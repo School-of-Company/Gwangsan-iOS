@@ -27,7 +27,6 @@ let targets: [Target] = [
         resources: ["Resources/**"],
         scripts: scripts,
         dependencies: [
-            .domain(target: .Domain),
             .SPM.Moya
         ],
         settings: .settings(base: env.baseSetting)
