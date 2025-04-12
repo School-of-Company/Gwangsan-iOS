@@ -13,7 +13,6 @@ struct SwiftUIView: View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
             .gwangsanFont(style: .titleLarge)
             .gwangsanColor(GwangsanAsset.Color.gray900)
-            .gwangsanFont(style: .caption)
         GwangsanAsset.Assets.chat.swiftUIImage
     }
 }
