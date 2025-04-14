@@ -54,7 +54,6 @@ extension View {
             .lineSpacing(lineSpacing)
             .padding(.vertical, lineSpacing / 2)
     }
-    
     func gwangsanColor(_ color: GwangsanColors) -> some View {
            self.foregroundColor(color.swiftUIColor)
        }

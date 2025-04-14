@@ -9,12 +9,19 @@
 import SwiftUI
 
 struct SwiftUIView: View {
+    @State var inputText: String = ""
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("Hello, World!")
             .gwangsanFont(style: .titleLarge)
-            .gwangsanColor(GwangsanAsset.Color.gray900)
-            .gwangsanFont(style: .caption)
+            .gwangsanColor(GwangsanAsset.Color.mainYellow400)
         GwangsanAsset.Assets.chat.swiftUIImage
+     
+        
+        GwangsanTextField(
+            "이름을 입력해주세요",
+            text: $inputText,
+            title: "이름"
+        )
     }
 }
 
