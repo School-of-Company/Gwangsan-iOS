@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct LoginView: View {
+struct AliasInputView: View {
     @State var nickname: String = "" // viewModel에서 사용
     var body: some View {
         NavigationStack {
@@ -52,22 +52,6 @@ struct LoginView: View {
     
 }
 
-
-//Text("로그인")
-//    .gwangsanFont(style: .titleMedium)
-//
-//Text("별칭을 입력해주세요")
-//    .gwangsanFont(style: .label)
-//    .gwangsanColor(GwangsanAsset.Color.gray500)
-//GwangsanButton(
-//    text: "다음",
-//    buttonState: false,
-//    horizontalPadding: 24,
-//    height: 52
-//)
-
-
-
 #Preview {
-    LoginView()
+    AliasInputView()
 }

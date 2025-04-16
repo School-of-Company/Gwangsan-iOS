@@ -8,12 +8,29 @@
 
 import SwiftUI
 
-struct ViewModifier: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+struct BackButtonModifier: ViewModifier {
+    @Environment(\.dismiss) private var dismiss
+
+    func body(content: Content) -> some View {
+        content
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        HStack {
+                            GwangsanAsset.Assets.back.swiftUIImage
+                                .frame(width: 8, height: 14)
+                            Text("뒤로")
+                                .font(.system(size: 14))
+                                .gwangsanColor(GwangsanAsset.Color.gray500)
+                        }
+                        .padding(.horizontal, 14)
+                    }
+                    .contentShape(Rectangle())
+                }
+            }
     }
 }
 
-#Preview {
-    ViewModifier()
-}

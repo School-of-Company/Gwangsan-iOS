@@ -46,7 +46,6 @@ public struct GwangsanButton: View {
             .padding(.horizontal, horizontalPadding)
             .frame(height: height)
         }
-        .disabled(!buttonState) 
     }
 }
 
