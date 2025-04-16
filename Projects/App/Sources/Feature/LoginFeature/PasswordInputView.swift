@@ -8,12 +8,12 @@
 
 import SwiftUI
 
-struct PasswordInputVIew: View {
+struct PasswordInputView: View {
     var body: some View {
         Text("패스워드")
     }
 }
 
 #Preview {
-    PasswordInputVIew()
+    PasswordInputView()
 }

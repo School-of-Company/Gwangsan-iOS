@@ -41,7 +41,8 @@ struct AliasInputView: View {
                     text: "다음",
                     buttonState: !nickname.isEmpty,
                     horizontalPadding: 24,
-                    height: 52
+                    height: 52,
+                    destination: PasswordInputView()
                 )
                 .padding(.bottom, 30)
             }
@@ -54,4 +55,4 @@ struct AliasInputView: View {
 
 #Preview {
     AliasInputView()
-}
+} 

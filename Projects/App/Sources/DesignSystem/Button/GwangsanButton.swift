@@ -8,44 +8,64 @@
 
 import SwiftUI
 
-public struct GwangsanButton: View {
+public struct GwangsanButton<Destination: View>: View {
     var text: String
     var buttonState: Bool
     var horizontalPadding: CGFloat
     var height: CGFloat
+    var destination: Destination?
     var action: () -> Void
 
-    @State private var isPressed = false
+    @State private var isLinkActive = false
 
     public init(
         text: String,
         buttonState: Bool,
         horizontalPadding: CGFloat,
         height: CGFloat,
+        destination: Destination? = nil,
         action: @escaping () -> Void = {}
     ) {
         self.text = text
         self.buttonState = buttonState
         self.horizontalPadding = horizontalPadding
         self.height = height
+        self.destination = destination
         self.action = action
     }
 
     public var body: some View {
-        Button(action: {
-            self.action()
-        }) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(buttonState ? GwangsanAsset.Color.mainGreen500.swiftUIColor : GwangsanAsset.Color.gray200.swiftUIColor)
-                Text(text)
-                    .font(.system(size: 18))
-                    .fontWeight(.semibold)
-                    .foregroundColor(buttonState ? .white : GwangsanAsset.Color.gray500.swiftUIColor)
+        Group {
+            if let destination = destination, buttonState {
+                NavigationLink(destination: destination, isActive: $isLinkActive) {
+                    buttonContent
+                }
+                .simultaneousGesture(TapGesture().onEnded {
+                    action()
+                    isLinkActive = true
+                })
+            } else {
+                Button(action: {
+                    action()
+                }) {
+                    buttonContent
+                }
+                .disabled(!buttonState)
             }
-            .padding(.horizontal, horizontalPadding)
-            .frame(height: height)
         }
+    }
+
+    private var buttonContent: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(buttonState ? GwangsanAsset.Color.mainGreen500.swiftUIColor : GwangsanAsset.Color.gray200.swiftUIColor)
+            Text(text)
+                .font(.system(size: 18))
+                .fontWeight(.semibold)
+                .foregroundColor(buttonState ? .white : GwangsanAsset.Color.gray500.swiftUIColor)
+        }
+        .padding(.horizontal, horizontalPadding)
+        .frame(height: height)
     }
 }
 
