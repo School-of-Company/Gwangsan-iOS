@@ -28,7 +28,8 @@ struct SwiftUIView: View {
             text: "다음",
             buttonState: true,
             horizontalPadding: 20,
-            height: 54
+            height: 54,
+            destination: PasswordInputView()
         )
         
         HStack(spacing: 12) {
@@ -45,7 +46,8 @@ struct SwiftUIView: View {
                 text: "인증",
                 buttonState: false,
                 horizontalPadding: 0,
-                height: 56
+                height: 56,
+                destination: PasswordInputView()
             )
             .padding(.top, 16)
             .frame(width: 80)
