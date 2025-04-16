@@ -32,20 +32,20 @@ public struct GwangsanButton: View {
     }
 
     public var body: some View {
-            Button(action: {
-                self.action()
-            }) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(buttonState ? GwangsanAsset.Color.mainGreen500.swiftUIColor : GwangsanAsset.Color.gray200.swiftUIColor)
-
-                    Text(text)
-                        .font(.system(size: 18))
-                        .fontWeight(.semibold)
-                        .foregroundColor(buttonState ? .white : GwangsanAsset.Color.gray500.swiftUIColor)
-                }
-                .padding(.horizontal, horizontalPadding)
-                .frame(height: height)
+        Button(action: {
+            self.action()
+        }) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(buttonState ? GwangsanAsset.Color.mainGreen500.swiftUIColor : GwangsanAsset.Color.gray200.swiftUIColor)
+                Text(text)
+                    .font(.system(size: 18))
+                    .fontWeight(.semibold)
+                    .foregroundColor(buttonState ? .white : GwangsanAsset.Color.gray500.swiftUIColor)
             }
+            .padding(.horizontal, horizontalPadding)
+            .frame(height: height)
         }
+    }
 }
+
