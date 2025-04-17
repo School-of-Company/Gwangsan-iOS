@@ -42,7 +42,7 @@ struct NicknameInputView: View {
                     buttonState: !nickname.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
-                    destination: PasswordInputView()
+                    destination: SignUpPasswordView()
                 )
                 .padding(.bottom, 30)
             }
