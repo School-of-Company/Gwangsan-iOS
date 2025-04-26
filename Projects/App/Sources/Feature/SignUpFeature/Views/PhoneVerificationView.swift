@@ -65,10 +65,10 @@ struct PhoneVerificationView: View {
 
                 GwangsanButton(
                     text: "다음",
-                    buttonState: viewModel.isPasswordMatch,
+                    buttonState: true, // 전화번호 인증이 완료되면 true로 변경하게 만들어야함
                     horizontalPadding: 24,
                     height: 52,
-                    destination: StartView()  // 동네 선택 페이지로 이동
+                    destination: LocationSelectView()
                 )
                 .padding(.bottom, 30)
             }
