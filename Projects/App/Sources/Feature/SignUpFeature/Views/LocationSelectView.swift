@@ -65,7 +65,7 @@ struct LocationSelectView: View {
                     buttonState: selectedLocation != nil,
                     horizontalPadding: 24,
                     height: 52,
-                    destination: SignUpPasswordView()  // 소개 페이지로 이동
+                    destination: MajorSelectView()
                 )
                 .padding(.top, 16)
                 .padding(.bottom, 30)
