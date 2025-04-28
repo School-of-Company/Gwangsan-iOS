@@ -85,7 +85,6 @@ struct LocationSelectView: View {
             }
             .modifier(BackButtonModifier())
         }
-        .navigationBarHidden(true)
     }
 }
 

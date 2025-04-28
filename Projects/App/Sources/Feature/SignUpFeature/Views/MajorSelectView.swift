@@ -47,7 +47,7 @@ struct MajorSelectView: View {
                 buttonState: !selectedMajors.isEmpty,
                 horizontalPadding: 24,
                 height: 52,
-                destination: PhoneVerificationView() // 추천인 페이지로 이동해야함
+                destination: ReferenceView()
             )
             .padding(.bottom, 30)
         }
