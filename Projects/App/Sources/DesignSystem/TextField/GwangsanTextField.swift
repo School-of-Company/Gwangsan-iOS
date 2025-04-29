@@ -44,7 +44,7 @@ struct GwangsanTextField: View {
                 TextField("", text: $text, prompt: Text(placeholder))
                     .font(.system(size: 14))
                     .fontWeight(.medium)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 22)
                     .focused($isFocused)
             }
             .frame(height: 56)

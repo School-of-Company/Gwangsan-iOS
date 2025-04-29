@@ -11,16 +11,10 @@ import SwiftUI
 struct StartView: View {
     var body: some View {
         NavigationView {
-            VStack{
-                NavigationLink (destination: AliasInputView()) {
-                    Text("로그인")
-                }
-                NavigationLink (destination: NicknameInputView()) {
-                    Text("회원가입")
-                }
+            NavigationLink (destination: AliasInputView()) {
+                Text("로그인")
             }
         }
-        .navigationBarHidden(true)
     }
 }
 
