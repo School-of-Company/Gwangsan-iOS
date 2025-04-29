@@ -52,7 +52,7 @@ struct SwiftUIView: View {
             .padding(.top, 16)
             .frame(width: 80)
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, 21)
     }
 }
 
