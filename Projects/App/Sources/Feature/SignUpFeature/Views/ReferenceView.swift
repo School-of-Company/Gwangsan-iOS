@@ -41,7 +41,7 @@ struct ReferenceView: View {
                     buttonState: !reference.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
-                    destination: PhoneVerificationView()
+                    destination: FinishedView()
                 )
                 .padding(.bottom, 30)
             }
