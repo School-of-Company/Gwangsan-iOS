@@ -37,11 +37,9 @@ struct TabbarView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // 상단 콘텐츠 뷰
             contentView(for: selectedTab)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-            // 탭바 영역
             Divider()
             HStack(spacing: 40) {
                 ForEach(TabType.allCases, id: \.self) { tab in
@@ -73,7 +71,7 @@ struct TabbarView: View {
         switch tab {
         case .home: MainView()
         case .post: PostView()
-        case .chat: ChatView()
+        case .chat: ChatListView()
         case .notice: NoticeView()
         case .profile: ProfileView()
         }
