@@ -111,12 +111,13 @@ struct ProfileView: View {
                         .foregroundColor(.black)
                     
                     GwangsanButton(
-                        text: "내글",
-                        fontSize: 12,
+                        text: "내 글",
+                        fontSize: 14,
                         buttonState: true,
-                        horizontalPadding: 0,
+                        horizontalPadding: 22,
                         height: 52,
-                        destination: MainView() // 내글 페이지로 이동
+                        style: .outline,
+                        destination: MainView()
                     ).frame(width: 107)
                     
                     Spacer()

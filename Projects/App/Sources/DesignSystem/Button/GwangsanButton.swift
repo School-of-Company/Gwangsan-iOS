@@ -8,12 +8,18 @@
 
 import SwiftUI
 
+public enum GwangsanButtonStyle {
+    case filled
+    case outline
+}
+
 public struct GwangsanButton<Destination: View>: View {
     var text: String
     var fontSize: CGFloat
     var buttonState: Bool
     var horizontalPadding: CGFloat
     var height: CGFloat
+    var style: GwangsanButtonStyle
     var destination: Destination?
     var action: () -> Void
 
@@ -25,6 +31,7 @@ public struct GwangsanButton<Destination: View>: View {
         buttonState: Bool,
         horizontalPadding: CGFloat,
         height: CGFloat,
+        style: GwangsanButtonStyle = .filled,
         destination: Destination? = nil,
         action: @escaping () -> Void = {}
     ) {
@@ -33,6 +40,7 @@ public struct GwangsanButton<Destination: View>: View {
         self.buttonState = buttonState
         self.horizontalPadding = horizontalPadding
         self.height = height
+        self.style = style
         self.destination = destination
         self.action = action
     }
@@ -60,13 +68,26 @@ public struct GwangsanButton<Destination: View>: View {
 
     private var buttonContent: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(buttonState ? GwangsanAsset.Color.mainGreen500.swiftUIColor : GwangsanAsset.Color.gray200.swiftUIColor)
+            if style == .filled {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(buttonState ? GwangsanAsset.Color.mainGreen500.swiftUIColor : GwangsanAsset.Color.gray200.swiftUIColor)
+            } else if style == .outline {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.white)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(GwangsanAsset.Color.mainGreen500.swiftUIColor, lineWidth: 1)
+                    )
+            }
 
             Text(text)
                 .font(.system(size: fontSize))
                 .fontWeight(.semibold)
-                .foregroundColor(buttonState ? .white : GwangsanAsset.Color.gray500.swiftUIColor)
+                .foregroundColor(
+                    style == .filled
+                    ? (buttonState ? .white : GwangsanAsset.Color.gray500.swiftUIColor)
+                    : GwangsanAsset.Color.mainGreen500.swiftUIColor
+                )
         }
         .padding(.horizontal, horizontalPadding)
         .frame(height: height)
