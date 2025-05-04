@@ -114,18 +114,16 @@ struct ProfileView: View {
                         text: "내 글",
                         fontSize: 14,
                         buttonState: true,
-                        horizontalPadding: 22,
+                        horizontalPadding: 0,
                         height: 52,
                         style: .outline,
-                        destination: MainView()
+                        destination: MainView() // 내 글 상세 페이지로 이동해야함
                     ).frame(width: 107)
                     
                     Spacer()
                     
                 }
                 .padding(.horizontal, 24)
-                
-                
             }
         }
     }

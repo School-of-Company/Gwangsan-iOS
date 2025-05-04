@@ -14,15 +14,16 @@ public enum GwangsanButtonStyle {
 }
 
 public struct GwangsanButton<Destination: View>: View {
-    var text: String
-    var fontSize: CGFloat
-    var buttonState: Bool
-    var horizontalPadding: CGFloat
-    var height: CGFloat
-    var style: GwangsanButtonStyle
-    var destination: Destination?
-    var action: () -> Void
+    let text: String
+    let fontSize: CGFloat
+    let buttonState: Bool
+    let horizontalPadding: CGFloat
+    let height: CGFloat
+    let style: GwangsanButtonStyle
+    let destination: Destination?
+    let action: () -> Void
 
+    @State private var isPressed = false
     @State private var isLinkActive = false
 
     public init(
@@ -52,11 +53,18 @@ public struct GwangsanButton<Destination: View>: View {
                     buttonContent
                 }
                 .simultaneousGesture(TapGesture().onEnded {
+                    if style == .outline {
+                        pressEffectAndNavigate()
+                    } else {
+                        isLinkActive = true
+                    }
                     action()
-                    isLinkActive = true
                 })
             } else {
                 Button(action: {
+                    if style == .outline {
+                        pressEffectOnly()
+                    }
                     action()
                 }) {
                     buttonContent
@@ -66,27 +74,60 @@ public struct GwangsanButton<Destination: View>: View {
         }
     }
 
-    private var buttonContent: some View {
-        ZStack {
-            if style == .filled {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(buttonState ? GwangsanAsset.Color.mainGreen500.swiftUIColor : GwangsanAsset.Color.gray200.swiftUIColor)
-            } else if style == .outline {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.white)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(GwangsanAsset.Color.mainGreen500.swiftUIColor, lineWidth: 1)
-                    )
-            }
+    private func pressEffectAndNavigate() {
+        isPressed = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            isPressed = false
+            isLinkActive = true
+        }
+    }
 
+    private func pressEffectOnly() {
+        isPressed = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            isPressed = false
+        }
+    }
+
+    private var buttonContent: some View {
+        let isTempFilled = style == .outline && isPressed
+        let isNowFilled = style == .filled && buttonState
+        let isOutlineBorder = style == .outline && buttonState && !isPressed
+        let isInactive = !buttonState
+
+        return ZStack {
+            // Background
+            RoundedRectangle(cornerRadius: 12)
+                .fill(
+                    isNowFilled || isTempFilled
+                    ? GwangsanAsset.Color.mainGreen500.swiftUIColor
+                    : (style == .filled ? GwangsanAsset.Color.gray200.swiftUIColor : .white)
+                )
+                .overlay(
+                    isOutlineBorder
+                    ? RoundedRectangle(cornerRadius: 12)
+                        .stroke(GwangsanAsset.Color.mainGreen500.swiftUIColor, lineWidth: 1)
+                    : nil
+                )
+                .overlay(
+                    style == .outline && isInactive
+                    ? RoundedRectangle(cornerRadius: 12)
+                        .stroke(GwangsanAsset.Color.gray400.swiftUIColor, lineWidth: 1)
+                    : nil
+                )
+
+            // Text
             Text(text)
                 .font(.system(size: fontSize))
                 .fontWeight(.semibold)
                 .foregroundColor(
-                    style == .filled
-                    ? (buttonState ? .white : GwangsanAsset.Color.gray500.swiftUIColor)
-                    : GwangsanAsset.Color.mainGreen500.swiftUIColor
+                    isNowFilled || isTempFilled
+                    ? .white
+                    : (
+                        style == .filled
+                        ? GwangsanAsset.Color.gray500.swiftUIColor
+                        : (buttonState ? GwangsanAsset.Color.mainGreen500.swiftUIColor : GwangsanAsset.Color.gray400.swiftUIColor)
+                    )
                 )
         }
         .padding(.horizontal, horizontalPadding)
