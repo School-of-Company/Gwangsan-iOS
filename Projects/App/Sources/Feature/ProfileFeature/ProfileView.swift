@@ -10,17 +10,18 @@ import SwiftUI
 
 struct ProfileView: View {
     var body: some View {
-        NavigationStack{
-            VStack{
-                
+        NavigationStack {
+            VStack(spacing: 0) {
+
                 Text("프로필")
                     .gwangsanFont(style: .body1)
-                
+                    .padding(.bottom, 48)
+
                 HStack(spacing: 16) {
                     Image(systemName: "person.crop.circle.fill")
                         .resizable()
                         .frame(width: 50, height: 50)
-                    
+
                     VStack(alignment: .leading, spacing: 4) {
                         Text("모태환")
                             .gwangsanFont(style: .body1)
@@ -33,9 +34,9 @@ struct ProfileView: View {
                                 .foregroundColor(.gray)
                         }
                     }
-                    
+
                     Spacer()
-                    
+
                     Button(action: {}) {
                         Text("내 정보 수정")
                             .font(.system(size: 14))
@@ -49,16 +50,16 @@ struct ProfileView: View {
                     }
                 }
                 .padding(.horizontal)
-                .padding(.vertical, 16)
-                
+                .padding(.bottom, 16)
+
                 Divider()
-                
+
                 VStack(alignment: .leading) {
-                    
+
                     Text("밝기")
                         .gwangsanFont(style: .titleSmall)
                         .padding(.top, 40)
-                    
+
                     ZStack(alignment: .leading) {
                         Capsule()
                             .fill(Color.gray.opacity(0.2))
@@ -69,33 +70,32 @@ struct ProfileView: View {
                             .padding(.horizontal, 5)
                     }
                     .padding(.top, 24)
-                    
+
                     HStack {
                         Spacer()
                         Text("8단계")
                             .font(.system(size: 12))
                             .foregroundColor(.orange)
                     }
-                    
+
                     Text("광산")
                         .gwangsanFont(style: .titleSmall)
                         .foregroundColor(.black)
                         .padding(.top, 12)
-                    
+
                     HStack {
                         Image("Gold")
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 57, height: 52)
                             .clipped()
-                        
+
                         Spacer().frame(width: 46)
-                        
+
                         Text("5000 광산")
                             .font(.system(size: 26))
                             .bold()
                             .gwangsanColor(GwangsanAsset.Color.mainYellow700)
-                        
                     }
                     .frame(height: 95)
                     .frame(maxWidth: .infinity)
@@ -103,27 +103,53 @@ struct ProfileView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .padding(.top, 24)
                     .padding(.bottom, 52)
-                    
-                    Divider()
-                    
-                    Text("내 활동")
-                        .gwangsanFont(style: .titleSmall)
-                        .foregroundColor(.black)
-                    
-                    GwangsanButton(
-                        text: "내 글",
-                        fontSize: 14,
-                        buttonState: true,
-                        horizontalPadding: 0,
-                        height: 52,
-                        style: .outline,
-                        destination: MainView() // 내 글 상세 페이지로 이동해야함
-                    ).frame(width: 107)
-                    
-                    Spacer()
-                    
                 }
                 .padding(.horizontal, 24)
+
+                Divider()
+                    .padding(.horizontal, -24)
+
+                VStack(alignment: .leading, spacing: 24) {
+                    Text("내 활동")
+                        .gwangsanFont(style: .titleSmall)
+                        .padding(.top, 20)
+
+                    HStack(spacing: 20) {
+                        GwangsanButton(
+                            text: "내 글",
+                            fontSize: 14,
+                            buttonState: true,
+                            horizontalPadding: 0,
+                            height: 52,
+                            style: .outline,
+                            destination: MainView()
+                        ).frame(width: 107)
+
+                        GwangsanButton(
+                            text: "거래내역",
+                            fontSize: 14,
+                            buttonState: true,
+                            horizontalPadding: 0,
+                            height: 52,
+                            style: .outline,
+                            destination: MainView()
+                        ).frame(width: 107)
+
+                        GwangsanButton(
+                            text: "내가 작성한 후기",
+                            fontSize: 14,
+                            buttonState: true,
+                            horizontalPadding: 0,
+                            height: 52,
+                            style: .outline,
+                            destination: MainView()
+                        ).frame(width: 107)
+                    }
+                }
+                .padding(.horizontal, 24)
+                .padding(.top, 24)
+
+                Spacer()
             }
         }
     }
