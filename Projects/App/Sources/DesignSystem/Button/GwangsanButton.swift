@@ -10,6 +10,7 @@ import SwiftUI
 
 public struct GwangsanButton<Destination: View>: View {
     var text: String
+    var fontSize: CGFloat
     var buttonState: Bool
     var horizontalPadding: CGFloat
     var height: CGFloat
@@ -20,6 +21,7 @@ public struct GwangsanButton<Destination: View>: View {
 
     public init(
         text: String,
+        fontSize: CGFloat = 18,
         buttonState: Bool,
         horizontalPadding: CGFloat,
         height: CGFloat,
@@ -27,6 +29,7 @@ public struct GwangsanButton<Destination: View>: View {
         action: @escaping () -> Void = {}
     ) {
         self.text = text
+        self.fontSize = fontSize
         self.buttonState = buttonState
         self.horizontalPadding = horizontalPadding
         self.height = height
@@ -59,8 +62,9 @@ public struct GwangsanButton<Destination: View>: View {
         ZStack {
             RoundedRectangle(cornerRadius: 12)
                 .fill(buttonState ? GwangsanAsset.Color.mainGreen500.swiftUIColor : GwangsanAsset.Color.gray200.swiftUIColor)
+
             Text(text)
-                .font(.system(size: 18))
+                .font(.system(size: fontSize))
                 .fontWeight(.semibold)
                 .foregroundColor(buttonState ? .white : GwangsanAsset.Color.gray500.swiftUIColor)
         }
@@ -68,4 +72,3 @@ public struct GwangsanButton<Destination: View>: View {
         .frame(height: height)
     }
 }
-
