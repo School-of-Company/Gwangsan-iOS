@@ -17,8 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install tuist manually
-        run: curl -Ls https://install.tuist.io | bash
+      - name: Install mise & tuist
+        run: |
+          curl https://mise.run | sh
+          export PATH="$HOME/.local/share/mise/bin:$PATH"
+          mise install tuist
 
       - name: Compute dependency cache key
         id: compute_hash
@@ -31,9 +34,11 @@ jobs:
           path: ${{ env.CACHED_DEPENDENCY_PATHS }}
           key: ${{ steps.compute_hash.outputs.hash }}
 
-      - name: Install dependencies
+      - name: Install dependencies (tuist fetch)
         if: steps.cache_dependencies.outputs.cache-hit != 'true'
-        run: tuist install
+        run: |
+          export PATH="$HOME/.local/share/mise/bin:$PATH"
+          tuist fetch
 
     outputs:
       dependency_cache_key: ${{ steps.compute_hash.outputs.hash }}
@@ -46,8 +51,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install tuist manually
-        run: curl -Ls https://install.tuist.io | bash
+      - name: Install mise & tuist
+        run: |
+          curl https://mise.run | sh
+          export PATH="$HOME/.local/share/mise/bin:$PATH"
+          mise install tuist
 
       - name: Check dependency cache
         uses: actions/cache@v3
@@ -56,14 +64,18 @@ jobs:
           path: ${{ env.CACHED_DEPENDENCY_PATHS }}
           key: ${{ needs.prepare-dependency.outputs.dependency_cache_key }}
 
-      - name: Install dependencies
+      - name: Install dependencies (tuist fetch)
         if: steps.cache_dependencies.outputs.cache-hit != 'true'
-        run: tuist install
+        run: |
+          export PATH="$HOME/.local/share/mise/bin:$PATH"
+          tuist fetch
 
-      - name: Test with tuist
-        run: TUIST_ENV=CI tuist test --no-selective-testing
+      - name: Run Unit Tests
+        run: |
+          export PATH="$HOME/.local/share/mise/bin:$PATH"
+          TUIST_ENV=CI tuist test --no-selective-testing
 
-      - name: ✅ GWANGSAN iOS CI Discord Notification
+      - name: ✅ Discord Notification (Success)
         uses: sarisia/actions-status-discord@v1
         if: ${{ success() }}
         with:
@@ -71,7 +83,7 @@ jobs:
           webhook: ${{ secrets.GWANGSAN_DISCORD_WEBHOOK }}
           color: 00FF00
 
-      - name: ❗️ GWANGSAN iOS CI Discord Notification
+      - name: ❗️ Discord Notification (Failure)
         uses: sarisia/actions-status-discord@v1
         if: ${{ failure() }}
         with:
