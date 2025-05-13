@@ -15,12 +15,15 @@ jobs:
     runs-on: macos-14
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Install tuist
+      - name: Install rtx and tuist
         run: |
-          curl -Ls https://install.tuist.io | bash
-          echo "$HOME/.tuist/bin" >> $GITHUB_PATH
+          brew install rtx
+          rtx plugin add tuist
+          rtx install tuist@4.49.1
+          echo "$(rtx where tuist)/bin" >> $GITHUB_PATH
 
       - name: Compute dependency cache key
         id: compute_hash
@@ -33,7 +36,7 @@ jobs:
           path: ${{ env.CACHED_DEPENDENCY_PATHS }}
           key: ${{ steps.compute_hash.outputs.hash }}
 
-      - name: Install dependencies
+      - name: Install dependencies (tuist fetch)
         if: steps.cache_dependencies.outputs.cache-hit != 'true'
         run: tuist fetch
 
@@ -46,12 +49,15 @@ jobs:
     needs: prepare-dependency
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Install tuist
+      - name: Install rtx and tuist
         run: |
-          curl -Ls https://install.tuist.io | bash
-          echo "$HOME/.tuist/bin" >> $GITHUB_PATH
+          brew install rtx
+          rtx plugin add tuist
+          rtx install tuist@4.49.1
+          echo "$(rtx where tuist)/bin" >> $GITHUB_PATH
 
       - name: Check dependency cache
         uses: actions/cache@v3
@@ -60,24 +66,24 @@ jobs:
           path: ${{ env.CACHED_DEPENDENCY_PATHS }}
           key: ${{ needs.prepare-dependency.outputs.dependency_cache_key }}
 
-      - name: Install dependencies
+      - name: Install dependencies (tuist fetch)
         if: steps.cache_dependencies.outputs.cache-hit != 'true'
         run: tuist fetch
 
       - name: Run Tests
         run: TUIST_ENV=CI tuist test --no-selective-testing
 
-      - name: ✅ Discord Notification (Success)
-        if: ${{ success() }}
+      - name: ✅ GWANGSAN iOS CI Discord Notification
         uses: sarisia/actions-status-discord@v1
+        if: ${{ success() }}
         with:
           title: ✅ GWANGSAN-iOS-CI 성공! ✅
           webhook: ${{ secrets.GWANGSAN_DISCORD_WEBHOOK }}
           color: 00FF00
 
-      - name: ❗ Discord Notification (Failure)
-        if: ${{ failure() }}
+      - name: ❗️ GWANGSAN iOS CI Discord Notification
         uses: sarisia/actions-status-discord@v1
+        if: ${{ failure() }}
         with:
           title: ❗️ GWANGSAN-iOS-CI 실패! ❗️
           webhook: ${{ secrets.GWANGSAN_DISCORD_WEBHOOK }}
