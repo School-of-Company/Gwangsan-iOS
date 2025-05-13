@@ -132,7 +132,7 @@ struct ProfileView: View {
                             horizontalPadding: 0,
                             height: 52,
                             style: .outline,
-                            destination: MainView()
+                            destination: TradeLogView()
                         ).frame(width: 107)
 
                         GwangsanButton(
