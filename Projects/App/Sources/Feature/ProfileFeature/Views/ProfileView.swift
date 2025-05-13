@@ -15,7 +15,7 @@ struct ProfileView: View {
 
                 Text("프로필")
                     .gwangsanFont(style: .body1)
-                    .padding(.bottom, 48)
+                    .padding(.bottom, 24)
 
                 HStack(spacing: 16) {
                     Image(systemName: "person.crop.circle.fill")
@@ -122,7 +122,7 @@ struct ProfileView: View {
                             horizontalPadding: 0,
                             height: 52,
                             style: .outline,
-                            destination: MainView()
+                            destination: MyPostsView()
                         ).frame(width: 107)
 
                         GwangsanButton(
