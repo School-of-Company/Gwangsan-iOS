@@ -142,7 +142,7 @@ struct ProfileView: View {
                             horizontalPadding: 0,
                             height: 52,
                             style: .outline,
-                            destination: MainView()
+                            destination: MyReviewsView()
                         ).frame(width: 107)
                     }
                 }
