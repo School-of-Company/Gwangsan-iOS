@@ -17,11 +17,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install mise & tuist
+      - name: Install tuist
         run: |
-          curl https://mise.run | sh
-          export PATH="$HOME/.local/share/mise/bin:$PATH"
-          mise install tuist
+          curl -Ls https://install.tuist.io | bash
+          echo "$HOME/.tuist/bin" >> $GITHUB_PATH
 
       - name: Compute dependency cache key
         id: compute_hash
@@ -34,11 +33,9 @@ jobs:
           path: ${{ env.CACHED_DEPENDENCY_PATHS }}
           key: ${{ steps.compute_hash.outputs.hash }}
 
-      - name: Install dependencies (tuist fetch)
+      - name: Install dependencies
         if: steps.cache_dependencies.outputs.cache-hit != 'true'
-        run: |
-          export PATH="$HOME/.local/share/mise/bin:$PATH"
-          tuist fetch
+        run: tuist fetch
 
     outputs:
       dependency_cache_key: ${{ steps.compute_hash.outputs.hash }}
@@ -51,11 +48,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install mise & tuist
+      - name: Install tuist
         run: |
-          curl https://mise.run | sh
-          export PATH="$HOME/.local/share/mise/bin:$PATH"
-          mise install tuist
+          curl -Ls https://install.tuist.io | bash
+          echo "$HOME/.tuist/bin" >> $GITHUB_PATH
 
       - name: Check dependency cache
         uses: actions/cache@v3
@@ -64,28 +60,24 @@ jobs:
           path: ${{ env.CACHED_DEPENDENCY_PATHS }}
           key: ${{ needs.prepare-dependency.outputs.dependency_cache_key }}
 
-      - name: Install dependencies (tuist fetch)
+      - name: Install dependencies
         if: steps.cache_dependencies.outputs.cache-hit != 'true'
-        run: |
-          export PATH="$HOME/.local/share/mise/bin:$PATH"
-          tuist fetch
+        run: tuist fetch
 
-      - name: Run Unit Tests
-        run: |
-          export PATH="$HOME/.local/share/mise/bin:$PATH"
-          TUIST_ENV=CI tuist test --no-selective-testing
+      - name: Run Tests
+        run: TUIST_ENV=CI tuist test --no-selective-testing
 
       - name: ✅ Discord Notification (Success)
-        uses: sarisia/actions-status-discord@v1
         if: ${{ success() }}
+        uses: sarisia/actions-status-discord@v1
         with:
           title: ✅ GWANGSAN-iOS-CI 성공! ✅
           webhook: ${{ secrets.GWANGSAN_DISCORD_WEBHOOK }}
           color: 00FF00
 
-      - name: ❗️ Discord Notification (Failure)
-        uses: sarisia/actions-status-discord@v1
+      - name: ❗ Discord Notification (Failure)
         if: ${{ failure() }}
+        uses: sarisia/actions-status-discord@v1
         with:
           title: ❗️ GWANGSAN-iOS-CI 실패! ❗️
           webhook: ${{ secrets.GWANGSAN_DISCORD_WEBHOOK }}
