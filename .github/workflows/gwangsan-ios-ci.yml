@@ -17,9 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: jdx/mise-action@v2
-        with:
-          version: tuist@latest
+      - name: Install tuist manually
+        run: curl -Ls https://install.tuist.io | bash
 
       - name: Compute dependency cache key
         id: compute_hash
@@ -47,9 +46,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: jdx/mise-action@v2
-        with:
-          version: tuist@latest
+      - name: Install tuist manually
+        run: curl -Ls https://install.tuist.io | bash
 
       - name: Check dependency cache
         uses: actions/cache@v3
