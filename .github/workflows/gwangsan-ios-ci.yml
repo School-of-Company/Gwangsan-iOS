@@ -2,9 +2,9 @@ name: GWANGSAN-IOS-CI
 
 on:
   push:
-    branches: ["master"]
+    branches: [ "master" ]
   pull_request:
-    branches: ["*"]
+    branches: [ "*" ]
 
 env:
   CACHED_DEPENDENCY_PATHS: ${{ github.workspace }}/Tuist/Dependencies
@@ -17,14 +17,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install mise
-        run: brew install mise
-
-      - name: Install required tools (tuist)
-        run: mise install
-
-      - name: Add mise to PATH
-        run: echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
+      - name: Install mise and tuist
+        run: |
+          brew install mise
+          mise install tuist@latest
 
       - name: Compute dependency cache key
         id: compute_hash
@@ -39,7 +35,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache_dependencies.outputs.cache-hit != 'true'
-        run: tuist fetch
+        run: tuist install
 
     outputs:
       dependency_cache_key: ${{ steps.compute_hash.outputs.hash }}
@@ -52,14 +48,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install mise
-        run: brew install mise
-
-      - name: Install required tools (tuist)
-        run: mise install
-
-      - name: Add mise to PATH
-        run: echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
+      - name: Install mise and tuist
+        run: |
+          brew install mise
+          mise install tuist@latest
 
       - name: Check dependency cache
         uses: actions/cache@v3
@@ -70,12 +62,12 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache_dependencies.outputs.cache-hit != 'true'
-        run: tuist fetch
+        run: tuist install
 
-      - name: Run tests
+      - name: Test with tuist
         run: TUIST_ENV=CI tuist test --no-selective-testing
 
-      - name: ✅ Notify Discord (Success)
+      - name: ✅ GWANGSAN iOS CI Discord Notification
         uses: sarisia/actions-status-discord@v1
         if: ${{ success() }}
         with:
@@ -83,7 +75,7 @@ jobs:
           webhook: ${{ secrets.GWANGSAN_DISCORD_WEBHOOK }}
           color: 00FF00
 
-      - name: ❗️ Notify Discord (Failure)
+      - name: ❗️ GWANGSAN iOS CI Discord Notification
         uses: sarisia/actions-status-discord@v1
         if: ${{ failure() }}
         with:
