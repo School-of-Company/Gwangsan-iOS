@@ -36,34 +36,37 @@ struct TabbarView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            contentView(for: selectedTab)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-            Divider()
-            HStack(spacing: 40) {
-                ForEach(TabType.allCases, id: \.self) { tab in
-                    Button {
-                        selectedTab = tab
-                    } label: {
-                        VStack {
-                            Image(tab.imageName)
-                                .renderingMode(.template)
-                                .resizable()
-                                .frame(width: 24, height: 24)
-                            Text(tab.title)
-                                .font(.system(size: 14))
+        NavigationView{
+            VStack(spacing: 0) {
+                contentView(for: selectedTab)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                
+                Divider()
+                HStack(spacing: 40) {
+                    ForEach(TabType.allCases, id: \.self) { tab in
+                        Button {
+                            selectedTab = tab
+                        } label: {
+                            VStack {
+                                Image(tab.imageName)
+                                    .renderingMode(.template)
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                                Text(tab.title)
+                                    .font(.system(size: 14))
+                            }
+                            .foregroundColor(
+                                selectedTab == tab
+                                ? GwangsanAsset.Color.mainGreen500.swiftUIColor
+                                : .gray
+                            )
                         }
-                        .foregroundColor(
-                            selectedTab == tab
-                            ? GwangsanAsset.Color.mainGreen500.swiftUIColor
-                            : .gray
-                        )
                     }
                 }
+                .padding(.top, 12)
             }
-            .padding(.top, 12)
         }
+        .navigationBarHidden(true)
     }
 
     @ViewBuilder

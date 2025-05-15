@@ -8,28 +8,40 @@
 
 import SwiftUI
 
-public struct GwangsanButton<Destination: View>: View {
-    var text: String
-    var buttonState: Bool
-    var horizontalPadding: CGFloat
-    var height: CGFloat
-    var destination: Destination?
-    var action: () -> Void
+public enum GwangsanButtonStyle {
+    case filled
+    case outline
+}
 
+public struct GwangsanButton<Destination: View>: View {
+    let text: String
+    let fontSize: CGFloat
+    let buttonState: Bool
+    let horizontalPadding: CGFloat
+    let height: CGFloat
+    let style: GwangsanButtonStyle
+    let destination: Destination?
+    let action: () -> Void
+
+    @State private var isPressed = false
     @State private var isLinkActive = false
 
     public init(
         text: String,
+        fontSize: CGFloat = 18,
         buttonState: Bool,
         horizontalPadding: CGFloat,
         height: CGFloat,
+        style: GwangsanButtonStyle = .filled,
         destination: Destination? = nil,
         action: @escaping () -> Void = {}
     ) {
         self.text = text
+        self.fontSize = fontSize
         self.buttonState = buttonState
         self.horizontalPadding = horizontalPadding
         self.height = height
+        self.style = style
         self.destination = destination
         self.action = action
     }
@@ -41,11 +53,18 @@ public struct GwangsanButton<Destination: View>: View {
                     buttonContent
                 }
                 .simultaneousGesture(TapGesture().onEnded {
+                    if style == .outline {
+                        pressEffectAndNavigate()
+                    } else {
+                        isLinkActive = true
+                    }
                     action()
-                    isLinkActive = true
                 })
             } else {
                 Button(action: {
+                    if style == .outline {
+                        pressEffectOnly()
+                    }
                     action()
                 }) {
                     buttonContent
@@ -55,17 +74,63 @@ public struct GwangsanButton<Destination: View>: View {
         }
     }
 
+    private func pressEffectAndNavigate() {
+        isPressed = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            isPressed = false
+            isLinkActive = true
+        }
+    }
+
+    private func pressEffectOnly() {
+        isPressed = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            isPressed = false
+        }
+    }
+
     private var buttonContent: some View {
-        ZStack {
+        let isTempFilled = style == .outline && isPressed
+        let isNowFilled = style == .filled && buttonState
+        let isOutlineBorder = style == .outline && buttonState && !isPressed
+        let isInactive = !buttonState
+
+        return ZStack {
+            // Background
             RoundedRectangle(cornerRadius: 12)
-                .fill(buttonState ? GwangsanAsset.Color.mainGreen500.swiftUIColor : GwangsanAsset.Color.gray200.swiftUIColor)
+                .fill(
+                    isNowFilled || isTempFilled
+                    ? GwangsanAsset.Color.mainGreen500.swiftUIColor
+                    : (style == .filled ? GwangsanAsset.Color.gray200.swiftUIColor : .white)
+                )
+                .overlay(
+                    isOutlineBorder
+                    ? RoundedRectangle(cornerRadius: 12)
+                        .stroke(GwangsanAsset.Color.mainGreen500.swiftUIColor, lineWidth: 1)
+                    : nil
+                )
+                .overlay(
+                    style == .outline && isInactive
+                    ? RoundedRectangle(cornerRadius: 12)
+                        .stroke(GwangsanAsset.Color.gray400.swiftUIColor, lineWidth: 1)
+                    : nil
+                )
+
+            // Text
             Text(text)
-                .font(.system(size: 18))
+                .font(.system(size: fontSize))
                 .fontWeight(.semibold)
-                .foregroundColor(buttonState ? .white : GwangsanAsset.Color.gray500.swiftUIColor)
+                .foregroundColor(
+                    isNowFilled || isTempFilled
+                    ? .white
+                    : (
+                        style == .filled
+                        ? GwangsanAsset.Color.gray500.swiftUIColor
+                        : (buttonState ? GwangsanAsset.Color.mainGreen500.swiftUIColor : GwangsanAsset.Color.gray400.swiftUIColor)
+                    )
+                )
         }
         .padding(.horizontal, horizontalPadding)
         .frame(height: height)
     }
 }
-

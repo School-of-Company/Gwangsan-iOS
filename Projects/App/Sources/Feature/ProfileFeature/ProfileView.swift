@@ -9,10 +9,12 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @State private var isActive = false
     var body: some View {
         VStack{
-            
-            Text("프로필")
+                Text("프로필")
+                    .gwangsanFont(style: .body1)
+
         
             HStack(spacing: 16) {
                 Image(systemName: "person.crop.circle.fill")
@@ -48,10 +50,6 @@ struct ProfileView: View {
             }
             .padding(.horizontal)
             .padding(.vertical, 16)
-
-//            Rectangle()
-//                .gwangsanColor(GwangsanAsset.Color.gray100)
-//                .frame(width: .infinity, height: 12)
 
             Divider()
             
@@ -105,22 +103,38 @@ struct ProfileView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .padding(.top, 24)
                 .padding(.bottom, 52)
+                
+                
             }
             .padding(.horizontal, 24)
-            
-            Rectangle()
-                .gwangsanColor(GwangsanAsset.Color.gray100)
-                .frame(width: .infinity, height: 12)
-            
-            VStack(alignment: .leading) {
+               
+            Divider()
+
+            HStack {
                 Text("내 활동")
                     .gwangsanFont(style: .titleSmall)
                     .foregroundColor(.black)
- 
-               
                 
+                Button {
+                    
+                } label: {
+                    Text("내 글")
+                        .font(.system(size: 12))
+                        .fontWeight(.semibold)
+                        .foregroundColor(GwangsanAsset.Color.mainGreen500.swiftUIColor)
+                        .frame(width: 63, height: 26)
+                        .padding(.horizontal, 22)
+                        .padding(.vertical, 13)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(GwangsanAsset.Color.mainGreen500.swiftUIColor, lineWidth: 1)
+                        )
+                }
                 Spacer()
             }
+            .padding(.horizontal, 24)
+            
+            Spacer()
         }
     }
 }
