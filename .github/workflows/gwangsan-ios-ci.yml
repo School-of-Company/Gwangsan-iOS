@@ -31,7 +31,8 @@ jobs:
 
       - name: Compute dependency cache key
         id: compute_hash
-        run: echo "hash=${{ hashFiles('Tuist/Dependencies.swift') }}" >> $GITHUB_OUTPUT
+        run: |
+          echo "hash=$(shasum -a 256 Tuist/Dependencies.swift | awk '{ print $1 }')" >> $GITHUB_OUTPUT
 
       - name: Cache Dependencies
         uses: actions/cache@v3
