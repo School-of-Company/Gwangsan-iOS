@@ -31,22 +31,21 @@ jobs:
 
       - name: Compute dependency cache key
         id: compute_hash
-        run: |
-          echo "hash=$(shasum -a 256 Tuist/Dependencies.swift | awk '{ print $1 }')" >> $GITHUB_OUTPUT
+        run: echo "hash-key=tuist-${{ hashFiles('Tuist/Dependencies.swift') }}" >> $GITHUB_OUTPUT
 
       - name: Cache Dependencies
         uses: actions/cache@v3
         id: cache_dependencies
         with:
           path: ${{ env.CACHED_DEPENDENCY_PATHS }}
-          key: ${{ steps.compute_hash.outputs.hash }}
+          key: ${{ steps.compute_hash.outputs.hash-key }}
 
       - name: Tuist Install
         if: steps.cache_dependencies.outputs.cache-hit != 'true'
         run: tuist install
 
     outputs:
-      dependency_cache_key: ${{ steps.compute_hash.outputs.hash }}
+      dependency_cache_key: ${{ steps.compute_hash.outputs.hash-key }}
 
   test:
     name: 🧪 Test
