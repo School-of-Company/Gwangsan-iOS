@@ -12,7 +12,7 @@ struct MainView: View {
     var body: some View {
         NavigationStack {
             HStack(spacing: 16) {
-                NavigationLink(destination: ServiceView()) {
+                NavigationLink(destination: ServiceListView()) {
                     ZStack {
                         Rectangle()
                             .fill(Color.gray.opacity(0.3))
@@ -24,7 +24,7 @@ struct MainView: View {
                             .foregroundColor(.black)
                     }
                 }
-                
+
                 NavigationLink(destination: ItemListView()) {
                     ZStack {
                         Rectangle()
@@ -45,3 +45,4 @@ struct MainView: View {
 #Preview {
     MainView()
 }
+
