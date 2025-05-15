@@ -1,5 +1,5 @@
 //
-//  itemView.swift
+//  ItemListView.swift
 //  Gwangsan
 //
 //  Created by 박정우 on 5/15/25.

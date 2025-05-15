@@ -1,5 +1,5 @@
 //
-//  ServiceView.swift
+//  ServiceListView.swift
 //  Gwangsan
 //
 //  Created by 박정우 on 5/15/25.
@@ -8,12 +8,13 @@
 
 import SwiftUI
 
-struct ServiceView: View {
+struct ServiceListView: View {
     var body: some View {
-        Text("서비스 페이지")
+        Text("서비스 리스트 뷰")
     }
 }
 
 #Preview {
-    ServiceView()
+    ServiceListView()
 }
+
