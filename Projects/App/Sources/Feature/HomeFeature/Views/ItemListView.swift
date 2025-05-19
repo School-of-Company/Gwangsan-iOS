@@ -95,27 +95,29 @@ struct ItemListView: View {
                     .frame(height: 45)
                     .padding(.bottom, 20)
 
-                    // 리스트
                     ScrollView {
                         LazyVStack(spacing: 20) {
                             ForEach(filteredItems) { item in
-                                HStack(spacing: 16) {
-                                    Image(item.imageName)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 80, height: 80)
-                                        .clipped()
-                                        .cornerRadius(8)
+                                NavigationLink(destination: ItemDetailView(item: item)) {
+                                    HStack(spacing: 16) {
+                                        Image(item.imageName)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 80, height: 80)
+                                            .clipped()
+                                            .cornerRadius(8)
 
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        Text(item.title)
-                                            .gwangsanFont(style: .body3)
-                                        Text("\(item.point) 광산")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.gray)
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text(item.title)
+                                                .gwangsanFont(style: .body3)
+                                                .foregroundColor(.black)
+                                            Text("\(item.point) 광산")
+                                                .font(.system(size: 14))
+                                                .foregroundColor(.gray)
+                                        }
+
+                                        Spacer()
                                     }
-
-                                    Spacer()
                                 }
                             }
                         }
