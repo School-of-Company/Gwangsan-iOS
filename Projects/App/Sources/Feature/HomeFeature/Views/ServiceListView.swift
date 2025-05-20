@@ -13,38 +13,57 @@ struct ServiceListView: View {
         case request = "해주세요"
         case provide = "할수있어요"
     }
-    
-    struct ServiceItem: Identifiable {
-        let id = UUID()
-        let title: String
-        let point: Int
-        let category: FilterType
-        let imageName: String
-    }
-    
+
     @State private var selected: FilterType = .request
     @Environment(\.dismiss) private var dismiss
-    
-    // 전체 게시글 목록
-    let allItems: [ServiceItem] = [
-        ServiceItem(title: "바퀴벌레 좀 잡아주세요", point: 3000, category: .request, imageName: "TestImage1"),
-        ServiceItem(title: "집 청소좀 해주세요", point: 3000, category: .request, imageName: "TestImage2"),
-        ServiceItem(title: "바퀴벌레 잡아드려요", point: 3000, category: .provide, imageName: "TestImage3"),
-        ServiceItem(title: "운동 도와드려요", point: 3000, category: .provide, imageName: "TestImage4")
+
+    let allItems: [CommonItem] = [
+        CommonItem(
+            id: UUID(),
+            title: "바퀴벌레 좀 잡아주세요",
+            point: 3000,
+            category: .request,
+            imageName: "TestImage1",
+            mode: .service
+        ),
+        CommonItem(
+            id: UUID(),
+            title: "집 청소좀 해주세요",
+            point: 3000,
+            category: .request,
+            imageName: "TestImage2",
+            mode: .service
+        ),
+        CommonItem(
+            id: UUID(),
+            title: "바퀴벌레 잡아드려요",
+            point: 3000,
+            category: .provide,
+            imageName: "TestImage3",
+            mode: .service
+        ),
+        CommonItem(
+            id: UUID(),
+            title: "운동 도와드려요",
+            point: 3000,
+            category: .provide,
+            imageName: "TestImage4",
+            mode: .service
+        )
     ]
-    
-    // 필터링된 항목
-    var filteredItems: [ServiceItem] {
-        allItems.filter { $0.category == selected }
+
+    var filteredItems: [CommonItem] {
+        allItems.filter { item in
+            selected == .request ? item.category == .request : item.category == .provide
+        }
     }
-    
+
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottomTrailing) {
                 let width = UIScreen.main.bounds.width - 48
 
                 VStack(alignment: .leading) {
-                    // 타이틀
                     ZStack {
                         Text("서비스")
                             .gwangsanFont(style: .body1)
@@ -62,7 +81,6 @@ struct ServiceListView: View {
                     }
                     .padding(.bottom, 30)
 
-                    // 세그먼트
                     ZStack {
                         RoundedRectangle(cornerRadius: 30)
                             .gwangsanColor(GwangsanAsset.Color.mainYellow300)
@@ -89,7 +107,7 @@ struct ServiceListView: View {
                                     Text(type.rawValue)
                                         .font(.system(size: 14))
                                         .foregroundColor(
-                                            selected == type ? Color.black : GwangsanAsset.Color.gray800.swiftUIColor
+                                            selected == type ? .black : GwangsanAsset.Color.gray800.swiftUIColor
                                         )
                                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 }
@@ -98,33 +116,35 @@ struct ServiceListView: View {
                     }
                     .frame(height: 45)
                     .padding(.bottom, 20)
-
-                    // 리스트
+                    
                     ScrollView {
                         LazyVStack(spacing: 20) {
                             ForEach(filteredItems) { item in
-                                HStack(spacing: 16) {
-                                    Image(item.imageName)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 80, height: 80)
-                                        .clipped()
-                                        .cornerRadius(8)
+                                NavigationLink(destination: ItemDetailView(item: item)) {
+                                    HStack(spacing: 16) {
+                                        Image(item.imageName)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 80, height: 80)
+                                            .clipped()
+                                            .cornerRadius(8)
 
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        Text(item.title)
-                                            .gwangsanFont(style: .body3)
-                                        Text("\(item.point) 광산")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.gray)
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text(item.title)
+                                                .gwangsanFont(style: .body3)
+                                            Text("\(item.point) 광산")
+                                                .font(.system(size: 14))
+                                                .foregroundColor(.gray)
+                                        }
+
+                                        Spacer()
                                     }
-
-                                    Spacer()
                                 }
                             }
                         }
                         .padding(.bottom, 20)
                     }
+                    .buttonStyle(PlainButtonStyle())
 
                     Spacer()
                 }
@@ -147,6 +167,10 @@ struct ServiceListView: View {
         }
         .navigationBarHidden(true)
     }
+}
+
+#Preview {
+    ServiceListView()
 }
 
 #Preview {

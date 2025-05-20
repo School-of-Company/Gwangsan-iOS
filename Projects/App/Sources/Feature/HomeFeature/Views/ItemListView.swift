@@ -9,32 +9,32 @@
 import SwiftUI
 
 struct ItemListView: View {
-    enum FilterType: String, CaseIterable {
-        case request = "필요해요"
-        case provide = "팔아요"
-    }
-    
-    struct ServiceItem: Identifiable {
-        let id = UUID()
-        let title: String
-        let point: Int
-        let category: FilterType
-        let imageName: String
-    }
-    
-    @State private var selected: FilterType = .request
+    @State private var selected: CommonItem.Category = .request
     @Environment(\.dismiss) private var dismiss
-    
-    // 전체 게시글 목록
-    let allItems: [ServiceItem] = [
-        ServiceItem(title: "아이폰 16 필요해요", point: 3000, category: .request, imageName: "TestImage1"),
-        ServiceItem(title: "자전거 팔아요", point: 3000, category: .provide, imageName: "TestImage2"),
+
+    let allItems: [CommonItem] = [
+        CommonItem(
+            id: UUID(),
+            title: "아이폰 16 필요해요",
+            point: 3000,
+            category: .request,
+            imageName: "TestImage1",
+            mode: .item
+        ),
+        CommonItem(
+            id: UUID(),
+            title: "자전거 팔아요",
+            point: 3000,
+            category: .provide,
+            imageName: "TestImage2",
+            mode: .item
+        )
     ]
-    
-    var filteredItems: [ServiceItem] {
+
+    var filteredItems: [CommonItem] {
         allItems.filter { $0.category == selected }
     }
-    
+
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottomTrailing) {
@@ -46,9 +46,7 @@ struct ItemListView: View {
                             .gwangsanFont(style: .body1)
 
                         HStack {
-                            Button(action: {
-                                dismiss()
-                            }) {
+                            Button(action: { dismiss() }) {
                                 Image(systemName: "chevron.left")
                                     .frame(width: 24, height: 24)
                                     .gwangsanColor(GwangsanAsset.Color.gray500)
@@ -58,7 +56,6 @@ struct ItemListView: View {
                     }
                     .padding(.bottom, 30)
 
-                    // 세그먼트
                     ZStack {
                         RoundedRectangle(cornerRadius: 30)
                             .gwangsanColor(GwangsanAsset.Color.mainYellow300)
@@ -78,11 +75,11 @@ struct ItemListView: View {
                         .padding(.vertical, 7)
 
                         HStack(spacing: 0) {
-                            ForEach(FilterType.allCases, id: \.self) { type in
+                            ForEach(CommonItem.Category.allCases, id: \.self) { type in
                                 Button(action: {
                                     selected = type
                                 }) {
-                                    Text(type.rawValue)
+                                    Text(type.displayName(for: .item))
                                         .font(.system(size: 14))
                                         .foregroundColor(
                                             selected == type ? Color.black : GwangsanAsset.Color.gray800.swiftUIColor
@@ -123,8 +120,9 @@ struct ItemListView: View {
                         }
                         .padding(.bottom, 20)
                     }
-
+                    
                     Spacer()
+                    
                 }
                 .padding(.horizontal, 24)
 

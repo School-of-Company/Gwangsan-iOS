@@ -1,15 +1,19 @@
 //
-//  ItemDetailView.swift
+//  ItemDetailVeiw.swift
 //  Gwangsan
 //
-//  Created by 박정우 on 5/19/25.
+//  Created by 박정우 on 5/20/25.
 //  Copyright © 2025 schoolcompany. All rights reserved.
 //
 
 import SwiftUI
 
 struct ItemDetailView: View {
-    let item: ItemListView.ServiceItem
+    let item: CommonItem
+
+    var categoryText: String {
+        item.category.displayName(for: item.mode)
+    }
 
     var body: some View {
         VStack(spacing: 24) {
@@ -27,13 +31,13 @@ struct ItemDetailView: View {
                 .font(.body)
                 .foregroundColor(.gray)
 
-            Text("카테고리: \(item.category.rawValue)")
+            Text("카테고리: \(categoryText)")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
 
             Spacer()
         }
         .padding()
-        .navigationTitle("상세 보기")
+        .navigationTitle(categoryText)
     }
 }
