@@ -11,6 +11,7 @@ import SwiftUI
 struct ItemDetailView: View {
     let item: CommonItem
     @Environment(\.dismiss) private var dismiss
+    @State private var isReportSheetPresented = false
     
     var categoryText: String {
         item.category.displayName(for: item.mode)
@@ -80,7 +81,7 @@ struct ItemDetailView: View {
                     Text(item.content)
                     
                     Button(action: {
-                        print("신고 버튼 눌림")
+                        isReportSheetPresented = true
                     }) {
                         Text("이 게시글 신고하기")
                             .font(.footnote)
@@ -125,6 +126,11 @@ struct ItemDetailView: View {
             .padding(.horizontal, 24)
         }
         .navigationBarHidden(true)
+        .sheet(isPresented: $isReportSheetPresented) {
+            ReportSheetView()
+                .presentationDetents([.fraction(0.8)]) // sheet 높이
+                .presentationDragIndicator(.visible)
+        }
     }
 }
 
