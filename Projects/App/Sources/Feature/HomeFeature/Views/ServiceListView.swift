@@ -24,6 +24,7 @@ struct ServiceListView: View {
             point: 3000,
             category: .request,
             imageName: "TestImage1",
+            content: "바퀴벌레 좀 잡아주세요바퀴벌레 좀 잡아주세요바퀴벌레 좀 잡아주세요바퀴벌레 좀 잡아주세요",
             mode: .service
         ),
         CommonItem(
@@ -32,6 +33,7 @@ struct ServiceListView: View {
             point: 3000,
             category: .request,
             imageName: "TestImage2",
+            content: "집 청소좀 해주세요집 청소좀 해주세요집 청소좀 해주세요집 청소좀 해주세요집 청소좀 해주세요집 청소좀 해주세요",
             mode: .service
         ),
         CommonItem(
@@ -40,6 +42,7 @@ struct ServiceListView: View {
             point: 3000,
             category: .provide,
             imageName: "TestImage3",
+            content: "바퀴벌레 잡아드려요바퀴벌레 잡아드려요바퀴벌레 잡아드려요바퀴벌레 잡아드려요바퀴벌레 잡아드려요바퀴벌레 잡아드려요바퀴벌레 잡아드려요",
             mode: .service
         ),
         CommonItem(
@@ -48,6 +51,7 @@ struct ServiceListView: View {
             point: 3000,
             category: .provide,
             imageName: "TestImage4",
+            content: "운동 도와드려요운동 도와드려요운동 도와드려요운동 도와드려요운동 도와드려요운동 도와드려요운동 도와드려요운동 도와드려요",
             mode: .service
         )
     ]

@@ -31,5 +31,6 @@ struct CommonItem: Identifiable {
     let point: Int
     let category: Category
     let imageName: String
+    let content: String
     let mode: Mode
 }

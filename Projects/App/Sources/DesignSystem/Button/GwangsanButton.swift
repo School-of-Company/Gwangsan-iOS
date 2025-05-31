@@ -11,6 +11,7 @@ import SwiftUI
 public enum GwangsanButtonStyle {
     case filled
     case outline
+    case danger
 }
 
 public struct GwangsanButton<Destination: View>: View {
@@ -91,17 +92,38 @@ public struct GwangsanButton<Destination: View>: View {
 
     private var buttonContent: some View {
         let isTempFilled = style == .outline && isPressed
-        let isNowFilled = style == .filled && buttonState
+        let isNowFilled = (style == .filled || style == .danger) && buttonState
         let isOutlineBorder = style == .outline && buttonState && !isPressed
         let isInactive = !buttonState
 
+        let activeFillColor: Color = {
+            switch style {
+            case .filled:
+                return GwangsanAsset.Color.mainGreen500.swiftUIColor
+            case .danger:
+                return buttonState ? .red : GwangsanAsset.Color.gray200.swiftUIColor
+            case .outline:
+                return .white
+            }
+        }()
+
+        let activeTextColor: Color = {
+            switch style {
+            case .filled:
+                return GwangsanAsset.Color.gray500.swiftUIColor
+            case .danger:
+                return buttonState ? .white : GwangsanAsset.Color.gray500.swiftUIColor
+            case .outline:
+                return buttonState ? GwangsanAsset.Color.mainGreen500.swiftUIColor : GwangsanAsset.Color.gray400.swiftUIColor
+            }
+        }()
+
         return ZStack {
-            // Background
             RoundedRectangle(cornerRadius: 12)
                 .fill(
-                    isNowFilled || isTempFilled
-                    ? GwangsanAsset.Color.mainGreen500.swiftUIColor
-                    : (style == .filled ? GwangsanAsset.Color.gray200.swiftUIColor : .white)
+                    isNowFilled || isTempFilled || (style == .outline && buttonState)
+                    ? activeFillColor
+                    : GwangsanAsset.Color.gray200.swiftUIColor
                 )
                 .overlay(
                     isOutlineBorder
@@ -116,21 +138,38 @@ public struct GwangsanButton<Destination: View>: View {
                     : nil
                 )
 
-            // Text
             Text(text)
                 .font(.system(size: fontSize))
                 .fontWeight(.semibold)
                 .foregroundColor(
                     isNowFilled || isTempFilled
                     ? .white
-                    : (
-                        style == .filled
-                        ? GwangsanAsset.Color.gray500.swiftUIColor
-                        : (buttonState ? GwangsanAsset.Color.mainGreen500.swiftUIColor : GwangsanAsset.Color.gray400.swiftUIColor)
-                    )
+                    : activeTextColor
                 )
         }
         .padding(.horizontal, horizontalPadding)
         .frame(height: height)
+    }
+}
+
+// MARK: - Destination 없이도 사용할 수 있도록 확장
+extension GwangsanButton where Destination == EmptyView {
+    public init(
+        text: String,
+        fontSize: CGFloat = 18,
+        buttonState: Bool,
+        horizontalPadding: CGFloat,
+        height: CGFloat,
+        style: GwangsanButtonStyle = .filled,
+        action: @escaping () -> Void = {}
+    ) {
+        self.text = text
+        self.fontSize = fontSize
+        self.buttonState = buttonState
+        self.horizontalPadding = horizontalPadding
+        self.height = height
+        self.style = style
+        self.destination = nil
+        self.action = action
     }
 }

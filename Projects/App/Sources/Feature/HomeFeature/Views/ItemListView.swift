@@ -19,6 +19,7 @@ struct ItemListView: View {
             point: 3000,
             category: .request,
             imageName: "TestImage1",
+            content: "아이폰 필요해 사줭 아이폰 필요해 사줭아이폰 필요해 사줭아이폰 필요해 사줭아이폰 필요해 사줭아이폰 필요해 사줭아이폰 필요해 사줭아이폰 필요해 사줭",
             mode: .item
         ),
         CommonItem(
@@ -27,6 +28,7 @@ struct ItemListView: View {
             point: 3000,
             category: .provide,
             imageName: "TestImage2",
+            content: "자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~",
             mode: .item
         )
     ]
