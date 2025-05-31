@@ -1,24 +1,23 @@
 //
-//  ReportSheetView.swift
+//  ReviewSheetView.swift
 //  Gwangsan
 //
-//  Created by 박정우 on 5/27/25.
+//  Created by 박정우 on 5/31/25.
 //  Copyright © 2025 schoolcompany. All rights reserved.
 //
 
 import SwiftUI
 
-struct ReportSheetView: View {
+struct ReviewSheetView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var reason: String = ""
-    @State private var reportType: String = ""
+    @State private var brightness: Double = 0.5
+    @State private var tradereview: String = ""
     
     var body: some View {
         NavigationStack {
             ZStack {
-                Text("신고하기")
+                Text("후기")
                     .gwangsanFont(style: .body1)
-                
                 HStack {
                     Spacer()
                     Button(action: { dismiss() }) {
@@ -29,25 +28,21 @@ struct ReportSheetView: View {
                 }
             }
             .padding(.bottom, 40)
-            
-            VStack(alignment: .leading, spacing: 4){
-                Text("신고유형")
-                    .gwangsanFont(style: .label)
+           
+            VStack(alignment: .leading, spacing: 16) {
+                      Text("밝기")
+                          .font(.subheadline)
+                          .foregroundColor(.black)
                 
-                DropdownSelector(
-                    options: ["허위매물등록", "신고유형 추가"],
-                    placeholder: "신고유형을 선택해주세요",
-                    selectedOption: $reportType
-                )
+                      CustomSliderView(value: $brightness)
             }
-            .padding(.bottom, 16)
             
             VStack(alignment: .leading, spacing: 5) {
-                Text("신고사유")
+                Text("후기작성")
                     .gwangsanFont(style: .label)
-                
+
                 ZStack(alignment: .topLeading) {
-                    TextEditor(text: $reason)
+                    TextEditor(text: $tradereview)
                         .font(.system(size: 14))
                         .frame(height: 185)
                         .padding(8)
@@ -58,8 +53,8 @@ struct ReportSheetView: View {
                         )
                         .cornerRadius(8)
 
-                    if reason.isEmpty {
-                        Text("신고사유를 입력해주세요")
+                    if tradereview.isEmpty {
+                        Text("거래의 후기를 입력해주세요.")
                             .font(.system(size: 14))
                             .gwangsanColor(GwangsanAsset.Color.gray400)
                             .padding(14)
@@ -70,22 +65,23 @@ struct ReportSheetView: View {
             Spacer()
             
             Button(action: {
-                print("신고 사유 제출: \(reason)")
+                print("신고 사유 제출: \(tradereview)")
                 dismiss()
             }) {
-                Text("신고하기")
+                Text("작성완료")
+                    .font(.system(size: 14))
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(reason.isEmpty ? Color.gray : Color.red)
+                    .background(tradereview.isEmpty ? Color.gray : Color.red)
                     .cornerRadius(10)
             }
-            .disabled(reason.isEmpty)
+            .disabled(tradereview.isEmpty)
         }
         .padding(24)
     }
 }
 
 #Preview {
-    ReportSheetView()
+    ReviewSheetView()
 }
