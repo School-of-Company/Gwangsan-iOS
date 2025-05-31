@@ -13,18 +13,18 @@ struct ItemDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isReportSheetPresented = false
     @State private var isReviewSheetPresented = false
-    
+
     var categoryText: String {
         item.category.displayName(for: item.mode)
     }
-    
+
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(spacing: 0) {
                 ZStack {
-                    Text("물건")
+                    Text("\(item.mode)")
                         .gwangsanFont(style: .body1)
-                    
+
                     HStack {
                         Button(action: { dismiss() }) {
                             Image(systemName: "chevron.left")
@@ -35,12 +35,13 @@ struct ItemDetailView: View {
                     }
                 }
                 .padding(.horizontal, 24)
-                
+                .padding(.bottom, 10)
+
                 Image(item.imageName)
                     .resizable()
                     .frame(height: 280)
                     .frame(maxWidth: .infinity)
-                
+
                 HStack(alignment: .center) {
                     HStack(spacing: 12) {
                         Image(systemName: "person.crop.circle.fill")
@@ -48,60 +49,61 @@ struct ItemDetailView: View {
                             .frame(width: 48, height: 48)
                             .foregroundColor(.gray)
                             .clipShape(Circle())
-                        
+
                         VStack(alignment: .leading, spacing: 4) {
                             Text("모태환")
                                 .gwangsanFont(style: .body3)
-                            
+
                             Text("첨단 1동")
                                 .font(.system(size: 14))
                                 .foregroundColor(.gray)
                         }
                     }
-                    
+                    .padding(.vertical, 10)
+
                     Spacer()
-                    
+
                     Text("8단계")
                         .gwangsanFont(style: .body1)
                         .gwangsanColor(GwangsanAsset.Color.mainYellow500)
                 }
                 .padding(.horizontal, 24)
                 .padding(.vertical, 6)
-                
+
                 Divider()
-                
-                
-                VStack(alignment: .leading, spacing: 24) {
-                    
-                    Text(item.title)
-                        .gwangsanFont(style: .titleSmall)
-                    
-                    Text("\(item.point) 광산")
-                        .gwangsanFont(style: .body3)
-                    
-                    Text(item.content)
-                    
-                    Button(action: {
-                        isReportSheetPresented = true
-                    }) {
-                        Text("이 게시글 신고하기")
-                            .font(.footnote)
-                            .foregroundColor(.red)
-                            .overlay(
-                                Rectangle()
-                                    .frame(height: 1)
-                                    .foregroundColor(.red)
-                                    .offset(y: 2),
-                                alignment: .bottom
-                            )
+
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        Text(item.title)
+                            .gwangsanFont(style: .titleSmall)
+
+                        Text("\(item.point) 광산")
+                            .gwangsanFont(style: .body3)
+
+                        Text(item.content)
+                            .multilineTextAlignment(.leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                        Button(action: {
+                            isReportSheetPresented = true
+                        }) {
+                            Text("이 게시글 신고하기")
+                                .font(.footnote)
+                                .foregroundColor(.red)
+                                .overlay(
+                                    Rectangle()
+                                        .frame(height: 1)
+                                        .foregroundColor(.red)
+                                        .offset(y: 2),
+                                    alignment: .bottom
+                                )
+                        }
+                        .padding(.top, 25)
                     }
-                    .padding(.top, 25)
-                    
-                    Spacer()
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 20)
                 }
-                .padding(.horizontal, 24)
-            }
-            VStack{
+
                 HStack(spacing: 12){
                     GwangsanButton(
                         text: "채팅하기",
@@ -110,9 +112,9 @@ struct ItemDetailView: View {
                         horizontalPadding: 0,
                         height: 52,
                         style: .outline,
-                        destination: SwiftUIView() // 채팅으로 이동
+                        destination: SwiftUIView()
                     )
-                    
+
                     GwangsanButton(
                         text: "거래완료",
                         fontSize: 14,
@@ -125,20 +127,20 @@ struct ItemDetailView: View {
                         }
                     )
                 }
+                .padding(.horizontal, 24)
+                .padding(.bottom, 25)
             }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 25)
-        }
-        .navigationBarHidden(true)
-        .sheet(isPresented: $isReportSheetPresented) {
-            ReportSheetView()
-                .presentationDetents([.fraction(0.8)])
-                .presentationDragIndicator(.visible)
-        }
-        .sheet(isPresented: $isReviewSheetPresented) {
-            ReviewSheetView()
-                .presentationDetents([.fraction(0.8)])
-                .presentationDragIndicator(.visible)
+            .navigationBarHidden(true)
+            .sheet(isPresented: $isReportSheetPresented) {
+                ReportSheetView()
+                    .presentationDetents([.fraction(0.8)])
+                    .presentationDragIndicator(.visible)
+            }
+            .sheet(isPresented: $isReviewSheetPresented) {
+                ReviewSheetView()
+                    .presentationDetents([.fraction(0.8)])
+                    .presentationDragIndicator(.visible)
+            }
         }
     }
 }
@@ -151,7 +153,7 @@ struct ItemDetailView: View {
             point: 5000,
             category: .request,
             imageName: "TestImage1",
-            content: "집 청소좀 해주세요집 청소좀 해주세요집 청소좀 해주세요집 청소좀 해주세요집 청소좀 해주세요집 청소좀 해주세요",
+            content: "집 청소좀 해주세요집 청소 집 청소좀 해주세요집 청소집 청소좀 해주세요집 청소집 청소좀 해주세요집 청소집 청소좀 해주세요집 청소집 청소좀 해주세요집 청소집 청소좀 해주세요집 청소 집 청소좀 해주세요집 ",
             mode: .service
         )
     )

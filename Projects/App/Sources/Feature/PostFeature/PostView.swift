@@ -9,10 +9,136 @@
 import SwiftUI
 
 struct PostView: View {
+    @State private var selectedCategory = ""
+    @State private var selectedType = ""
+
     var body: some View {
-        Text("게시글 작성 페이지")
+        NavigationStack{
+            VStack {
+                Text("게시글")
+                    .gwangsanFont(style: .body1)
+                    .padding(.bottom, 30)
+                
+                let allItems: [CommonItem] = [
+                    CommonItem(
+                        id: UUID(),
+                        title: "바퀴벌레 좀 잡아주세요",
+                        point: 3000,
+                        category: .request,
+                        imageName: "TestImage1",
+                        content: "바퀴벌레 좀 잡아주세요...",
+                        mode: .service
+                    ),
+                    CommonItem(
+                        id: UUID(),
+                        title: "집 청소좀 해주세요",
+                        point: 3000,
+                        category: .request,
+                        imageName: "TestImage2",
+                        content: "집 청소좀 해주세요...집 청소좀 해주세요...집 청소좀 해주세요...집 청소좀 해주세요...집 청소좀 해주세요...집 청소좀 해주세요...집",
+                        mode: .service
+                    ),
+                    CommonItem(
+                        id: UUID(),
+                        title: "바퀴벌레 잡아드려요",
+                        point: 3000,
+                        category: .provide,
+                        imageName: "TestImage3",
+                        content: "바퀴벌레 잡아드려요...",
+                        mode: .service
+                    ),
+                    CommonItem(
+                        id: UUID(),
+                        title: "운동 도와드려요",
+                        point: 3000,
+                        category: .provide,
+                        imageName: "TestImage4",
+                        content: "운동 도와드려요...",
+                        mode: .service
+                    ),
+                    CommonItem(
+                        id: UUID(),
+                        title: "아이폰 16 필요해요",
+                        point: 3000,
+                        category: .request,
+                        imageName: "TestImage1",
+                        content: "아이폰 필요해 사줭 아이폰 필요해 사줭아이폰 필요해 사줭아이폰 필요해 사줭아이폰 필요해 사줭아이폰 필요해 사줭아이폰 필요해 사줭아이폰 필요해 사줭",
+                        mode: .item
+                    ),
+                    CommonItem(
+                        id: UUID(),
+                        title: "자전거 팔아요",
+                        point: 3000,
+                        category: .provide,
+                        imageName: "TestImage2",
+                        content: "자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~",
+                        mode: .item
+                    )
+                ]
+                
+                HStack(alignment: .top, spacing: 24) {
+                    DropdownSelector(
+                        options: ["서비스", "물건"],
+                        placeholder: "선택",
+                        selectedOption: $selectedCategory
+                    )
+                    
+                    DropdownSelector(
+                        options: ["해주세요", "팔아요"],
+                        placeholder: "선택",
+                        selectedOption: $selectedType
+                    )
+                }
+                .padding(.bottom, 16)
+                
+                ScrollView {
+                    LazyVStack(spacing: 20) {
+                        ForEach(filteredItems(from: allItems)) { item in
+                            NavigationLink(destination: ItemDetailView(item: item)) {
+                                HStack(spacing: 16) {
+                                    Image(item.imageName)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 80, height: 80)
+                                        .clipped()
+                                        .cornerRadius(8)
+                                    
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(item.title)
+                                            .gwangsanFont(style: .body3)
+                                            .foregroundColor(.black)
+                                        Text("\(item.point) 광산")
+                                            .font(.system(size: 14))
+                                            .foregroundColor(.gray)
+                                    }
+                                    
+                                    Spacer()
+                                }
+                            }
+                        }
+                    }
+                    .padding(.bottom, 20)
+                }
+            }
+            .padding(.horizontal, 24)
+        }
+    }
+
+    private func filteredItems(from items: [CommonItem]) -> [CommonItem] {
+        items.filter { item in
+            let categoryMatches = selectedCategory.isEmpty ||
+                (selectedCategory == "서비스" && item.mode == .service) ||
+                (selectedCategory == "물건" && item.mode == .item)
+
+            let typeMatches = selectedType.isEmpty ||
+                (selectedType == "해주세요" && item.category == .request) ||
+                (selectedType == "팔아요" && item.category == .provide)
+
+            return categoryMatches && typeMatches
+        }
     }
 }
+    
 
 #Preview {
     PostView()
