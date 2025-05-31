@@ -109,7 +109,7 @@ struct ItemDetailView: View {
                         horizontalPadding: 0,
                         height: 52,
                         style: .outline,
-                        destination: SwiftUIView() // 채팅뷰로 이동
+                        destination: SwiftUIView()
                     )
                     
                     GwangsanButton(
@@ -124,11 +124,12 @@ struct ItemDetailView: View {
                 }
             }
             .padding(.horizontal, 24)
+            .padding(.bottom, 25)
         }
         .navigationBarHidden(true)
         .sheet(isPresented: $isReportSheetPresented) {
             ReportSheetView()
-                .presentationDetents([.fraction(0.8)]) // sheet 높이
+                .presentationDetents([.fraction(0.8)])
                 .presentationDragIndicator(.visible)
         }
     }

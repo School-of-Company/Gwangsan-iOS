@@ -15,74 +15,72 @@ struct ReportSheetView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                Text("신고하기")
-                    .gwangsanFont(style: .body1)
-                
-                HStack {
-                    Spacer()
-                    Button(action: { dismiss() }) {
-                        Image("Close")
-                            .resizable()
-                            .frame(width: 25, height: 25)
+            VStack{
+                ZStack {
+                    Text("신고하기")
+                        .gwangsanFont(style: .body1)
+                    
+                    HStack {
+                        Spacer()
+                        Button(action: { dismiss() }) {
+                            Image("Close")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                        }
                     }
                 }
-            }
-            .padding(.bottom, 40)
-            
-            VStack(alignment: .leading, spacing: 4){
-                Text("신고유형")
-                    .gwangsanFont(style: .label)
+                .padding(.top, 30)
                 
-                DropdownSelector(
-                    options: ["허위매물등록", "신고유형 추가"],
-                    placeholder: "신고유형을 선택해주세요",
-                    selectedOption: $reportType
+                VStack(alignment: .leading, spacing: 4){
+                    Text("신고유형")
+                        .gwangsanFont(style: .label)
+                    
+                    DropdownSelector(
+                        options: ["허위매물등록", "신고유형 추가"],
+                        placeholder: "신고유형을 선택해주세요",
+                        selectedOption: $reportType
+                    )
+                }
+                .padding(.bottom, 16)
+                
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("신고사유")
+                        .gwangsanFont(style: .label)
+                    
+                    ZStack(alignment: .topLeading) {
+                        TextEditor(text: $reason)
+                            .font(.system(size: 14))
+                            .frame(height: 185)
+                            .padding(8)
+                            .background(Color.white)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(GwangsanAsset.Color.mainYellow500.swiftUIColor, lineWidth: 1)
+                            )
+                            .cornerRadius(8)
+                        
+                        if reason.isEmpty {
+                            Text("신고사유를 입력해주세요")
+                                .font(.system(size: 14))
+                                .gwangsanColor(GwangsanAsset.Color.gray400)
+                                .padding(14)
+                        }
+                    }
+                }
+                
+                Spacer()
+                
+                GwangsanButton(
+                    text: "신고하기",
+                    buttonState: !reason.isEmpty,
+                    horizontalPadding: 0,
+                    height: 52,
+                    style: .danger,
+                    destination: SwiftUIView()
                 )
             }
-            .padding(.bottom, 16)
-            
-            VStack(alignment: .leading, spacing: 5) {
-                Text("신고사유")
-                    .gwangsanFont(style: .label)
-                
-                ZStack(alignment: .topLeading) {
-                    TextEditor(text: $reason)
-                        .font(.system(size: 14))
-                        .frame(height: 185)
-                        .padding(8)
-                        .background(Color.white)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(GwangsanAsset.Color.mainYellow500.swiftUIColor, lineWidth: 1)
-                        )
-                        .cornerRadius(8)
-
-                    if reason.isEmpty {
-                        Text("신고사유를 입력해주세요")
-                            .font(.system(size: 14))
-                            .gwangsanColor(GwangsanAsset.Color.gray400)
-                            .padding(14)
-                    }
-                }
-            }
-
-            Spacer()
-            
-            Button(action: {
-                print("신고 사유 제출: \(reason)")
-                dismiss()
-            }) {
-                Text("신고하기")
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(reason.isEmpty ? Color.gray : Color.red)
-                    .cornerRadius(10)
-            }
-            .disabled(reason.isEmpty)
+            .padding(.horizontal, 24)
         }
-        .padding(24)
     }
 }
 

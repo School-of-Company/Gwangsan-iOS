@@ -63,20 +63,17 @@ struct ReviewSheetView: View {
             }
 
             Spacer()
+       
+            GwangsanButton(
+                text: "작성완료",
+                buttonState: false,
+                horizontalPadding: 0,
+                height: 52,
+                style: .filled,
+                destination: SwiftUIView()
+            )
+            .padding(.bottom, 30)
             
-            Button(action: {
-                print("신고 사유 제출: \(tradereview)")
-                dismiss()
-            }) {
-                Text("작성완료")
-                    .font(.system(size: 14))
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(tradereview.isEmpty ? Color.gray : Color.red)
-                    .cornerRadius(10)
-            }
-            .disabled(tradereview.isEmpty)
         }
         .padding(24)
     }

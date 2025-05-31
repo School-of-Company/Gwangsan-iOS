@@ -11,6 +11,7 @@ import SwiftUI
 public enum GwangsanButtonStyle {
     case filled
     case outline
+    case danger
 }
 
 public struct GwangsanButton<Destination: View>: View {
@@ -21,7 +22,7 @@ public struct GwangsanButton<Destination: View>: View {
     let height: CGFloat
     let style: GwangsanButtonStyle
     let destination: Destination?
-    let action: () -> Void
+    let action: (Destination?) -> Void
 
     @State private var isPressed = false
     @State private var isLinkActive = false
@@ -34,7 +35,7 @@ public struct GwangsanButton<Destination: View>: View {
         height: CGFloat,
         style: GwangsanButtonStyle = .filled,
         destination: Destination? = nil,
-        action: @escaping () -> Void = {}
+        action: @escaping (Destination?) -> Void = { _ in }
     ) {
         self.text = text
         self.fontSize = fontSize
@@ -58,14 +59,14 @@ public struct GwangsanButton<Destination: View>: View {
                     } else {
                         isLinkActive = true
                     }
-                    action()
+                    action(destination)
                 })
             } else {
                 Button(action: {
                     if style == .outline {
                         pressEffectOnly()
                     }
-                    action()
+                    action(destination)
                 }) {
                     buttonContent
                 }
@@ -91,17 +92,39 @@ public struct GwangsanButton<Destination: View>: View {
 
     private var buttonContent: some View {
         let isTempFilled = style == .outline && isPressed
-        let isNowFilled = style == .filled && buttonState
+        let isNowFilled = (style == .filled || style == .danger) && buttonState
         let isOutlineBorder = style == .outline && buttonState && !isPressed
         let isInactive = !buttonState
+
+        let activeFillColor: Color = {
+            switch style {
+            case .filled:
+                return GwangsanAsset.Color.mainGreen500.swiftUIColor
+            case .danger:
+                return buttonState ? .red : GwangsanAsset.Color.gray200.swiftUIColor
+            case .outline:
+                return .white
+            }
+        }()
+
+        let activeTextColor: Color = {
+            switch style {
+            case .filled:
+                return GwangsanAsset.Color.gray500.swiftUIColor
+            case .danger:
+                return buttonState ? .white : GwangsanAsset.Color.gray500.swiftUIColor
+            case .outline:
+                return buttonState ? GwangsanAsset.Color.mainGreen500.swiftUIColor : GwangsanAsset.Color.gray400.swiftUIColor
+            }
+        }()
 
         return ZStack {
             // Background
             RoundedRectangle(cornerRadius: 12)
                 .fill(
-                    isNowFilled || isTempFilled
-                    ? GwangsanAsset.Color.mainGreen500.swiftUIColor
-                    : (style == .filled ? GwangsanAsset.Color.gray200.swiftUIColor : .white)
+                    isNowFilled || isTempFilled || style == .outline
+                    ? activeFillColor
+                    : GwangsanAsset.Color.gray200.swiftUIColor
                 )
                 .overlay(
                     isOutlineBorder
@@ -123,11 +146,7 @@ public struct GwangsanButton<Destination: View>: View {
                 .foregroundColor(
                     isNowFilled || isTempFilled
                     ? .white
-                    : (
-                        style == .filled
-                        ? GwangsanAsset.Color.gray500.swiftUIColor
-                        : (buttonState ? GwangsanAsset.Color.mainGreen500.swiftUIColor : GwangsanAsset.Color.gray400.swiftUIColor)
-                    )
+                    : activeTextColor
                 )
         }
         .padding(.horizontal, horizontalPadding)

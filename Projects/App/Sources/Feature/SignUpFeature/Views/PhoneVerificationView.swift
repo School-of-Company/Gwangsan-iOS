@@ -42,9 +42,9 @@ struct PhoneVerificationView: View {
                                 buttonState: !viewModel.phoneNumber.isEmpty,
                                 horizontalPadding: 0,
                                 height: 56,
-                                destination: StartView() ,// destination 없이 액션만 수행할수 있도록 변경해야함
-                                action: {
-                                    // 전화번호 인증
+                                destination: StartView(),// destination 없이 액션만 수행할수 있도록 변경해야함
+                                action: {_ in 
+    
                                 }
                             )
                             .padding(.top, 20)
