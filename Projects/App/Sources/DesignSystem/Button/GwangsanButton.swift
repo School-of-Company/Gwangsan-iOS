@@ -22,7 +22,7 @@ public struct GwangsanButton<Destination: View>: View {
     let height: CGFloat
     let style: GwangsanButtonStyle
     let destination: Destination?
-    let action: (Destination?) -> Void
+    let action: () -> Void
 
     @State private var isPressed = false
     @State private var isLinkActive = false
@@ -35,7 +35,7 @@ public struct GwangsanButton<Destination: View>: View {
         height: CGFloat,
         style: GwangsanButtonStyle = .filled,
         destination: Destination? = nil,
-        action: @escaping (Destination?) -> Void = { _ in }
+        action: @escaping () -> Void = {}
     ) {
         self.text = text
         self.fontSize = fontSize
@@ -59,14 +59,14 @@ public struct GwangsanButton<Destination: View>: View {
                     } else {
                         isLinkActive = true
                     }
-                    action(destination)
+                    action()
                 })
             } else {
                 Button(action: {
                     if style == .outline {
                         pressEffectOnly()
                     }
-                    action(destination)
+                    action()
                 }) {
                     buttonContent
                 }
@@ -119,10 +119,9 @@ public struct GwangsanButton<Destination: View>: View {
         }()
 
         return ZStack {
-            // Background
             RoundedRectangle(cornerRadius: 12)
                 .fill(
-                    isNowFilled || isTempFilled || style == .outline
+                    isNowFilled || isTempFilled || (style == .outline && buttonState)
                     ? activeFillColor
                     : GwangsanAsset.Color.gray200.swiftUIColor
                 )
@@ -139,7 +138,6 @@ public struct GwangsanButton<Destination: View>: View {
                     : nil
                 )
 
-            // Text
             Text(text)
                 .font(.system(size: fontSize))
                 .fontWeight(.semibold)
@@ -151,5 +149,27 @@ public struct GwangsanButton<Destination: View>: View {
         }
         .padding(.horizontal, horizontalPadding)
         .frame(height: height)
+    }
+}
+
+// MARK: - Destination 없이도 사용할 수 있도록 확장
+extension GwangsanButton where Destination == EmptyView {
+    public init(
+        text: String,
+        fontSize: CGFloat = 18,
+        buttonState: Bool,
+        horizontalPadding: CGFloat,
+        height: CGFloat,
+        style: GwangsanButtonStyle = .filled,
+        action: @escaping () -> Void = {}
+    ) {
+        self.text = text
+        self.fontSize = fontSize
+        self.buttonState = buttonState
+        self.horizontalPadding = horizontalPadding
+        self.height = height
+        self.style = style
+        self.destination = nil
+        self.action = action
     }
 }
