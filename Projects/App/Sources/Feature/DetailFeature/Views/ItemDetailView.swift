@@ -12,6 +12,7 @@ struct ItemDetailView: View {
     let item: CommonItem
     @Environment(\.dismiss) private var dismiss
     @State private var isReportSheetPresented = false
+    @State private var isReviewSheetPresented = false
     
     var categoryText: String {
         item.category.displayName(for: item.mode)
@@ -109,7 +110,7 @@ struct ItemDetailView: View {
                         horizontalPadding: 0,
                         height: 52,
                         style: .outline,
-                        destination: SwiftUIView()
+                        destination: SwiftUIView() // 채팅으로 이동
                     )
                     
                     GwangsanButton(
@@ -119,7 +120,9 @@ struct ItemDetailView: View {
                         horizontalPadding: 0,
                         height: 52,
                         style: .filled,
-                        destination: SwiftUIView()
+                        action: {
+                            isReviewSheetPresented = true
+                        }
                     )
                 }
             }
@@ -129,6 +132,11 @@ struct ItemDetailView: View {
         .navigationBarHidden(true)
         .sheet(isPresented: $isReportSheetPresented) {
             ReportSheetView()
+                .presentationDetents([.fraction(0.8)])
+                .presentationDragIndicator(.visible)
+        }
+        .sheet(isPresented: $isReviewSheetPresented) {
+            ReviewSheetView()
                 .presentationDetents([.fraction(0.8)])
                 .presentationDragIndicator(.visible)
         }

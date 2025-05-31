@@ -66,14 +66,15 @@ struct ReviewSheetView: View {
        
             GwangsanButton(
                 text: "작성완료",
-                buttonState: false,
+                buttonState: !tradereview.isEmpty,
                 horizontalPadding: 0,
                 height: 52,
                 style: .filled,
-                destination: SwiftUIView()
+                action: {
+                    print("\(tradereview)")
+                }
             )
             .padding(.bottom, 30)
-            
         }
         .padding(24)
     }
