@@ -16,7 +16,7 @@ struct GwangsanTextField: View {
     var horizontalPadding: CGFloat
 
     private var borderColor: Color {
-        isFocused ? GwangsanAsset.Color.mainYellow400.swiftUIColor : .black
+        isFocused ? GwangsanAsset.Color.mainYellow400.swiftUIColor : GwangsanAsset.Color.gray400.swiftUIColor
     }
 
     public init(
