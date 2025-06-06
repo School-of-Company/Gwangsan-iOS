@@ -13,12 +13,12 @@ struct PostView: View {
     @State private var selectedType = ""
 
     var body: some View {
-        NavigationStack{
+        NavigationStack {
             VStack {
                 Text("게시글")
                     .gwangsanFont(style: .body1)
                     .padding(.bottom, 30)
-                
+
                 let allItems: [CommonItem] = [
                     CommonItem(
                         id: UUID(),
@@ -35,7 +35,7 @@ struct PostView: View {
                         point: 3000,
                         category: .request,
                         imageName: "TestImage2",
-                        content: "집 청소좀 해주세요...집 청소좀 해주세요...집 청소좀 해주세요...집 청소좀 해주세요...집 청소좀 해주세요...집 청소좀 해주세요...집",
+                        content: "집 청소좀 해주세요...",
                         mode: .service
                     ),
                     CommonItem(
@@ -62,7 +62,7 @@ struct PostView: View {
                         point: 3000,
                         category: .request,
                         imageName: "TestImage1",
-                        content: "아이폰 필요해 사줭 아이폰 필요해 사줭아이폰 필요해 사줭아이폰 필요해 사줭아이폰 필요해 사줭아이폰 필요해 사줭아이폰 필요해 사줭아이폰 필요해 사줭",
+                        content: "아이폰 필요해 사줭...",
                         mode: .item
                     ),
                     CommonItem(
@@ -71,26 +71,29 @@ struct PostView: View {
                         point: 3000,
                         category: .provide,
                         imageName: "TestImage2",
-                        content: "자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~자전거 필요없어요~",
+                        content: "자전거 필요없어요~",
                         mode: .item
                     )
                 ]
-                
+
                 HStack(alignment: .top, spacing: 24) {
                     DropdownSelector(
                         options: ["서비스", "물건"],
                         placeholder: "선택",
                         selectedOption: $selectedCategory
                     )
-                    
+
                     DropdownSelector(
-                        options: ["해주세요", "팔아요"],
+                        options: typeOptions(for: selectedCategory),
                         placeholder: "선택",
                         selectedOption: $selectedType
                     )
                 }
-                .padding(.bottom, 16)
-                
+                .padding(.bottom, 30)
+                .onChange(of: selectedCategory) { _ in
+                    selectedType = ""
+                }
+
                 ScrollView {
                     LazyVStack(spacing: 20) {
                         ForEach(filteredItems(from: allItems)) { item in
@@ -102,7 +105,7 @@ struct PostView: View {
                                         .frame(width: 80, height: 80)
                                         .clipped()
                                         .cornerRadius(8)
-                                    
+
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text(item.title)
                                             .gwangsanFont(style: .body3)
@@ -111,7 +114,7 @@ struct PostView: View {
                                             .font(.system(size: 14))
                                             .foregroundColor(.gray)
                                     }
-                                    
+
                                     Spacer()
                                 }
                             }
@@ -132,13 +135,25 @@ struct PostView: View {
 
             let typeMatches = selectedType.isEmpty ||
                 (selectedType == "해주세요" && item.category == .request) ||
-                (selectedType == "팔아요" && item.category == .provide)
+                (selectedType == "할 수 있어요" && item.category == .provide) ||
+                (selectedType == "팔아요" && item.category == .provide) ||
+                (selectedType == "필요해" && item.category == .request)
 
             return categoryMatches && typeMatches
         }
     }
+
+    private func typeOptions(for category: String) -> [String] {
+        switch category {
+        case "서비스":
+            return ["해주세요", "할 수 있어요"]
+        case "물건":
+            return ["팔아요", "필요해"]
+        default:
+            return []
+        }
+    }
 }
-    
 
 #Preview {
     PostView()
