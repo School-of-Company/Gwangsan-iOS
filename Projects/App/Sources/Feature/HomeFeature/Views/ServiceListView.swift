@@ -154,7 +154,7 @@ struct ServiceListView: View {
                 }
                 .padding(.horizontal, 24)
 
-                NavigationLink(destination: PostView()) {
+                NavigationLink(destination: PostCreateStep1View()) {
                     Circle()
                         .fill(GwangsanAsset.Color.mainGreen500.swiftUIColor)
                         .frame(width: 60, height: 60)
