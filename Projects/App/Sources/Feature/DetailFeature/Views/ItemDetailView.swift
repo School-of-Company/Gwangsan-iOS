@@ -22,7 +22,7 @@ struct ItemDetailView: View {
         NavigationStack {
             VStack(spacing: 0) {
                 ZStack {
-                    Text("\(item.mode)")
+                    Text(item.mode == .service ? "서비스" : "물건")
                         .gwangsanFont(style: .body1)
 
                     HStack {
