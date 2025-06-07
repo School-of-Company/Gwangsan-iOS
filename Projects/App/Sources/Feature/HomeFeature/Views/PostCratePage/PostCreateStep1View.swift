@@ -23,26 +23,30 @@ struct PostCreateStep1View: View {
     
     var body: some View {
         NavigationStack{
-            VStack(alignment: .leading) {
-                ZStack {
-                    HStack {
-                        Image("Back")
-                        Spacer()
-                        Text("필요해요")
-                            .gwangsanFont(style: .body1)
-                        Spacer()
-                    }
-                    
-                    HStack {
-                        Spacer()
-                        Button(action: { dismiss() }) {
-                            Image("Close")
-                                .resizable()
-                                .frame(width: 25, height: 25)
-                        }
-                    }
+            
+            ZStack {
+                HStack {
+                    Image("Back")
+                    Spacer()
+                    Text("필요해요")
+                        .gwangsanFont(style: .body1)
+                    Spacer()
                 }
                 
+                HStack {
+                    Spacer()
+                    Button(action: { dismiss() }) {
+                        Image("Close")
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                    }
+                }
+            }
+            .padding(.horizontal, 24)
+            
+            ProgressBar(currentStep: 1)
+            
+            VStack(alignment: .leading) {
                 GwangsanTextField(
                     "이름을 입력해주세요",
                     text: $topic,

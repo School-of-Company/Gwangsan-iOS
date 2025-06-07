@@ -17,129 +17,137 @@ struct PostCreateStep3View: View {
     @State private var content = ""
     @State private var selectedImages: [UIImage] = []
     @State private var photoItems: [PhotosPickerItem] = []
-
     
     var body: some View {
-        NavigationStack{
+        NavigationStack {
             
-            VStack(alignment: .leading) {
-                ZStack {
-                    HStack {
-                        Image("Back")
-                        Spacer()
-                        Text("필요해요")
-                            .gwangsanFont(style: .body1)
-                        Spacer()
-                    }
-                    
-                    HStack {
-                        Spacer()
-                        Button(action: { dismiss() }) {
-                            Image("Close")
-                                .resizable()
-                                .frame(width: 25, height: 25)
-                        }
+            ZStack {
+                HStack {
+                    Image("Back")
+                    Spacer()
+                    Text("필요해요")
+                        .gwangsanFont(style: .body1)
+                    Spacer()
+                }
+                
+                HStack {
+                    Spacer()
+                    Button(action: { dismiss() }) {
+                        Image("Close")
+                            .resizable()
+                            .frame(width: 25, height: 25)
                     }
                 }
-                Text("다시 한번 확인해주세요.")
-                    .gwangsanFont(style: .titleSmall)
-                    .padding(.top, 10)
-                
-                GwangsanTextField(
-                    "이름을 입력해주세요",
-                    text: $topic,
-                    title: "주제",
-                    horizontalPadding: 0
-                )
-                .padding(.top, 30)
-                
-                VStack(alignment: .leading, spacing: 5) {
-                    Text("내용")
-                        .gwangsanFont(style: .label)
-                    
-                    ZStack(alignment: .topLeading) {
-                        TextEditor(text: $content)
-                            .font(.system(size: 14))
-                            .frame(height: 185)
-                            .padding(8)
-                            .background(Color.white)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(
-                                        isFocused
-                                        ? GwangsanAsset.Color.mainYellow500.swiftUIColor
-                                        : GwangsanAsset.Color.gray400.swiftUIColor,
-                                        lineWidth: 2
-                                    )
-                            )
-                            .cornerRadius(8)
-                            .focused($isFocused)
+            }
+            .padding(.horizontal,24)
+            
+            ProgressBar(currentStep: 3)
+            
+            VStack(spacing: 0) {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text("다시 한번 확인해주세요.")
+                            .gwangsanFont(style: .titleSmall)
+                            .padding(.top, 10)
                         
-                        if content.isEmpty {
-                            Text("내용을 작성해주세요")
-                                .font(.system(size: 14))
-                                .gwangsanColor(GwangsanAsset.Color.gray400)
-                                .padding(14)
-                        }
-                    }
-                }
-                .padding(.top, 25)
-                
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("사진첨부")
-                        .gwangsanFont(style: .label)
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 16) {
-                            ForEach(selectedImages, id: \.self) { image in
-                                Image(uiImage: image)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 64, height: 64)
-                                    .clipShape(Circle())
-                            }
+                        GwangsanTextField(
+                            "이름을 입력해주세요",
+                            text: $topic,
+                            title: "주제",
+                            horizontalPadding: 0
+                        )
+                        .padding(.top, 30)
+                        
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("내용")
+                                .gwangsanFont(style: .label)
                             
-                            PhotosPicker(
-                                selection: $photoItems,
-                                maxSelectionCount: 5,
-                                matching: .images,
-                                photoLibrary: .shared()
-                            ) {
-                                ZStack {
-                                    Circle()
-                                        .fill(GwangsanAsset.Color.gray50.swiftUIColor)
-                                        .frame(width: 64, height: 64)
-                                    Image(systemName: "plus")
-                                        .foregroundColor(.black)
+                            ZStack(alignment: .topLeading) {
+                                TextEditor(text: $content)
+                                    .font(.system(size: 14))
+                                    .frame(height: 185)
+                                    .padding(8)
+                                    .background(Color.white)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(
+                                                isFocused
+                                                ? GwangsanAsset.Color.mainYellow500.swiftUIColor
+                                                : GwangsanAsset.Color.gray400.swiftUIColor,
+                                                lineWidth: 2
+                                            )
+                                    )
+                                    .cornerRadius(8)
+                                    .focused($isFocused)
+                                
+                                if content.isEmpty {
+                                    Text("내용을 작성해주세요")
+                                        .font(.system(size: 14))
+                                        .gwangsanColor(GwangsanAsset.Color.gray400)
+                                        .padding(14)
                                 }
                             }
-                            .onChange(of: photoItems) { newItems in
-                                for item in newItems {
-                                    Task {
-                                        if let data = try? await item.loadTransferable(type: Data.self),
-                                           let uiImage = UIImage(data: data) {
-                                            if !selectedImages.contains(uiImage) {
-                                                selectedImages.append(uiImage)
+                        }
+                        .padding(.top, 25)
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("사진첨부")
+                                .gwangsanFont(style: .label)
+                            
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 16) {
+                                    ForEach(selectedImages, id: \.self) { image in
+                                        Image(uiImage: image)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 64, height: 64)
+                                            .clipShape(Circle())
+                                    }
+                                    
+                                    PhotosPicker(
+                                        selection: $photoItems,
+                                        maxSelectionCount: 5,
+                                        matching: .images,
+                                        photoLibrary: .shared()
+                                    ) {
+                                        ZStack {
+                                            Circle()
+                                                .fill(GwangsanAsset.Color.gray50.swiftUIColor)
+                                                .frame(width: 64, height: 64)
+                                            Image(systemName: "plus")
+                                                .foregroundColor(.black)
+                                        }
+                                    }
+                                    .onChange(of: photoItems) { newItems in
+                                        for item in newItems {
+                                            Task {
+                                                if let data = try? await item.loadTransferable(type: Data.self),
+                                                   let uiImage = UIImage(data: data) {
+                                                    if !selectedImages.contains(uiImage) {
+                                                        selectedImages.append(uiImage)
+                                                    }
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
                         }
+                        .padding(.top, 10)
+                        
+                        GwangsanTextField(
+                            "광산을 입력해주세요",
+                            text: $point,
+                            title: "광산",
+                            horizontalPadding: 0
+                        )
+                        .padding(.top, 30)
+                        
+                        Spacer().frame(height: 30)
                     }
                 }
-                .padding(.top, 10)
                 
-                GwangsanTextField(
-                    "광산을 입력해주세요",
-                    text: $point,
-                    title: "광산",
-                    horizontalPadding: 0
-                )
-                .padding(.top,30)
-                
-                Spacer()
-                HStack{
+                HStack(spacing: 12) {
                     GwangsanButton(
                         text: "수정",
                         buttonState: true,
@@ -156,7 +164,6 @@ struct PostCreateStep3View: View {
                         destination: PostCreateStep2View()
                     )
                 }
-                .padding(.bottom, 30)
             }
             .padding(.horizontal, 24)
         }

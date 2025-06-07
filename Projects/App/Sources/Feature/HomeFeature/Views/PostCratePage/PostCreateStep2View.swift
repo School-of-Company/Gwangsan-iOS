@@ -14,7 +14,7 @@ struct PostCreateStep2View: View {
     
     var body: some View {
         NavigationStack{
-            VStack{
+            
                 ZStack {
                     HStack {
                         Image("Back")
@@ -33,6 +33,11 @@ struct PostCreateStep2View: View {
                         }
                     }
                 }
+                .padding(.horizontal, 24)
+            
+            ProgressBar(currentStep: 2)
+            
+            VStack{
                 GwangsanTextField(
                     "광산을 입력해주세요",
                     text: $point,
@@ -49,7 +54,7 @@ struct PostCreateStep2View: View {
                     horizontalPadding: 0,
                     height: 52,
                     style: .filled,
-                    destination: PostCreateStep2View()
+                    destination: PostCreateStep3View()
                 )
                 .padding(.bottom, 30)
             }
