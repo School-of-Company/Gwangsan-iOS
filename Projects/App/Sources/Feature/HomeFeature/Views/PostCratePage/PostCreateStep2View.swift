@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct PostCreateStep2View: View {
-    @State var point: String = ""
+    @ObservedObject var viewModel: PostDraftViewModel
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -40,7 +40,7 @@ struct PostCreateStep2View: View {
             VStack{
                 GwangsanTextField(
                     "광산을 입력해주세요",
-                    text: $point,
+                    text: $viewModel.point,
                     title: "광산",
                     horizontalPadding: 0
                 )
@@ -50,11 +50,11 @@ struct PostCreateStep2View: View {
                 
                 GwangsanButton(
                     text: "다음",
-                    buttonState: !point.isEmpty,
+                    buttonState: !viewModel.point.isEmpty,
                     horizontalPadding: 0,
                     height: 52,
                     style: .filled,
-                    destination: PostCreateStep3View()
+                    destination: PostCreateStep3View(viewModel: viewModel)
                 )
                 .padding(.bottom, 30)
             }
@@ -62,8 +62,4 @@ struct PostCreateStep2View: View {
         }
         .navigationBarHidden(true)
     }
-}
-
-#Preview {
-    PostCreateStep2View()
 }

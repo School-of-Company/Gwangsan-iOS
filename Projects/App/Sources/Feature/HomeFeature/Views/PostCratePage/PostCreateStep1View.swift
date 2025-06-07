@@ -13,13 +13,12 @@ struct PostCreateStep1View: View {
     let headerTitle: String
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool
-    @State private var topic: String = ""
-    @State private var content = ""
-    @State private var selectedImages: [UIImage] = []
     @State private var photoItems: [PhotosPickerItem] = []
+    @ObservedObject var viewModel: PostDraftViewModel
+    
     
     var isFormValid: Bool {
-        !topic.isEmpty && !content.isEmpty
+        !viewModel.topic.isEmpty && !viewModel.content.isEmpty
     }
     
     var body: some View {
@@ -49,8 +48,8 @@ struct PostCreateStep1View: View {
             
             VStack(alignment: .leading) {
                 GwangsanTextField(
-                    "이름을 입력해주세요",
-                    text: $topic,
+                    "주제를 작성해주세요",
+                    text: $viewModel.topic,
                     title: "주제",
                     horizontalPadding: 0
                 )
@@ -61,7 +60,7 @@ struct PostCreateStep1View: View {
                         .gwangsanFont(style: .label)
                     
                     ZStack(alignment: .topLeading) {
-                        TextEditor(text: $content)
+                        TextEditor(text: $viewModel.content)
                             .font(.system(size: 14))
                             .frame(height: 185)
                             .padding(8)
@@ -78,7 +77,7 @@ struct PostCreateStep1View: View {
                             .cornerRadius(8)
                             .focused($isFocused)
                         
-                        if content.isEmpty {
+                        if viewModel.content.isEmpty {
                             Text("내용을 작성해주세요")
                                 .font(.system(size: 14))
                                 .gwangsanColor(GwangsanAsset.Color.gray400)
@@ -94,7 +93,7 @@ struct PostCreateStep1View: View {
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
-                            ForEach(selectedImages, id: \.self) { image in
+                            ForEach(viewModel.selectedImages, id: \.self) { image in
                                 Image(uiImage: image)
                                     .resizable()
                                     .scaledToFill()
@@ -121,8 +120,8 @@ struct PostCreateStep1View: View {
                                     Task {
                                         if let data = try? await item.loadTransferable(type: Data.self),
                                            let uiImage = UIImage(data: data) {
-                                            if !selectedImages.contains(uiImage) {
-                                                selectedImages.append(uiImage)
+                                            if !viewModel.selectedImages.contains(uiImage) {
+                                                viewModel.selectedImages.append(uiImage)
                                             }
                                         }
                                     }
@@ -141,7 +140,7 @@ struct PostCreateStep1View: View {
                     horizontalPadding: 0,
                     height: 52,
                     style: .filled,
-                    destination: PostCreateStep2View()
+                    destination: PostCreateStep2View(viewModel: viewModel)
                 )
                 .padding(.bottom, 30)
             }

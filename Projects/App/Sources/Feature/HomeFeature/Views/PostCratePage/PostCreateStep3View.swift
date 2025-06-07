@@ -7,16 +7,12 @@
 //
 
 import SwiftUI
-import PhotosUI
 
 struct PostCreateStep3View: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool
-    @State private var topic: String = ""
-    @State var point: String = ""
-    @State private var content = ""
-    @State private var selectedImages: [UIImage] = []
-    @State private var photoItems: [PhotosPickerItem] = []
+    @ObservedObject var viewModel: PostDraftViewModel
+    @State private var navigateToStep1 = false
     
     var body: some View {
         NavigationStack {
@@ -39,7 +35,7 @@ struct PostCreateStep3View: View {
                     }
                 }
             }
-            .padding(.horizontal,24)
+            .padding(.horizontal, 24)
             
             ProgressBar(currentStep: 3)
             
@@ -52,7 +48,7 @@ struct PostCreateStep3View: View {
                         
                         GwangsanTextField(
                             "이름을 입력해주세요",
-                            text: $topic,
+                            text: $viewModel.topic,
                             title: "주제",
                             horizontalPadding: 0
                         )
@@ -63,7 +59,7 @@ struct PostCreateStep3View: View {
                                 .gwangsanFont(style: .label)
                             
                             ZStack(alignment: .topLeading) {
-                                TextEditor(text: $content)
+                                TextEditor(text: $viewModel.content)
                                     .font(.system(size: 14))
                                     .frame(height: 185)
                                     .padding(8)
@@ -80,7 +76,7 @@ struct PostCreateStep3View: View {
                                     .cornerRadius(8)
                                     .focused($isFocused)
                                 
-                                if content.isEmpty {
+                                if viewModel.content.isEmpty {
                                     Text("내용을 작성해주세요")
                                         .font(.system(size: 14))
                                         .gwangsanColor(GwangsanAsset.Color.gray400)
@@ -96,39 +92,12 @@ struct PostCreateStep3View: View {
                             
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 16) {
-                                    ForEach(selectedImages, id: \.self) { image in
+                                    ForEach(viewModel.selectedImages, id: \.self) { image in
                                         Image(uiImage: image)
                                             .resizable()
                                             .scaledToFill()
                                             .frame(width: 64, height: 64)
                                             .clipShape(Circle())
-                                    }
-                                    
-                                    PhotosPicker(
-                                        selection: $photoItems,
-                                        maxSelectionCount: 5,
-                                        matching: .images,
-                                        photoLibrary: .shared()
-                                    ) {
-                                        ZStack {
-                                            Circle()
-                                                .fill(GwangsanAsset.Color.gray50.swiftUIColor)
-                                                .frame(width: 64, height: 64)
-                                            Image(systemName: "plus")
-                                                .foregroundColor(.black)
-                                        }
-                                    }
-                                    .onChange(of: photoItems) { newItems in
-                                        for item in newItems {
-                                            Task {
-                                                if let data = try? await item.loadTransferable(type: Data.self),
-                                                   let uiImage = UIImage(data: data) {
-                                                    if !selectedImages.contains(uiImage) {
-                                                        selectedImages.append(uiImage)
-                                                    }
-                                                }
-                                            }
-                                        }
                                     }
                                 }
                             }
@@ -137,41 +106,48 @@ struct PostCreateStep3View: View {
                         
                         GwangsanTextField(
                             "광산을 입력해주세요",
-                            text: $point,
+                            text: $viewModel.point,
                             title: "광산",
                             horizontalPadding: 0
                         )
                         .padding(.top, 30)
                         
-                        Spacer().frame(height: 30)
+                        HStack(spacing: 12) {
+                            NavigationLink(destination: PostCreateStep1View(
+                                headerTitle: "필요해요",
+                                viewModel: viewModel
+                            ), isActive: $navigateToStep1) {
+                                EmptyView()
+                            }.hidden()
+                            
+                            GwangsanButton(
+                                text: "수정",
+                                buttonState: true,
+                                horizontalPadding: 0,
+                                height: 52,
+                                style: .outline
+                            ) {
+                                navigateToStep1 = true
+                            }
+                            
+                            GwangsanButton(
+                                text: "완료",
+                                buttonState: true,
+                                horizontalPadding: 0,
+                                height: 52,
+                                style: .filled,
+                                action: {
+                                    viewModel.sumbit()
+                                }
+                            )
+                        }
+                        .padding(.top, 60)
+                        .padding(.bottom, 20)
                     }
-                    
-                    HStack(spacing: 12) {
-                        GwangsanButton(
-                            text: "수정",
-                            buttonState: true,
-                            horizontalPadding: 0,
-                            height: 52,
-                            style: .outline
-                        )
-                        GwangsanButton(
-                            text: "완료",
-                            buttonState: true,
-                            horizontalPadding: 0,
-                            height: 52,
-                            style: .filled,
-                            destination: PostCreateStep2View()
-                        )
-                    }
-                    .padding(.top, 60)
+                    .padding(.horizontal, 24)
                 }
             }
-            .padding(.horizontal, 24)
         }
         .navigationBarHidden(true)
     }
-}
-
-#Preview {
-    PostCreateStep3View()
 }
