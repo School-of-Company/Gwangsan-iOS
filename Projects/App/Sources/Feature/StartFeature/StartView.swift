@@ -15,7 +15,7 @@ struct StartView: View {
                 NavigationLink (destination: AliasInputView()) {
                     Text("로그인")
                 }
-                NavigationLink (destination: NicknameInputView()) {
+                NavigationLink (destination: NameInputView()) {
                     Text("회원가입")
                 }
             }
