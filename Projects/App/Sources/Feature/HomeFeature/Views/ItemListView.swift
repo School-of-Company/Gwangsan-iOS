@@ -128,7 +128,10 @@ struct ItemListView: View {
                 }
                 .padding(.horizontal, 24)
 
-                NavigationLink(destination: PostView()) {
+                NavigationLink(destination: PostCreateStep1View(
+                    headerTitle: selected.displayName(for: .item),
+                    viewModel: PostDraftViewModel())
+                ) {
                     Circle()
                         .fill(GwangsanAsset.Color.mainGreen500.swiftUIColor)
                         .frame(width: 60, height: 60)
