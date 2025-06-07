@@ -9,20 +9,20 @@
 import SwiftUI
 
 struct BranchSelectView: View {
-    @State private var keyword: String = ""
-    @State private var selectedLocation: String? = nil
-
-    private let allLocations = ["첨단 1동", "첨단 2동", "첨단 3동", "운암동", "풍암동", "쌍촌동"]
-
-    var filteredLocations: [String] {
-        if keyword.isEmpty { return [] }
-        return allLocations.filter { $0.contains(keyword) }
-    }
+    @State private var selectedLocation: String = ""
+    private let allLocations = [
+        "첨단 1동",
+        "첨단 2동",
+        "첨단 3동",
+        "운암동",
+        "풍암동",
+        "쌍촌동"
+    ]
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                VStack(spacing: 16) {
+            VStack {
+                VStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("회원가입")
                             .gwangsanFont(style: .titleMedium)
@@ -31,25 +31,25 @@ struct BranchSelectView: View {
                             .gwangsanColor(GwangsanAsset.Color.gray500)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 24)
 
-                    GwangsanTextField(
-                        "동네를 검색해주세요",
-                        text: $keyword,
-                        title: "",
-                        horizontalPadding: 24
+                    DropdownSelector(
+                        options: allLocations,
+                        placeholder: "지점을 선택해주세요",
+                        selectedOption: $selectedLocation
                     )
-                    .padding(.vertical, 20)
+                    .padding(.top, 45)
                 }
                 .padding(.top, 16)
+                .padding(.horizontal, 24)
 
                 Spacer()
 
                 GwangsanButton(
                     text: "다음",
-                    buttonState: selectedLocation != nil,
+                    buttonState: !selectedLocation.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
+                    style: .filled,
                     destination: MajorSelectView()
                 )
                 .padding(.top, 16)

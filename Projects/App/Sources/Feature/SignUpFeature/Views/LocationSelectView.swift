@@ -20,7 +20,7 @@ struct LocationSelectView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
+            VStack{
                 VStack(spacing: 16) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("회원가입")
@@ -37,6 +37,12 @@ struct LocationSelectView: View {
                         text: $keyword,
                         title: "",
                         horizontalPadding: 24
+                    )
+                    .overlay(
+                        Image("Search")
+                            .padding(.top, 17)
+                            .padding(.trailing, 35),
+                        alignment: .trailing
                     )
                     .padding(.vertical, 20)
                 }
