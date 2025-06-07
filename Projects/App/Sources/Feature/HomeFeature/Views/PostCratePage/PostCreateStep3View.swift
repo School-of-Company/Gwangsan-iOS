@@ -145,24 +145,25 @@ struct PostCreateStep3View: View {
                         
                         Spacer().frame(height: 30)
                     }
-                }
-                
-                HStack(spacing: 12) {
-                    GwangsanButton(
-                        text: "수정",
-                        buttonState: true,
-                        horizontalPadding: 0,
-                        height: 52,
-                        style: .outline
-                    )
-                    GwangsanButton(
-                        text: "완료",
-                        buttonState: true,
-                        horizontalPadding: 0,
-                        height: 52,
-                        style: .filled,
-                        destination: PostCreateStep2View()
-                    )
+                    
+                    HStack(spacing: 12) {
+                        GwangsanButton(
+                            text: "수정",
+                            buttonState: true,
+                            horizontalPadding: 0,
+                            height: 52,
+                            style: .outline
+                        )
+                        GwangsanButton(
+                            text: "완료",
+                            buttonState: true,
+                            horizontalPadding: 0,
+                            height: 52,
+                            style: .filled,
+                            destination: PostCreateStep2View()
+                        )
+                    }
+                    .padding(.top, 60)
                 }
             }
             .padding(.horizontal, 24)

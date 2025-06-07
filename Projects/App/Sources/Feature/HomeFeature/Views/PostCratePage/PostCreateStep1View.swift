@@ -10,6 +10,7 @@ import SwiftUI
 import PhotosUI
 
 struct PostCreateStep1View: View {
+    let headerTitle: String
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool
     @State private var topic: String = ""
@@ -28,7 +29,7 @@ struct PostCreateStep1View: View {
                 HStack {
                     Image("Back")
                     Spacer()
-                    Text("필요해요")
+                    Text("\(headerTitle)")
                         .gwangsanFont(style: .body1)
                     Spacer()
                 }
@@ -148,8 +149,4 @@ struct PostCreateStep1View: View {
         }
         .navigationBarHidden(true)
     }
-}
-
-#Preview {
-    PostCreateStep1View()
 }
