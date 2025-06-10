@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct NameInputView: View {
-    @State var name: String = ""
+    @ObservedObject var viewModel = SignUpViewModel()
     var body: some View {
         NavigationStack {
             VStack{
@@ -28,7 +28,7 @@ struct NameInputView: View {
                     
                     GwangsanTextField(
                         "본인의 이름을 입력해주세요",
-                        text: $name,
+                        text: $viewModel.name,
                         title: "이름",
                         horizontalPadding: 24
                     )
@@ -39,7 +39,7 @@ struct NameInputView: View {
                 
                 GwangsanButton(
                     text: "다음",
-                    buttonState: !name.isEmpty,
+                    buttonState: !viewModel.name.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
                     destination: SignUpPasswordView()
@@ -50,7 +50,6 @@ struct NameInputView: View {
         }
         .navigationBarHidden(true)
     }
-    
 }
 
 #Preview {

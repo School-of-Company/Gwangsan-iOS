@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct MajorSelectView: View {
-    @State private var selectedMajors: [String] = []
+    @ObservedObject var viewModel = SignUpViewModel()
     @State private var isDropdownOpen: Bool = false
     
     private let allMajors = ["청소하기", "운전하기", "달리기", "빨래하기", "벌레잡기", "이삿짐 나르기"]
@@ -44,7 +44,7 @@ struct MajorSelectView: View {
             
             GwangsanButton(
                 text: "다음",
-                buttonState: !selectedMajors.isEmpty,
+                buttonState: !viewModel.selectedMajors.isEmpty,
                 horizontalPadding: 24,
                 height: 52,
                 destination: ReferenceView()
@@ -75,14 +75,14 @@ struct MajorSelectView: View {
                 .padding(.horizontal, 24)
             
             HStack(spacing: 8) {
-                if selectedMajors.isEmpty {
+                if viewModel.selectedMajors.isEmpty {
                     Image("Plus")
                         .resizable()
                         .frame(width: 24, height: 24)
                 }
                 
-                Text(selectedMajors.isEmpty ? "소개추가" : selectedMajors.joined(separator: ", "))
-                    .foregroundColor(selectedMajors.isEmpty ? .gray : .black)
+                Text(viewModel.selectedMajors.isEmpty ? "소개추가" : viewModel.selectedMajors.joined(separator: ", "))
+                    .foregroundColor(viewModel.selectedMajors.isEmpty ? .gray : .black)
                     .font(.system(size: 14))
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -142,7 +142,7 @@ struct MajorSelectView: View {
     
     private func dropdownItem(for major: String) -> some View {
         HStack(spacing: 8) {
-            if selectedMajors.contains(major) {
+            if viewModel.selectedMajors.contains(major) {
                 Image("Check")
                     .resizable()
                     .frame(width: 16, height: 16)
@@ -162,21 +162,21 @@ struct MajorSelectView: View {
         .frame(height: 36)
         .frame(maxWidth: .infinity)
         .background(
-            selectedMajors.contains(major)
+            viewModel.selectedMajors.contains(major)
             ? GwangsanAsset.Color.selectColor.swiftUIColor
             : Color.clear
         )
         .clipShape(
-            RoundedRectangle(cornerRadius: selectedMajors.contains(major) ? 12 : 0)
+            RoundedRectangle(cornerRadius: viewModel.selectedMajors.contains(major) ? 12 : 0)
         )
-        .padding(.horizontal, selectedMajors.contains(major) ? 8 : 0)
+        .padding(.horizontal, viewModel.selectedMajors.contains(major) ? 8 : 0)
         .contentShape(Rectangle())
         .onTapGesture {
             withAnimation {
-                if let index = selectedMajors.firstIndex(of: major) {
-                    selectedMajors.remove(at: index)
+                if let index = viewModel.selectedMajors.firstIndex(of: major) {
+                    viewModel.selectedMajors.remove(at: index)
                 } else {
-                    selectedMajors.append(major)
+                    viewModel.selectedMajors.append(major)
                 }
             }
         }

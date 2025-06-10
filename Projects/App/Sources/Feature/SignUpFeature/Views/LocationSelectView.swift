@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LocationSelectView: View {
     @State private var keyword: String = ""
-    @State private var selectedLocation: String? = nil
+    @ObservedObject var viewModel = SignUpViewModel()
 
     private let allLocations = ["첨단 1동", "첨단 2동", "첨단 3동", "운암동", "풍암동", "쌍촌동"]
 
@@ -67,7 +67,7 @@ struct LocationSelectView: View {
                             .background(Color.white)
                             .contentShape(Rectangle())
                             .onTapGesture {
-                                selectedLocation = location
+                                viewModel.selectedLocation = location
                                 keyword = location
                             }
 
@@ -81,7 +81,7 @@ struct LocationSelectView: View {
 
                 GwangsanButton(
                     text: "다음",
-                    buttonState: selectedLocation != nil,
+                    buttonState: !viewModel.selectedLocation.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
                     destination: MajorSelectView()

@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct NicknameInputView: View {
-    @State var nickname: String = "" // viewModel에서 사용
+    @ObservedObject var viewModel = SignUpViewModel()
     var body: some View {
         NavigationStack {
             VStack{
@@ -28,7 +28,7 @@ struct NicknameInputView: View {
                     
                     GwangsanTextField(
                         "별칭을 입력해주세요",
-                        text: $nickname,
+                        text: $viewModel.nickname,
                         title: "별칭",
                         horizontalPadding: 24
                     )
@@ -39,7 +39,7 @@ struct NicknameInputView: View {
                 
                 GwangsanButton(
                     text: "다음",
-                    buttonState: !nickname.isEmpty,
+                    buttonState: !viewModel.nickname.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
                     destination: SignUpPasswordView()
@@ -54,5 +54,5 @@ struct NicknameInputView: View {
 }
 
 #Preview {
-    NicknameInputView()
+    NicknameInputView(viewModel: SignUpViewModel())
 }

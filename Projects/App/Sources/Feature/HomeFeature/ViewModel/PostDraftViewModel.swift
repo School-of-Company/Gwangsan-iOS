@@ -16,6 +16,8 @@ class PostDraftViewModel: ObservableObject {
     @Published var selectedImages: [UIImage] = []
     
     func sumbit() {
-        print("서버로 제출")
+        print("\(topic)")
+        print("\(content)")
+        print("\(point)")
     }
 }

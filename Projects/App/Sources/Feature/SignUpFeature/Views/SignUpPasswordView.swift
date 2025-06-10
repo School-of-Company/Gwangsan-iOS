@@ -9,7 +9,11 @@
 import SwiftUI
 
 struct SignUpPasswordView: View {
-    @StateObject var viewModel = SignUpViewModel()
+    @ObservedObject var viewModel = SignUpViewModel()
+    
+    func isValid() -> Bool {
+        return !viewModel.password.isEmpty && viewModel.password == viewModel.confirmPassword
+    }
 
     var body: some View {
         NavigationStack {
@@ -48,7 +52,7 @@ struct SignUpPasswordView: View {
 
                 GwangsanButton(
                     text: "다음",
-                    buttonState: viewModel.isPasswordMatch,
+                    buttonState: isValid(),
                     horizontalPadding: 24,
                     height: 52,
                     destination: PhoneVerificationView()
