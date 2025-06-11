@@ -28,7 +28,6 @@ struct MajorSelectView: View {
                 }
             }
         }
-        .navigationBarHidden(true)
     }
     
     private var mainContent: some View {
@@ -47,7 +46,7 @@ struct MajorSelectView: View {
                 buttonState: !viewModel.selectedMajors.isEmpty,
                 horizontalPadding: 24,
                 height: 52,
-                destination: ReferenceView()
+                destination: ReferenceView(viewModel: viewModel)
             )
             .padding(.bottom, 30)
         }

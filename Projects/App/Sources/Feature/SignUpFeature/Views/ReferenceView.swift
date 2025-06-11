@@ -9,7 +9,8 @@
 import SwiftUI
 
 struct ReferenceView: View {
-    @ObservedObject var viewModel = SignUpViewModel()
+    @ObservedObject var viewModel: SignUpViewModel
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -51,8 +52,4 @@ struct ReferenceView: View {
             .modifier(BackButtonModifier())
         }
     }
-}
-
-#Preview {
-     ReferenceView()
 }

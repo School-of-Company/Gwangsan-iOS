@@ -84,7 +84,7 @@ struct LocationSelectView: View {
                     buttonState: !viewModel.selectedLocation.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
-                    destination: MajorSelectView()
+                    destination: BranchSelectView(viewModel: viewModel)
                 )
                 .padding(.top, 16)
                 .padding(.bottom, 30)

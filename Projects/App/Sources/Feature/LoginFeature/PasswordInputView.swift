@@ -42,7 +42,7 @@ struct PasswordInputView: View {
                     buttonState: !password.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
-                    destination: StartView()     // MainFeature로 변경해야함
+                    destination: StartView(viewModel: SignUpViewModel())     // MainFeature로 변경해야함
                 )
                 .padding(.bottom, 30)
             }

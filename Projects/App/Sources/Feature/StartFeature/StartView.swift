@@ -9,13 +9,14 @@
 import SwiftUI
 
 struct StartView: View {
+    @ObservedObject var viewModel: SignUpViewModel
     var body: some View {
         NavigationView {
             VStack{
                 NavigationLink (destination: AliasInputView()) {
                     Text("로그인")
                 }
-                NavigationLink (destination: NameInputView()) {
+                NavigationLink (destination: NameInputView(viewModel: viewModel)) {
                     Text("회원가입")
                 }
             }
@@ -25,5 +26,5 @@ struct StartView: View {
 }
 
 #Preview {
-    StartView()
+    StartView(viewModel: SignUpViewModel())
 }

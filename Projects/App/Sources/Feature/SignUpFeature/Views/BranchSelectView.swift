@@ -9,7 +9,8 @@
 import SwiftUI
 
 struct BranchSelectView: View {
-    @State private var selectedBranch: String = ""
+    @ObservedObject var viewModel: SignUpViewModel
+    
     private let allLocations = [
         "첨단 1동",
         "첨단 2동",
@@ -35,7 +36,7 @@ struct BranchSelectView: View {
                     DropdownSelector(
                         options: allLocations,
                         placeholder: "지점을 선택해주세요",
-                        selectedOption: $selectedBranch
+                        selectedOption: $viewModel.branch
                     )
                     .padding(.top, 45)
                 }
@@ -46,11 +47,11 @@ struct BranchSelectView: View {
 
                 GwangsanButton(
                     text: "다음",
-                    buttonState: !selectedBranch.isEmpty,
+                    buttonState: !viewModel.branch.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
                     style: .filled,
-                    destination: MajorSelectView()
+                    destination: MajorSelectView(viewModel: viewModel)
                 )
                 .padding(.top, 16)
                 .padding(.bottom, 30)
@@ -58,8 +59,4 @@ struct BranchSelectView: View {
             .modifier(BackButtonModifier())
         }
     }
-}
-
-#Preview {
-    BranchSelectView()
 }

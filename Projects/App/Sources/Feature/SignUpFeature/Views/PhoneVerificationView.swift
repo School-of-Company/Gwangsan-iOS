@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct PhoneVerificationView: View {
+    @ObservedObject var viewModel: SignUpViewModel
     @State var phoneNumber: String = ""
     @State var confirmnumber: String = ""
 
@@ -68,15 +69,11 @@ struct PhoneVerificationView: View {
                     buttonState: true, // 전화번호 인증이 완료되면 true로 변경하게 만들어야함
                     horizontalPadding: 24,
                     height: 52,
-                    destination: LocationSelectView()
+                    destination: LocationSelectView(viewModel: viewModel)
                 )
                 .padding(.bottom, 30)
             }
             .modifier(BackButtonModifier())
         }
     }
-}
-
-#Preview {
-    PhoneVerificationView()
 }

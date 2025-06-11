@@ -32,7 +32,7 @@ struct FinishedView: View {
                 buttonState: true,
                 horizontalPadding: 24,
                 height: 52,
-                destination: StartView()
+                destination: StartView(viewModel: SignUpViewModel())
             )
             .padding(.bottom, 30)
         }

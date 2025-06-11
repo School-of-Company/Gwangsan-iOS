@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct NameInputView: View {
-    @ObservedObject var viewModel = SignUpViewModel()
+    @ObservedObject var viewModel: SignUpViewModel
     var body: some View {
         NavigationStack {
             VStack{
@@ -42,7 +42,7 @@ struct NameInputView: View {
                     buttonState: !viewModel.name.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
-                    destination: SignUpPasswordView()
+                    destination: NicknameInputView(viewModel: viewModel)
                 )
                 .padding(.bottom, 30)
             }
@@ -50,8 +50,4 @@ struct NameInputView: View {
         }
         .navigationBarHidden(true)
     }
-}
-
-#Preview {
-    NameInputView()
 }

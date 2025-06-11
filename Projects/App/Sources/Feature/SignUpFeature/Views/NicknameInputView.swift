@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct NicknameInputView: View {
-    @ObservedObject var viewModel = SignUpViewModel()
+    @ObservedObject var viewModel: SignUpViewModel
     var body: some View {
         NavigationStack {
             VStack{
@@ -42,17 +42,11 @@ struct NicknameInputView: View {
                     buttonState: !viewModel.nickname.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
-                    destination: SignUpPasswordView()
+                    destination: SignUpPasswordView(viewModel: viewModel)
                 )
                 .padding(.bottom, 30)
             }
             .modifier(BackButtonModifier())
         }
-        .navigationBarHidden(true)
     }
-    
-}
-
-#Preview {
-    NicknameInputView(viewModel: SignUpViewModel())
 }
