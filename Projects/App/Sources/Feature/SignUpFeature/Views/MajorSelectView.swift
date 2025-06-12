@@ -23,7 +23,7 @@ struct MajorSelectView: View {
         NavigationStack {
             ZStack {
                 if isDropdownOpen {
-                    Color(.systemGray5)
+                    Color(asset: GwangsanAsset.Color.gray300Main)
                         .ignoresSafeArea()
                         .onTapGesture {
                             withAnimation {
