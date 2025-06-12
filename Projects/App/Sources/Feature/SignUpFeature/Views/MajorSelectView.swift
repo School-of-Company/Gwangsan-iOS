@@ -34,7 +34,6 @@ struct MajorSelectView: View {
                 }
 
                 VStack(spacing: 0) {
-                    // Header
                     VStack(alignment: .leading, spacing: 8) {
                         Text("회원가입")
                             .gwangsanFont(style: .titleMedium)
@@ -46,7 +45,6 @@ struct MajorSelectView: View {
                     .padding(.horizontal, 24)
                     .padding(.top, 16)
 
-                    // 입력 필드 + 드롭다운
                     fieldAndDropdown
                         .zIndex(1)
 
@@ -71,8 +69,7 @@ struct MajorSelectView: View {
             Text("특기")
                 .gwangsanFont(style: .label)
                 .padding(.horizontal, 24)
-
-            // TextField 영역
+            
             ZStack(alignment: .leading) {
                 if customInput.isEmpty && viewModel.selectedMajors.isEmpty {
                     HStack(spacing: 8) {
@@ -94,11 +91,11 @@ struct MajorSelectView: View {
                 .padding(.vertical, 14)
                 .padding(.horizontal, 24)
                 .onChange(of: customInput) { newValue in
-                    if newValue.isEmpty {
-                        viewModel.selectedMajors = []
-                    } else {
-                        viewModel.selectedMajors = [newValue]
-                    }
+                    let parts = newValue
+                        .split(separator: ",")
+                        .map { $0.trimmingCharacters(in: .whitespaces) }
+                        .filter { !$0.isEmpty }
+                    viewModel.selectedMajors = parts
                 }
             }
             .frame(height: 52)
