@@ -12,7 +12,7 @@ import SwiftUI
 struct GwangsanApp: App {
     var body: some Scene {
         WindowGroup {
-            StartView(viewModel: SignUpViewModel())
+            StartView(viewModel: SignUpViewModel(), loginviewModel: LoginViewModel())
         }
     }
 }
