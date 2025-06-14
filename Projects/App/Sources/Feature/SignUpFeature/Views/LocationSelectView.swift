@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LocationSelectView: View {
     @State private var keyword: String = ""
-    @State private var selectedLocation: String? = nil
+    @ObservedObject var viewModel = SignUpViewModel()
 
     private let allLocations = ["첨단 1동", "첨단 2동", "첨단 3동", "운암동", "풍암동", "쌍촌동"]
 
@@ -20,7 +20,7 @@ struct LocationSelectView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
+            VStack{
                 VStack(spacing: 16) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("회원가입")
@@ -37,6 +37,12 @@ struct LocationSelectView: View {
                         text: $keyword,
                         title: "",
                         horizontalPadding: 24
+                    )
+                    .overlay(
+                        Image("Search")
+                            .padding(.top, 17)
+                            .padding(.trailing, 35),
+                        alignment: .trailing
                     )
                     .padding(.vertical, 20)
                 }
@@ -61,7 +67,7 @@ struct LocationSelectView: View {
                             .background(Color.white)
                             .contentShape(Rectangle())
                             .onTapGesture {
-                                selectedLocation = location
+                                viewModel.selectedLocation = location
                                 keyword = location
                             }
 
@@ -75,10 +81,10 @@ struct LocationSelectView: View {
 
                 GwangsanButton(
                     text: "다음",
-                    buttonState: selectedLocation != nil,
+                    buttonState: !viewModel.selectedLocation.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
-                    destination: MajorSelectView()
+                    destination: BranchSelectView(viewModel: viewModel)
                 )
                 .padding(.top, 16)
                 .padding(.bottom, 30)

@@ -9,7 +9,9 @@
 import SwiftUI
 
 struct PhoneVerificationView: View {
-    @StateObject var viewModel = SignUpViewModel()
+    @ObservedObject var viewModel: SignUpViewModel
+    @State var phoneNumber: String = ""
+    @State var confirmnumber: String = ""
 
     var body: some View {
         NavigationStack {
@@ -30,7 +32,7 @@ struct PhoneVerificationView: View {
                         HStack(spacing: 12) {
                             GwangsanTextField(
                                 "전화번호를 입력해주세요",
-                                text: $viewModel.phoneNumber,
+                                text: $phoneNumber,
                                 title: "전화번호",
                                 horizontalPadding: 0
                             )
@@ -39,7 +41,7 @@ struct PhoneVerificationView: View {
                             
                             GwangsanButton(
                                 text: "인증",
-                                buttonState: !viewModel.phoneNumber.isEmpty,
+                                buttonState: phoneNumber.isEmpty,
                                 horizontalPadding: 0,
                                 height: 56,
                                 action: {
@@ -52,7 +54,7 @@ struct PhoneVerificationView: View {
                         .padding(.horizontal, 20)
                         GwangsanTextField(
                             "인증번호를 입력해주세요",
-                            text: $viewModel.confirmPassword,
+                            text: $confirmnumber,
                             title: "전화번호 인증",
                             horizontalPadding: 24
                         )
@@ -67,7 +69,7 @@ struct PhoneVerificationView: View {
                     buttonState: true, // 전화번호 인증이 완료되면 true로 변경하게 만들어야함
                     horizontalPadding: 24,
                     height: 52,
-                    destination: LocationSelectView()
+                    destination: LocationSelectView(viewModel: viewModel)
                 )
                 .padding(.bottom, 30)
             }
@@ -75,8 +77,3 @@ struct PhoneVerificationView: View {
         }
     }
 }
-
-#Preview {
-    PhoneVerificationView()
-}
-

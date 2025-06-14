@@ -32,7 +32,7 @@ struct FinishedView: View {
                 buttonState: true,
                 horizontalPadding: 24,
                 height: 52,
-                destination: TabbarView() // 회원가입 완료시 TabbarView로 이동
+                destination: StartView(viewModel: SignUpViewModel())
             )
             .padding(.bottom, 30)
         }

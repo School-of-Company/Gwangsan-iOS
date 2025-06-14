@@ -1,14 +1,14 @@
 //
-//  SignUpView.swift
+//  NameInputView.swift
 //  Gwangsan
 //
-//  Created by 박정우 on 4/17/25.
+//  Created by 박정우 on 6/7/25.
 //  Copyright © 2025 schoolcompany. All rights reserved.
 //
 
 import SwiftUI
 
-struct NicknameInputView: View {
+struct NameInputView: View {
     @ObservedObject var viewModel: SignUpViewModel
     var body: some View {
         NavigationStack {
@@ -27,9 +27,9 @@ struct NicknameInputView: View {
                     .padding(.horizontal, 24)
                     
                     GwangsanTextField(
-                        "별칭을 입력해주세요",
-                        text: $viewModel.nickname,
-                        title: "별칭",
+                        "본인의 이름을 입력해주세요",
+                        text: $viewModel.name,
+                        title: "이름",
                         horizontalPadding: 24
                     )
                 }
@@ -39,14 +39,15 @@ struct NicknameInputView: View {
                 
                 GwangsanButton(
                     text: "다음",
-                    buttonState: !viewModel.nickname.isEmpty,
+                    buttonState: !viewModel.name.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
-                    destination: SignUpPasswordView(viewModel: viewModel)
+                    destination: NicknameInputView(viewModel: viewModel)
                 )
                 .padding(.bottom, 30)
             }
             .modifier(BackButtonModifier())
         }
+        .navigationBarHidden(true)
     }
 }

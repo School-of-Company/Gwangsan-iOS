@@ -9,140 +9,149 @@
 import SwiftUI
 
 struct MajorSelectView: View {
-    @State private var selectedMajors: [String] = []
+    @ObservedObject var viewModel = SignUpViewModel()
+    @State private var customInput: String = ""
     @State private var isDropdownOpen: Bool = false
-    
-    private let allMajors = ["청소하기", "운전하기", "달리기", "빨래하기", "벌레잡기", "이삿짐 나르기"]
-    
+    @FocusState private var isTextFieldFocused: Bool
+
+    private let allMajors = [
+        "청소하기", "운전하기", "달리기",
+        "빨래하기", "벌레잡기", "이삿짐 나르기"
+    ]
+
     var body: some View {
         NavigationStack {
             ZStack {
-                mainContent
-                
-                if isDropdownOpen {
-                    overlayBackground
-                }
-                
-                if isDropdownOpen {
-                    dropdownMenu
-                }
-            }
-        }
-        .navigationBarHidden(true)
-    }
-    
-    private var mainContent: some View {
-        VStack(spacing: 0) {
-            VStack(spacing: 54) {
-                headerSection
-                
-                selectSection
-            }
-            .padding(.top, 16)
-            
-            Spacer()
-            
-            GwangsanButton(
-                text: "다음",
-                buttonState: !selectedMajors.isEmpty,
-                horizontalPadding: 24,
-                height: 52,
-                destination: ReferenceView()
-            )
-            .padding(.bottom, 30)
-        }
-        .modifier(BackButtonModifier())
-    }
-    
-    private var headerSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("회원가입")
-                .gwangsanFont(style: .titleMedium)
-            
-            Text("자신을 소개하는 글을 작성해주세요")
-                .gwangsanFont(style: .label)
-                .gwangsanColor(GwangsanAsset.Color.gray500)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 24)
-    }
-    
-    private var selectSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("전공")
-                .font(.system(size: 14))
-                .fontWeight(.medium)
-                .padding(.horizontal, 24)
-            
-            HStack(spacing: 8) {
-                if selectedMajors.isEmpty {
-                    Image("Plus")
-                        .resizable()
-                        .frame(width: 24, height: 24)
-                }
-                
-                Text(selectedMajors.isEmpty ? "소개추가" : selectedMajors.joined(separator: ", "))
-                    .foregroundColor(selectedMajors.isEmpty ? .gray : .black)
-                    .font(.system(size: 14))
+                VStack(spacing: 0) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("회원가입")
+                            .gwangsanFont(style: .titleMedium)
+                        Text("자신을 소개하는 글을 작성해주세요")
+                            .gwangsanFont(style: .label)
+                            .gwangsanColor(GwangsanAsset.Color.gray500)
+                    }
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 24)
+                    .padding(.top, 16)
+
+                    Spacer()
+
+                    GwangsanButton(
+                        text: "다음",
+                        buttonState: !viewModel.selectedMajors.isEmpty,
+                        horizontalPadding: 24,
+                        height: 52,
+                        destination: ReferenceView(viewModel: viewModel)
+                    )
+                    .padding(.bottom, 30)
+                }
+
+                if isDropdownOpen {
+                    Color(asset: GwangsanAsset.Color.gray300Main)
+                        .opacity(0.6)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            withAnimation {
+                                isDropdownOpen = false
+                                isTextFieldFocused = false
+                            }
+                        }
+                }
+                
+                VStack(spacing: 0) {
+                    Spacer().frame(height: 16 + 60 + 30)
+                    fieldAndDropdown
+                        .zIndex(1)
+                    Spacer()
+                }
+            }
+            .modifier(BackButtonModifier())
+        }
+    }
+
+    private var fieldAndDropdown: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("특기")
+                .gwangsanFont(style: .label)
+                .padding(.horizontal, 24)
+
+            ZStack(alignment: .leading) {
+                if customInput.isEmpty && viewModel.selectedMajors.isEmpty {
+                    HStack(spacing: 8) {
+                        Image("Plus")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                        Text("특기 추가")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 14))
+                    }
+                    .padding(.vertical, 16)
+                    .padding(.horizontal, 20)
+                }
+
+                TextField("", text: $customInput) { _ in
+                    withAnimation { isDropdownOpen = true }
+                }
+                .focused($isTextFieldFocused)
+                .padding(.vertical, 14)
+                .padding(.horizontal, 24)
+                .onChange(of: customInput) { newValue in
+                    let parts = newValue
+                        .split(separator: ",")
+                        .map { $0.trimmingCharacters(in: .whitespaces) }
+                        .filter { !$0.isEmpty }
+                    viewModel.selectedMajors = parts
+                }
             }
             .frame(height: 52)
-            .padding(.horizontal, 16)
-            .background(
+            .background(Color.white)
+            .cornerRadius(12)
+            .overlay(
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(
                         isDropdownOpen
-                        ? GwangsanAsset.Color.mainYellow400.swiftUIColor
-                        : Color.black,
+                            ? GwangsanAsset.Color.mainYellow400.swiftUIColor
+                            : Color.black,
                         lineWidth: 1
                     )
             )
             .padding(.horizontal, 24)
-            .onTapGesture {
-                withAnimation {
-                    isDropdownOpen.toggle()
-                }
+            .onSubmit {
+                let trimmed = customInput.trimmingCharacters(in: .whitespaces)
+                guard !trimmed.isEmpty,
+                      !viewModel.selectedMajors.contains(trimmed)
+                else { return }
+                viewModel.selectedMajors.append(trimmed)
+                customInput = viewModel.selectedMajors.joined(separator: ", ")
+                DispatchQueue.main.async { isTextFieldFocused = true }
             }
-        }
-    }
-    
-    private var overlayBackground: some View {
-        Color.black.opacity(0.3)
-            .ignoresSafeArea()
-            .onTapGesture {
-                withAnimation {
-                    isDropdownOpen = false
-                }
-            }
-    }
-    
-    private var dropdownMenu: some View {
-        VStack {
-            Spacer()
-                .frame(height: UIScreen.main.bounds.height * 0.26)
-            VStack(spacing: 0) {
-                Spacer().frame(height: 8)
-                
+
+            if isDropdownOpen {
                 VStack(spacing: 0) {
+                    Spacer().frame(height: 5)
                     ForEach(allMajors, id: \.self) { major in
                         dropdownItem(for: major)
                     }
+                    Spacer().frame(height: 5)
                 }
-                
-                Spacer().frame(height: 8)
+                .padding(.horizontal, 5)
+                .background(Color.white)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.white, lineWidth: 1)
+                )
+                .padding(.horizontal, 24)
+                .padding(.top, 4)
             }
-            .background(Color.white)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .shadow(radius: 1)
-            .padding(.horizontal, 24)
-            
-            Spacer()
         }
+        .padding(.top, 30)
     }
-    
+
     private func dropdownItem(for major: String) -> some View {
-        HStack(spacing: 8) {
-            if selectedMajors.contains(major) {
+        let isSelected = viewModel.selectedMajors.contains(major)
+        return HStack(spacing: 8) {
+            if isSelected {
                 Image("Check")
                     .resizable()
                     .frame(width: 16, height: 16)
@@ -152,37 +161,30 @@ struct MajorSelectView: View {
                     .foregroundColor(.clear)
                     .frame(width: 16, height: 16)
             }
-            
+
             Text(major)
-                .foregroundColor(.black)
+                .foregroundColor(isSelected ? .blue : .black)
                 .font(.system(size: 14))
-            
+
             Spacer()
         }
         .frame(height: 36)
-        .frame(maxWidth: .infinity)
-        .background(
-            selectedMajors.contains(major)
-            ? GwangsanAsset.Color.selectColor.swiftUIColor
-            : Color.clear
-        )
-        .clipShape(
-            RoundedRectangle(cornerRadius: selectedMajors.contains(major) ? 12 : 0)
-        )
-        .padding(.horizontal, selectedMajors.contains(major) ? 8 : 0)
-        .contentShape(Rectangle())
+        .background(isSelected ? Color.blue.opacity(0.1) : Color.clear)
+        .clipShape(RoundedRectangle(cornerRadius: isSelected ? 12 : 0))
         .onTapGesture {
             withAnimation {
-                if let index = selectedMajors.firstIndex(of: major) {
-                    selectedMajors.remove(at: index)
+                if let idx = viewModel.selectedMajors.firstIndex(of: major) {
+                    viewModel.selectedMajors.remove(at: idx)
                 } else {
-                    selectedMajors.append(major)
+                    viewModel.selectedMajors.append(major)
                 }
+                customInput = viewModel.selectedMajors.joined(separator: ", ")
+                DispatchQueue.main.async { isTextFieldFocused = true }
             }
         }
     }
 }
 
 #Preview {
-    MajorSelectView()
+    MajorSelectView(viewModel: SignUpViewModel())
 }

@@ -9,7 +9,8 @@
 import SwiftUI
 
 struct ReferenceView: View {
-    @State var reference: String = ""
+    @ObservedObject var viewModel: SignUpViewModel
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -27,7 +28,7 @@ struct ReferenceView: View {
 
                         GwangsanTextField(
                             "추천인 별칭을 입력해주세요",
-                            text: $reference,
+                            text: $viewModel.reference,
                             title: "추천인",
                             horizontalPadding: 24
                         )
@@ -38,18 +39,17 @@ struct ReferenceView: View {
 
                 GwangsanButton(
                     text: "다음",
-                    buttonState: !reference.isEmpty,
+                    buttonState: !viewModel.reference.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
-                    destination: FinishedView()
+                    destination: FinishedView(),
+                    action: {
+                        viewModel.submit()
+                    }
                 )
                 .padding(.bottom, 30)
             }
             .modifier(BackButtonModifier())
         }
     }
-}
-
-#Preview {
-     ReferenceView()
 }
