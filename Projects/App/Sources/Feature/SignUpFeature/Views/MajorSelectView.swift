@@ -22,17 +22,6 @@ struct MajorSelectView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                if isDropdownOpen {
-                    Color(asset: GwangsanAsset.Color.gray300Main)
-                        .ignoresSafeArea()
-                        .onTapGesture {
-                            withAnimation {
-                                isDropdownOpen = false
-                                isTextFieldFocused = false
-                            }
-                        }
-                }
-
                 VStack(spacing: 0) {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("회원가입")
@@ -45,9 +34,6 @@ struct MajorSelectView: View {
                     .padding(.horizontal, 24)
                     .padding(.top, 16)
 
-                    fieldAndDropdown
-                        .zIndex(1)
-
                     Spacer()
 
                     GwangsanButton(
@@ -59,8 +45,27 @@ struct MajorSelectView: View {
                     )
                     .padding(.bottom, 30)
                 }
-                .modifier(BackButtonModifier())
+
+                if isDropdownOpen {
+                    Color(asset: GwangsanAsset.Color.gray300Main)
+                        .opacity(0.6)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            withAnimation {
+                                isDropdownOpen = false
+                                isTextFieldFocused = false
+                            }
+                        }
+                }
+                
+                VStack(spacing: 0) {
+                    Spacer().frame(height: 16 + 60 + 30)
+                    fieldAndDropdown
+                        .zIndex(1)
+                    Spacer()
+                }
             }
+            .modifier(BackButtonModifier())
         }
     }
 
@@ -69,7 +74,7 @@ struct MajorSelectView: View {
             Text("특기")
                 .gwangsanFont(style: .label)
                 .padding(.horizontal, 24)
-            
+
             ZStack(alignment: .leading) {
                 if customInput.isEmpty && viewModel.selectedMajors.isEmpty {
                     HStack(spacing: 8) {
