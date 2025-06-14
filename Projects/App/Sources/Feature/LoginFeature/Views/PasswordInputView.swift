@@ -1,5 +1,5 @@
 //
-//  LoginView.swift
+//  PasswordInputVIew.swift
 //  Gwangsan
 //
 //  Created by 박정우 on 4/16/25.
@@ -8,28 +8,28 @@
 
 import SwiftUI
 
-struct AliasInputView: View {
-    @State var nickname: String = "" // viewModel에서 사용
+struct PasswordInputView: View {
+    @ObservedObject var viewModel: LoginViewModel
+    
     var body: some View {
-        NavigationStack {
-            VStack{
-                VStack(spacing: 54){
+        NavigationStack{
+            VStack {
+                VStack(spacing: 54) {
                     VStack(alignment: .leading) {
                         Text("로그인")
                             .gwangsanFont(style: .titleMedium)
                         
-                        Text("별칭을 입력해주세요")
+                        Text("비밀번호를 입력해주세요")
                             .gwangsanFont(style: .label)
                             .gwangsanColor(GwangsanAsset.Color.gray500)
-                        
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 24)
                     
                     GwangsanTextField(
-                        "별칭을 입력해주세요",
-                        text: $nickname,
-                        title: "별칭",
+                        "비밀번호를 입력해주세요",
+                        text: $viewModel.password,
+                        title: "비밀번호",
                         horizontalPadding: 24
                     )
                 }
@@ -39,20 +39,21 @@ struct AliasInputView: View {
                 
                 GwangsanButton(
                     text: "다음",
-                    buttonState: !nickname.isEmpty,
+                    buttonState: !viewModel.password.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
-                    destination: PasswordInputView()
+                    destination: MainView(),
+                    action: {
+                        viewModel.submit()
+                    }
                 )
                 .padding(.bottom, 30)
             }
             .modifier(BackButtonModifier())
         }
-        .navigationBarHidden(true)
     }
-    
 }
 
 #Preview {
-    AliasInputView()
-} 
+    PasswordInputView(viewModel: LoginViewModel())
+}
