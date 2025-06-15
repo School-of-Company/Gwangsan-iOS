@@ -50,9 +50,7 @@ struct ProfileView: View {
                     
                     Spacer()
                     
-                    Button {
-                        
-                    } label: {
+                    NavigationLink(destination: ModifyProfileView()) {
                         Text("내 정보 수정")
                             .font(.system(size: 14))
                             .gwangsanColor(GwangsanAsset.Color.mainGreen500)

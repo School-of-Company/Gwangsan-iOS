@@ -74,8 +74,8 @@ struct ModifyProfileView: View {
                 }
             )
             .padding(.bottom, 30)
-            
         }
+        .navigationBarHidden(true)
     }
 }
 
