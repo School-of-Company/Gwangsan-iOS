@@ -10,6 +10,7 @@ import SwiftUI
 struct LocationSelectView: View {
     @State private var keyword: String = ""
     @ObservedObject var viewModel = SignUpViewModel()
+    @State private var showError: Bool = false
 
     private let allLocations = ["첨단 1동", "첨단 2동", "첨단 3동", "운암동", "풍암동", "쌍촌동"]
 
@@ -36,7 +37,8 @@ struct LocationSelectView: View {
                         "동네를 검색해주세요",
                         text: $keyword,
                         title: "",
-                        horizontalPadding: 24
+                        horizontalPadding: 24,
+                        isError: $showError
                     )
                     .overlay(
                         Image("Search")

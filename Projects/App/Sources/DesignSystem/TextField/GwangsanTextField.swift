@@ -71,9 +71,8 @@ struct GwangsanTextField: View {
             
             if isError, let error = errorMessage, !error.isEmpty {
                 Text(error)
-                    .font(.system(size: 10))
+                    .font(.system(size: 13))
                     .foregroundColor(GwangsanAsset.Color.error.swiftUIColor)
-                    .padding(.horizontal, horizontalPadding)
             }
         }
         .padding(.horizontal, horizontalPadding)

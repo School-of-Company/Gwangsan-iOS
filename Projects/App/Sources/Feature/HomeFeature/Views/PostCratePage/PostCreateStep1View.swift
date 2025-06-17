@@ -13,6 +13,7 @@ struct PostCreateStep1View: View {
     let headerTitle: String
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool
+    @State private var showError: Bool = false
     @State private var photoItems: [PhotosPickerItem] = []
     @ObservedObject var viewModel: PostDraftViewModel
     
@@ -51,7 +52,11 @@ struct PostCreateStep1View: View {
                     "주제를 작성해주세요",
                     text: $viewModel.topic,
                     title: "주제",
-                    horizontalPadding: 0
+                    horizontalPadding: 0,
+                    isError: $showError,
+                    onSubmit: {
+                        showError = viewModel.topic.isEmpty
+                    }
                 )
                 .padding(.top, 30)
                 

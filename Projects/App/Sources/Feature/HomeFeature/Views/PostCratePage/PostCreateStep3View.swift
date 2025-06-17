@@ -13,6 +13,7 @@ struct PostCreateStep3View: View {
     @FocusState private var isFocused: Bool
     @ObservedObject var viewModel: PostDraftViewModel
     @State private var navigateToStep1 = false
+    @State private var showError: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -50,7 +51,11 @@ struct PostCreateStep3View: View {
                             "이름을 입력해주세요",
                             text: $viewModel.topic,
                             title: "주제",
-                            horizontalPadding: 0
+                            horizontalPadding: 0,
+                            isError: $showError,
+                            onSubmit: {
+                                showError = viewModel.topic.isEmpty
+                            }
                         )
                         .padding(.top, 30)
                         
@@ -108,7 +113,11 @@ struct PostCreateStep3View: View {
                             "광산을 입력해주세요",
                             text: $viewModel.point,
                             title: "광산",
-                            horizontalPadding: 0
+                            horizontalPadding: 0,
+                            isError: $showError,
+                            onSubmit: {
+                                showError = viewModel.point.isEmpty
+                            }
                         )
                         .padding(.top, 30)
                         

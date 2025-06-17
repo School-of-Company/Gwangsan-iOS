@@ -32,11 +32,7 @@ struct NameInputView: View {
                             text: $viewModel.name,
                             title: "이름",
                             horizontalPadding: 24,
-                            isError: $showError, 
-                            errorMessage: "이름을 입력해주세요",
-                            onSubmit: {
-                                showError = viewModel.name.isEmpty
-                            }
+                            isError: $showError
                         )
                 }
                 .padding(.top, 16)
