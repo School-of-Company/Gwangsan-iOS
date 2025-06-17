@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ModifyProfileView: View {
     @Environment(\.dismiss) private var dismiss
+    @State private var showError: Bool = false
     @State var nickname: String = "" // 뷰모델
     var body: some View {
         NavigationStack{
@@ -37,27 +38,31 @@ struct ModifyProfileView: View {
                         "별칭을 입력해주세요",
                         text: $nickname,
                         title: "별칭",
-                        horizontalPadding: 0
+                        horizontalPadding: 0,
+                        isError: $showError,
+                        onSubmit: {
+                           
+                        }
                     )
                     .padding(.top, 25)
-                    GwangsanTextField(
-                        "별칭을 입력해주세요",
-                        text: $nickname,
-                        title: "별칭",
-                        horizontalPadding: 0
-                    )
-                    GwangsanTextField(
-                        "별칭을 입력해주세요",
-                        text: $nickname,
-                        title: "별칭",
-                        horizontalPadding: 0
-                    )
-                    GwangsanTextField(
-                        "별칭을 입력해주세요",
-                        text: $nickname,
-                        title: "별칭",
-                        horizontalPadding: 0
-                    )
+//                    GwangsanTextField(
+//                        "별칭을 입력해주세요",
+//                        text: $nickname,
+//                        title: "별칭",
+//                        horizontalPadding: 0
+//                    )
+//                    GwangsanTextField(
+//                        "별칭을 입력해주세요",
+//                        text: $nickname,
+//                        title: "별칭",
+//                        horizontalPadding: 0
+//                    )
+//                    GwangsanTextField(
+//                        "별칭을 입력해주세요",
+//                        text: $nickname,
+//                        title: "별칭",
+//                        horizontalPadding: 0
+//                    )
                 }
             }
             .padding(.horizontal, 24)

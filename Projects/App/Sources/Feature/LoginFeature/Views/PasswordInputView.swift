@@ -10,6 +10,7 @@ import SwiftUI
 
 struct PasswordInputView: View {
     @ObservedObject var viewModel: LoginViewModel
+    @State private var showError: Bool = false
     
     var body: some View {
         NavigationStack{
@@ -30,7 +31,11 @@ struct PasswordInputView: View {
                         "비밀번호를 입력해주세요",
                         text: $viewModel.password,
                         title: "비밀번호",
-                        horizontalPadding: 24
+                        horizontalPadding: 24,
+                        isError: $showError,
+                        onSubmit: {
+                            showError = viewModel.password.isEmpty
+                        }
                     )
                 }
                 .padding(.top, 16)

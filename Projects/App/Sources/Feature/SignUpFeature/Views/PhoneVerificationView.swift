@@ -12,7 +12,7 @@ struct PhoneVerificationView: View {
     @ObservedObject var viewModel: SignUpViewModel
     @State var phoneNumber: String = ""
     @State var confirmnumber: String = ""
-
+    @State private var showError: Bool = false
     var body: some View {
         NavigationStack {
             VStack {
@@ -34,7 +34,8 @@ struct PhoneVerificationView: View {
                                 "전화번호를 입력해주세요",
                                 text: $phoneNumber,
                                 title: "전화번호",
-                                horizontalPadding: 0
+                                horizontalPadding: 0,
+                                isError: $showError
                             )
                             .frame(height: 56)
                             .frame(maxWidth: .infinity)
@@ -56,7 +57,8 @@ struct PhoneVerificationView: View {
                             "인증번호를 입력해주세요",
                             text: $confirmnumber,
                             title: "전화번호 인증",
-                            horizontalPadding: 24
+                            horizontalPadding: 24,
+                            isError: $showError
                         )
                     }
                 }

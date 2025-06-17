@@ -11,6 +11,7 @@ import SwiftUI
 struct PostCreateStep2View: View {
     @ObservedObject var viewModel: PostDraftViewModel
     @Environment(\.dismiss) private var dismiss
+    @State private var showError: Bool = false
     
     var body: some View {
         NavigationStack{
@@ -42,7 +43,11 @@ struct PostCreateStep2View: View {
                     "광산을 입력해주세요",
                     text: $viewModel.point,
                     title: "광산",
-                    horizontalPadding: 0
+                    horizontalPadding: 0,
+                    isError: $showError,
+                    onSubmit: {
+                        showError = viewModel.point.isEmpty
+                    }
                 )
                 .padding(.top,30)
                 

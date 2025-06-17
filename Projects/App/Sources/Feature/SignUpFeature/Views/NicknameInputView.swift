@@ -10,6 +10,7 @@ import SwiftUI
 
 struct NicknameInputView: View {
     @ObservedObject var viewModel: SignUpViewModel
+    @State private var showError: Bool = false
     var body: some View {
         NavigationStack {
             VStack{
@@ -30,7 +31,8 @@ struct NicknameInputView: View {
                         "별칭을 입력해주세요",
                         text: $viewModel.nickname,
                         title: "별칭",
-                        horizontalPadding: 24
+                        horizontalPadding: 24,
+                        isError: $showError
                     )
                 }
                 .padding(.top, 16)
@@ -49,4 +51,8 @@ struct NicknameInputView: View {
             .modifier(BackButtonModifier())
         }
     }
+}
+
+#Preview {
+    NicknameInputView(viewModel: SignUpViewModel())
 }

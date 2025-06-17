@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ReferenceView: View {
     @ObservedObject var viewModel: SignUpViewModel
+    @State private var showError: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -30,7 +31,8 @@ struct ReferenceView: View {
                             "추천인 별칭을 입력해주세요",
                             text: $viewModel.reference,
                             title: "추천인",
-                            horizontalPadding: 24
+                            horizontalPadding: 24,
+                            isError: $showError
                         )
                 }
                 .padding(.top, 16)

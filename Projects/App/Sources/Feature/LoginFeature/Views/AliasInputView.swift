@@ -10,6 +10,7 @@ import SwiftUI
 
 struct AliasInputView: View {
     @ObservedObject var viewModel: LoginViewModel
+    @State private var showError: Bool = false
     var body: some View {
         NavigationStack {
             VStack{
@@ -30,7 +31,11 @@ struct AliasInputView: View {
                         "별칭을 입력해주세요",
                         text: $viewModel.nickname,
                         title: "별칭",
-                        horizontalPadding: 24
+                        horizontalPadding: 24,
+                        isError: $showError,
+                        onSubmit: {
+                            showError = viewModel.nickname.isEmpty
+                        }
                     )
                 }
                 .padding(.top, 16)
