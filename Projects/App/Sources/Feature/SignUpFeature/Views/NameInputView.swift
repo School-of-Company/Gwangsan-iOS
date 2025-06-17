@@ -10,6 +10,7 @@ import SwiftUI
 
 struct NameInputView: View {
     @ObservedObject var viewModel: SignUpViewModel
+    @State private var showError: Bool = false
     var body: some View {
         NavigationStack {
             VStack{
@@ -27,11 +28,16 @@ struct NameInputView: View {
                     .padding(.horizontal, 24)
                     
                     GwangsanTextField(
-                        "본인의 이름을 입력해주세요",
-                        text: $viewModel.name,
-                        title: "이름",
-                        horizontalPadding: 24
-                    )
+                            "본인의 이름을 입력해주세요",
+                            text: $viewModel.name,
+                            title: "이름",
+                            horizontalPadding: 24,
+                            isError: $showError, 
+                            errorMessage: "이름을 입력해주세요",
+                            onSubmit: {
+                                showError = viewModel.name.isEmpty
+                            }
+                        )
                 }
                 .padding(.top, 16)
                 
@@ -50,4 +56,8 @@ struct NameInputView: View {
         }
         .navigationBarHidden(true)
     }
+}
+
+#Preview {
+    NameInputView(viewModel: SignUpViewModel())
 }
