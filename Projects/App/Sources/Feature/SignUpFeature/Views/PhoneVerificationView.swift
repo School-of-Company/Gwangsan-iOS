@@ -10,9 +10,13 @@ import SwiftUI
 
 struct PhoneVerificationView: View {
     @ObservedObject var viewModel: SignUpViewModel
-    @State var phoneNumber: String = ""
-    @State var confirmnumber: String = ""
-    @State private var showError: Bool = false
+    @StateObject private var phoneVM = PhoneVerificationViewModel()
+    @State private var shouldNavigate = false
+
+    private var canGoNext: Bool {
+        phoneVM.isCodeSent && phoneVM.verificationCode.count == 6 && phoneVM.errorMessage == nil
+    }
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -20,7 +24,6 @@ struct PhoneVerificationView: View {
                     VStack(alignment: .leading) {
                         Text("회원가입")
                             .gwangsanFont(style: .titleMedium)
-
                         Text("전화번호를 입력해주세요")
                             .gwangsanFont(style: .label)
                             .gwangsanColor(GwangsanAsset.Color.gray500)
@@ -29,36 +32,48 @@ struct PhoneVerificationView: View {
                     .padding(.horizontal, 24)
 
                     VStack(spacing: 32) {
-                        HStack(spacing: 12) {
-                            GwangsanTextField(
-                                "전화번호를 입력해주세요",
-                                text: $phoneNumber,
-                                title: "전화번호",
-                                horizontalPadding: 0,
-                                isError: $showError
-                            )
-                            .frame(height: 56)
-                            .frame(maxWidth: .infinity)
-                            
-                            GwangsanButton(
-                                text: "인증",
-                                buttonState: phoneNumber.isEmpty,
-                                horizontalPadding: 0,
-                                height: 56,
-                                action: {
-                                   print("전화번호 인증")
+                        VStack(spacing: 4) {
+                            HStack(spacing: 12) {
+                                GwangsanTextField(
+                                    "전화번호를 입력해주세요",
+                                    text: $phoneVM.phoneNumber,
+                                    title: "전화번호",
+                                    horizontalPadding: 0,
+                                    isError: .constant(false),
+                                    errorMessage: nil
+                                )
+                                .frame(height: 56)
+                                .frame(maxWidth: .infinity)
+
+                                GwangsanButton(
+                                    text: "인증",
+                                    buttonState: !phoneVM.phoneNumber.isEmpty,
+                                    horizontalPadding: 0,
+                                    height: 56
+                                ) {
+                                    phoneVM.sendCode()
                                 }
-                            )
-                            .padding(.top, 20)
-                            .frame(width: 80)
+                                .frame(width: 80)
+                                .padding(.top, 20)
+                            }
+                            .padding(.horizontal, 24)
+
+                            if let error = phoneVM.errorMessage, !phoneVM.isCodeSent {
+                                Text(error)
+                                    .font(.caption)
+                                    .foregroundColor(.red)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.horizontal, 24)
+                            }
                         }
-                        .padding(.horizontal, 20)
+
                         GwangsanTextField(
                             "인증번호를 입력해주세요",
-                            text: $confirmnumber,
+                            text: $phoneVM.verificationCode,
                             title: "전화번호 인증",
                             horizontalPadding: 24,
-                            isError: $showError
+                            isError: .constant(phoneVM.errorMessage != nil && phoneVM.isCodeSent),
+                            errorMessage: phoneVM.errorMessage
                         )
                     }
                 }
@@ -68,14 +83,26 @@ struct PhoneVerificationView: View {
 
                 GwangsanButton(
                     text: "다음",
-                    buttonState: true, // 전화번호 인증이 완료되면 true로 변경하게 만들어야함
+                    buttonState: canGoNext,
                     horizontalPadding: 24,
                     height: 52,
-                    destination: LocationSelectView(viewModel: viewModel)
-                )
+                    style: .filled
+                ) {
+                    phoneVM.verifyCode()
+                    if phoneVM.errorMessage == nil {
+                        shouldNavigate = true
+                    }
+                }
                 .padding(.bottom, 30)
+                .navigationDestination(isPresented: $shouldNavigate) {
+                    LocationSelectView(viewModel: viewModel)
+                }
             }
             .modifier(BackButtonModifier())
         }
     }
+}
+
+#Preview {
+    PhoneVerificationView(viewModel: SignUpViewModel())
 }
