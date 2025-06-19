@@ -39,8 +39,7 @@ struct PhoneVerificationView: View {
                                     text: $phoneVM.phoneNumber,
                                     title: "전화번호",
                                     horizontalPadding: 0,
-                                    isError: .constant(false),
-                                    errorMessage: nil
+                                    isError: $phoneVM.isPhoneError
                                 )
                                 .frame(height: 56)
                                 .frame(maxWidth: .infinity)
@@ -72,7 +71,7 @@ struct PhoneVerificationView: View {
                             text: $phoneVM.verificationCode,
                             title: "전화번호 인증",
                             horizontalPadding: 24,
-                            isError: .constant(phoneVM.errorMessage != nil && phoneVM.isCodeSent),
+                            isError: $phoneVM.isCodeError,
                             errorMessage: phoneVM.errorMessage
                         )
                     }
