@@ -97,9 +97,11 @@ struct MyPostsView: View {
                                     VStack(alignment: .leading, spacing: 12) {
                                         Text(item.title)
                                             .gwangsanFont(style: .body3)
+                                            .foregroundColor(.black)
 
                                         Text("\(item.point) 광산")
                                             .font(.system(size: 14))
+                                            .foregroundColor(.black)
                                     }
 
                                     Spacer()

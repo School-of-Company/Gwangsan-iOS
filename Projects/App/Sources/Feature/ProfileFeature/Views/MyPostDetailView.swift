@@ -22,7 +22,7 @@ struct MyPostDetailView: View {
         NavigationStack {
             VStack(spacing: 0) {
                 ZStack {
-                    Text(item.mode == .service ? "서비스" : "물건")
+                    Text(item.category.displayName(for: item.mode))
                         .gwangsanFont(style: .body1)
 
                     HStack {
