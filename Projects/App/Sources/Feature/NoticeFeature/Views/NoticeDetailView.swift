@@ -39,7 +39,6 @@ struct NoticeDetailView: View {
                         Spacer()
                     }
                 }
-                .padding(.horizontal, 24)
                 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
@@ -53,7 +52,6 @@ struct NoticeDetailView: View {
                             .gwangsanFont(style: .body4)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .padding(.horizontal, 24)
                     .padding(.top, 24)
                 }
             }
