@@ -16,25 +16,27 @@ struct PostCreateStep2View: View {
     
     var body: some View {
         NavigationStack{
-                ZStack {
-                    HStack {
+            ZStack {
+                HStack {
+                    Button(action: { dismiss() }) {
                         Image("Back")
-                        Spacer()
-                        Text(headerTitle)
-                            .gwangsanFont(style: .body1)
-                        Spacer()
                     }
-                    
-                    HStack {
-                        Spacer()
-                        Button(action: { dismiss() }) {
-                            Image("Close")
-                                .resizable()
-                                .frame(width: 25, height: 25)
-                        }
+                    Spacer()
+                    Text("\(headerTitle)")
+                        .gwangsanFont(style: .body1)
+                    Spacer()
+                }
+                
+                HStack {
+                    Spacer()
+                    NavigationLink(destination: MainView()) {
+                        Image("Close")
+                            .resizable()
+                            .frame(width: 25, height: 25)
                     }
                 }
-                .padding(.horizontal, 24)
+            }
+            .padding(.horizontal, 24)
             
             ProgressBar(currentStep: 2)
             

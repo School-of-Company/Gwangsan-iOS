@@ -20,16 +20,18 @@ struct PostCreateStep3View: View {
         NavigationStack {
             ZStack {
                 HStack {
-                    Image("Back")
+                    Button(action: { dismiss() }) {
+                        Image("Back")
+                    }
                     Spacer()
-                    Text(headerTitle)
+                    Text("\(headerTitle)")
                         .gwangsanFont(style: .body1)
                     Spacer()
                 }
                 
                 HStack {
                     Spacer()
-                    Button(action: { dismiss() }) {
+                    NavigationLink(destination: MainView()) {
                         Image("Close")
                             .resizable()
                             .frame(width: 25, height: 25)
