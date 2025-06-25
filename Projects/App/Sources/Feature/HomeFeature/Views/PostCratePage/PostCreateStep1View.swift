@@ -27,7 +27,9 @@ struct PostCreateStep1View: View {
             
             ZStack {
                 HStack {
-                    Image("Back")
+                    Button(action: { dismiss() }) {
+                        Image("Back")
+                    }
                     Spacer()
                     Text("\(headerTitle)")
                         .gwangsanFont(style: .body1)
@@ -36,7 +38,7 @@ struct PostCreateStep1View: View {
                 
                 HStack {
                     Spacer()
-                    Button(action: { dismiss() }) {
+                    NavigationLink(destination: MainView()) {
                         Image("Close")
                             .resizable()
                             .frame(width: 25, height: 25)
@@ -145,7 +147,7 @@ struct PostCreateStep1View: View {
                     horizontalPadding: 0,
                     height: 52,
                     style: .filled,
-                    destination: PostCreateStep2View(viewModel: viewModel)
+                    destination: PostCreateStep2View(headerTitle: headerTitle, viewModel: viewModel)
                 )
                 .padding(.bottom, 30)
             }
