@@ -76,6 +76,7 @@ struct MyPostDetailView: View {
                     VStack(alignment: .leading, spacing: 24) {
                         Text(item.title)
                             .gwangsanFont(style: .titleSmall)
+                            .padding(.top, 20)
 
                         Text("\(item.point) 광산")
                             .gwangsanFont(style: .body3)
