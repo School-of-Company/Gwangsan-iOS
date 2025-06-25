@@ -116,9 +116,9 @@ struct MyPostsView: View {
                     Spacer()
                 }
             }
+            .padding(.horizontal, 24)
             .navigationBarHidden(true)
         }
-        .padding(.horizontal, 24)
     }
 }
 
