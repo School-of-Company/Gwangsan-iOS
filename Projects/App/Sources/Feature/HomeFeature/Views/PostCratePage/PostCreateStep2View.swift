@@ -9,18 +9,18 @@
 import SwiftUI
 
 struct PostCreateStep2View: View {
+    let headerTitle: String
     @ObservedObject var viewModel: PostDraftViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showError: Bool = false
     
     var body: some View {
         NavigationStack{
-            
                 ZStack {
                     HStack {
                         Image("Back")
                         Spacer()
-                        Text("필요해요")
+                        Text(headerTitle)
                             .gwangsanFont(style: .body1)
                         Spacer()
                     }
@@ -59,7 +59,7 @@ struct PostCreateStep2View: View {
                     horizontalPadding: 0,
                     height: 52,
                     style: .filled,
-                    destination: PostCreateStep3View(viewModel: viewModel)
+                    destination: PostCreateStep3View(headerTitle: headerTitle, viewModel: viewModel)
                 )
                 .padding(.bottom, 30)
             }
