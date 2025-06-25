@@ -16,15 +16,13 @@ struct PostCreateStep1View: View {
     @State private var showError: Bool = false
     @State private var photoItems: [PhotosPickerItem] = []
     @ObservedObject var viewModel: PostDraftViewModel
-    
-    
+
     var isFormValid: Bool {
         !viewModel.topic.isEmpty && !viewModel.content.isEmpty
     }
-    
+
     var body: some View {
-        NavigationStack{
-            
+        NavigationStack {
             ZStack {
                 HStack {
                     Image("Back")
@@ -33,7 +31,7 @@ struct PostCreateStep1View: View {
                         .gwangsanFont(style: .body1)
                     Spacer()
                 }
-                
+
                 HStack {
                     Spacer()
                     Button(action: { dismiss() }) {
@@ -44,9 +42,9 @@ struct PostCreateStep1View: View {
                 }
             }
             .padding(.horizontal, 24)
-            
+
             ProgressBar(currentStep: 1)
-            
+
             VStack(alignment: .leading) {
                 GwangsanTextField(
                     "주제를 작성해주세요",
@@ -59,11 +57,11 @@ struct PostCreateStep1View: View {
                     }
                 )
                 .padding(.top, 30)
-                
+
                 VStack(alignment: .leading, spacing: 5) {
                     Text("내용")
                         .gwangsanFont(style: .label)
-                    
+
                     ZStack(alignment: .topLeading) {
                         TextEditor(text: $viewModel.content)
                             .font(.system(size: 14))
@@ -81,7 +79,7 @@ struct PostCreateStep1View: View {
                             )
                             .cornerRadius(8)
                             .focused($isFocused)
-                        
+
                         if viewModel.content.isEmpty {
                             Text("내용을 작성해주세요")
                                 .font(.system(size: 14))
@@ -91,11 +89,11 @@ struct PostCreateStep1View: View {
                     }
                 }
                 .padding(.top, 25)
-                
+
                 VStack(alignment: .leading, spacing: 8) {
                     Text("사진첨부")
                         .gwangsanFont(style: .label)
-                    
+
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
                             ForEach(viewModel.selectedImages, id: \.self) { image in
@@ -105,7 +103,7 @@ struct PostCreateStep1View: View {
                                     .frame(width: 64, height: 64)
                                     .clipShape(Circle())
                             }
-                            
+
                             PhotosPicker(
                                 selection: $photoItems,
                                 maxSelectionCount: 5,
@@ -136,9 +134,9 @@ struct PostCreateStep1View: View {
                     }
                 }
                 .padding(.top, 10)
-                
+
                 Spacer()
-                
+
                 GwangsanButton(
                     text: "다음",
                     buttonState: isFormValid,
@@ -152,5 +150,23 @@ struct PostCreateStep1View: View {
             .padding(.horizontal, 24)
         }
         .navigationBarHidden(true)
+        .onAppear {
+            switch headerTitle {
+            case "해주세요":
+                viewModel.mode = .service
+                viewModel.category = .request
+            case "할 수 있어요":
+                viewModel.mode = .service
+                viewModel.category = .provide
+            case "필요해요":
+                viewModel.mode = .item
+                viewModel.category = .request
+            case "팔아요":
+                viewModel.mode = .item
+                viewModel.category = .provide
+            default:
+                break
+            }
+        }
     }
 }
