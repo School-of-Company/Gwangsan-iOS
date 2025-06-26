@@ -16,7 +16,6 @@ struct PostCreateStep2View: View {
     
     var body: some View {
         NavigationStack{
-            
             ZStack {
                 HStack {
                     Button(action: { dismiss() }) {
