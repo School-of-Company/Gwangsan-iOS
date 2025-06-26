@@ -9,32 +9,34 @@
 import SwiftUI
 
 struct PostCreateStep2View: View {
+    let headerTitle: String
     @ObservedObject var viewModel: PostDraftViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showError: Bool = false
     
     var body: some View {
         NavigationStack{
-            
-                ZStack {
-                    HStack {
+            ZStack {
+                HStack {
+                    Button(action: { dismiss() }) {
                         Image("Back")
-                        Spacer()
-                        Text("필요해요")
-                            .gwangsanFont(style: .body1)
-                        Spacer()
                     }
-                    
-                    HStack {
-                        Spacer()
-                        Button(action: { dismiss() }) {
-                            Image("Close")
-                                .resizable()
-                                .frame(width: 25, height: 25)
-                        }
+                    Spacer()
+                    Text("\(headerTitle)")
+                        .gwangsanFont(style: .body1)
+                    Spacer()
+                }
+                
+                HStack {
+                    Spacer()
+                    NavigationLink(destination: MainView()) {
+                        Image("Close")
+                            .resizable()
+                            .frame(width: 25, height: 25)
                     }
                 }
-                .padding(.horizontal, 24)
+            }
+            .padding(.horizontal, 24)
             
             ProgressBar(currentStep: 2)
             
@@ -59,7 +61,7 @@ struct PostCreateStep2View: View {
                     horizontalPadding: 0,
                     height: 52,
                     style: .filled,
-                    destination: PostCreateStep3View(viewModel: viewModel)
+                    destination: PostCreateStep3View(headerTitle: headerTitle, viewModel: viewModel)
                 )
                 .padding(.bottom, 30)
             }

@@ -1,14 +1,14 @@
 //
-//  ItemDetailVeiw.swift
+//  MyPostDetailView.swift
 //  Gwangsan
 //
-//  Created by 박정우 on 5/20/25.
+//  Created by 박정우 on 6/26/25.
 //  Copyright © 2025 schoolcompany. All rights reserved.
 //
 
 import SwiftUI
 
-struct ItemDetailView: View {
+struct MyPostDetailView: View {
     let item: CommonItem
     @Environment(\.dismiss) private var dismiss
     @State private var isReportSheetPresented = false
@@ -84,22 +84,6 @@ struct ItemDetailView: View {
                         Text(item.content)
                             .multilineTextAlignment(.leading)
                             .frame(maxWidth: .infinity, alignment: .leading)
-
-                        Button(action: {
-                            isReportSheetPresented = true
-                        }) {
-                            Text("이 게시글 신고하기")
-                                .font(.footnote)
-                                .foregroundColor(.red)
-                                .overlay(
-                                    Rectangle()
-                                        .frame(height: 1)
-                                        .foregroundColor(.red)
-                                        .offset(y: 2),
-                                    alignment: .bottom
-                                )
-                        }
-                        .padding(.top, 25)
                     }
                     .padding(.horizontal, 24)
                     .padding(.bottom, 20)
@@ -144,18 +128,4 @@ struct ItemDetailView: View {
             }
         }
     }
-}
-
-#Preview {
-    ItemDetailView(
-        item: CommonItem(
-            id: UUID(),
-            title: "집 청소좀 해주세요",
-            point: 5000,
-            category: .request,
-            imageName: "TestImage1",
-            content: "집 청소좀 해주세요집 청소 집 청소좀 해주세요집 청소집 청소좀 해주세요집 청소집 청소좀 해주세요집 청소집 청소좀 해주세요집 청소집 청소좀 해주세요집 청소집 청소좀 해주세요집 청소 집 청소좀 해주세요집 ",
-            mode: .service
-        )
-    )
 }

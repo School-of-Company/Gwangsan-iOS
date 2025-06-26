@@ -181,7 +181,3 @@ struct ServiceListView: View {
 #Preview {
     ServiceListView()
 }
-
-#Preview {
-    ServiceListView()
-}

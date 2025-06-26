@@ -9,27 +9,29 @@
 import SwiftUI
 
 struct PostCreateStep3View: View {
+    let headerTitle: String
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool
     @ObservedObject var viewModel: PostDraftViewModel
     @State private var navigateToStep1 = false
     @State private var showError: Bool = false
-    
+
     var body: some View {
         NavigationStack {
-            
             ZStack {
                 HStack {
-                    Image("Back")
+                    Button(action: { dismiss() }) {
+                        Image("Back")
+                    }
                     Spacer()
-                    Text("필요해요")
+                    Text("\(headerTitle)")
                         .gwangsanFont(style: .body1)
                     Spacer()
                 }
                 
                 HStack {
                     Spacer()
-                    Button(action: { dismiss() }) {
+                    NavigationLink(destination: MainView()) {
                         Image("Close")
                             .resizable()
                             .frame(width: 25, height: 25)
@@ -37,16 +39,16 @@ struct PostCreateStep3View: View {
                 }
             }
             .padding(.horizontal, 24)
-            
+
             ProgressBar(currentStep: 3)
-            
+
             VStack(spacing: 0) {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
                         Text("다시 한번 확인해주세요.")
                             .gwangsanFont(style: .titleSmall)
                             .padding(.top, 10)
-                        
+
                         GwangsanTextField(
                             "이름을 입력해주세요",
                             text: $viewModel.topic,
@@ -58,11 +60,11 @@ struct PostCreateStep3View: View {
                             }
                         )
                         .padding(.top, 30)
-                        
+
                         VStack(alignment: .leading, spacing: 5) {
                             Text("내용")
                                 .gwangsanFont(style: .label)
-                            
+
                             ZStack(alignment: .topLeading) {
                                 TextEditor(text: $viewModel.content)
                                     .font(.system(size: 14))
@@ -80,7 +82,7 @@ struct PostCreateStep3View: View {
                                     )
                                     .cornerRadius(8)
                                     .focused($isFocused)
-                                
+
                                 if viewModel.content.isEmpty {
                                     Text("내용을 작성해주세요")
                                         .font(.system(size: 14))
@@ -90,11 +92,11 @@ struct PostCreateStep3View: View {
                             }
                         }
                         .padding(.top, 25)
-                        
+
                         VStack(alignment: .leading, spacing: 8) {
                             Text("사진첨부")
                                 .gwangsanFont(style: .label)
-                            
+
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 16) {
                                     ForEach(viewModel.selectedImages, id: \.self) { image in
@@ -108,7 +110,7 @@ struct PostCreateStep3View: View {
                             }
                         }
                         .padding(.top, 10)
-                        
+
                         GwangsanTextField(
                             "광산을 입력해주세요",
                             text: $viewModel.point,
@@ -120,15 +122,15 @@ struct PostCreateStep3View: View {
                             }
                         )
                         .padding(.top, 30)
-                        
+
                         HStack(spacing: 12) {
                             NavigationLink(destination: PostCreateStep1View(
-                                headerTitle: "필요해요",
+                                headerTitle: headerTitle,
                                 viewModel: viewModel
                             ), isActive: $navigateToStep1) {
                                 EmptyView()
                             }.hidden()
-                            
+
                             GwangsanButton(
                                 text: "수정",
                                 buttonState: true,
@@ -138,17 +140,16 @@ struct PostCreateStep3View: View {
                             ) {
                                 navigateToStep1 = true
                             }
-                            
+
                             GwangsanButton(
                                 text: "완료",
                                 buttonState: true,
                                 horizontalPadding: 0,
                                 height: 52,
-                                style: .filled,
-                                action: {
-                                    viewModel.sumbit()
-                                }
-                            )
+                                style: .filled
+                            ) {
+                                viewModel.sumbit()
+                            }
                         }
                         .padding(.top, 60)
                         .padding(.bottom, 20)
@@ -158,5 +159,23 @@ struct PostCreateStep3View: View {
             }
         }
         .navigationBarHidden(true)
+        .onAppear {
+            switch headerTitle {
+            case "해주세요":
+                viewModel.mode = .service
+                viewModel.category = .request
+            case "할수있어요":
+                viewModel.mode = .service
+                viewModel.category = .provide
+            case "필요해요":
+                viewModel.mode = .item
+                viewModel.category = .request
+            case "팔아요":
+                viewModel.mode = .item
+                viewModel.category = .provide
+            default:
+                break
+            }
+        }
     }
 }
