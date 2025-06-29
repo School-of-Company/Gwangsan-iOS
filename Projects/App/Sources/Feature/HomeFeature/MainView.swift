@@ -15,14 +15,17 @@ struct MainView: View {
                 Color.clear
                 VStack(alignment: .leading){
                     HStack{
-                        HStack(spacing:0){
-                            Text("시민")
-                                .gwangsanColor(GwangsanAsset.Color.mainBlue500)
-                            Text("화폐,")
-                                .gwangsanColor(GwangsanAsset.Color.mainYellow500)
-                            Text("광산")
-                                .gwangsanColor(GwangsanAsset.Color.mainGreen500)
+                        VStack{
+                            HStack(spacing:0){
+                                Text("시민")
+                                    .gwangsanColor(GwangsanAsset.Color.mainBlue500)
+                                Text("화폐,")
+                                    .gwangsanColor(GwangsanAsset.Color.mainYellow500)
+                                Text("광산")
+                                    .gwangsanColor(GwangsanAsset.Color.mainGreen500)
+                            }
                         }
+                        .font(.custom("Cafe24SsurroundOTF", size: 16))
                         
                         Spacer()
                         
@@ -38,14 +41,14 @@ struct MainView: View {
                     Image("TestImage1")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: .infinity, height: 213)
+                        .frame(width: .infinity, height: 250)
                         .clipped()
                         .padding(.vertical, 24)
                     
                     Rectangle()
                         .frame(width: .infinity, height: 1)
                         .gwangsanColor(GwangsanAsset.Color.gray400)
-                        .padding(.bottom, 20)
+                        .padding(.bottom, 30)
                     
                     VStack(alignment: .leading) {
                         Text("광산구도시재생센터") // 본점
@@ -64,9 +67,10 @@ struct MainView: View {
                                     .fill(.white)
                                     .frame(width: 160, height: 160)
                                     .cornerRadius(12)
-                                VStack(spacing: 20) {
+                                VStack(spacing: 30) {
                                     Image("Object")
                                     Text("물건")
+                                        .font(.custom("Cafe24SsurroundOTF", size: 24))
                                         .multilineTextAlignment(.center)
                                         .foregroundColor(.black)
                                 }
@@ -82,9 +86,11 @@ struct MainView: View {
                                     .fill(.white)
                                     .frame(width: 160, height: 160)
                                     .cornerRadius(12)
+                                
                                 VStack(spacing: 20) {
                                     Image("Service")
                                     Text("서비스")
+                                        .font(.custom("Cafe24SsurroundOTF", size: 24))
                                         .multilineTextAlignment(.center)
                                         .foregroundColor(.black)
                                 }
