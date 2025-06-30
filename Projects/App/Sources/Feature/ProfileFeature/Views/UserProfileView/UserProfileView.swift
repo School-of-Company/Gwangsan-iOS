@@ -147,6 +147,7 @@ struct UserProfileView: View {
                 Spacer()
             }
         }
+        .navigationBarHidden(true)
     }
 }
 
