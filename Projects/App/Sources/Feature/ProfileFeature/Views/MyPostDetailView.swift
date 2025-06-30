@@ -13,18 +13,18 @@ struct MyPostDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isReportSheetPresented = false
     @State private var isReviewSheetPresented = false
-
+    
     var categoryText: String {
         item.category.displayName(for: item.mode)
     }
-
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
                 ZStack {
                     Text(item.mode == .service ? "서비스" : "물건")
                         .gwangsanFont(style: .body1)
-
+                    
                     HStack {
                         Button(action: { dismiss() }) {
                             Image(systemName: "chevron.left")
@@ -36,51 +36,54 @@ struct MyPostDetailView: View {
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 10)
-
+                
                 Image(item.imageName)
                     .resizable()
                     .frame(height: 280)
                     .frame(maxWidth: .infinity)
-
+                
                 HStack(alignment: .center) {
-                    HStack(spacing: 12) {
-                        Image(systemName: "person.crop.circle.fill")
-                            .resizable()
-                            .frame(width: 48, height: 48)
-                            .foregroundColor(.gray)
-                            .clipShape(Circle())
-
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("모태환")
-                                .gwangsanFont(style: .body3)
-
-                            Text("첨단 1동")
-                                .font(.system(size: 14))
+                    NavigationLink(destination: UserProfileView()) {
+                        HStack(spacing: 12) {
+                            Image(systemName: "person.crop.circle.fill")
+                                .resizable()
+                                .frame(width: 48, height: 48)
                                 .foregroundColor(.gray)
+                                .clipShape(Circle())
+                            
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("모태환")
+                                    .gwangsanFont(style: .body3)
+                                    .foregroundColor(.black)
+                                
+                                Text("첨단 1동")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.gray)
+                            }
                         }
                     }
                     .padding(.vertical, 10)
-
+                    
                     Spacer()
-
+                    
                     Text("8단계")
                         .gwangsanFont(style: .body1)
                         .gwangsanColor(GwangsanAsset.Color.mainYellow500)
                 }
                 .padding(.horizontal, 24)
                 .padding(.vertical, 6)
-
+                
                 Divider()
-
+                
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         Text(item.title)
                             .gwangsanFont(style: .titleSmall)
                             .padding(.top, 20)
-
+                        
                         Text("\(item.point) 광산")
                             .gwangsanFont(style: .body3)
-
+                        
                         Text(item.content)
                             .multilineTextAlignment(.leading)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -88,7 +91,7 @@ struct MyPostDetailView: View {
                     .padding(.horizontal, 24)
                     .padding(.bottom, 20)
                 }
-
+                
                 HStack(spacing: 12){
                     GwangsanButton(
                         text: "채팅하기",
@@ -99,7 +102,7 @@ struct MyPostDetailView: View {
                         style: .outline,
                         destination: SwiftUIView()
                     )
-
+                    
                     GwangsanButton(
                         text: "거래완료",
                         fontSize: 14,
