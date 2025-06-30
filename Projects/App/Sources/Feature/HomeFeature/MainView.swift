@@ -31,9 +31,11 @@ struct MainView: View {
                         .padding(.vertical, 10)
 
                         Spacer()
-
-                        Image("Bell")
-                            .frame(width: 24, height: 24)
+                        
+                        NavigationLink(destination: MyInForm()){
+                            Image("Bell")
+                                .frame(width: 24, height: 24)
+                        }
                     }
                     .padding(.horizontal, 24)
 
@@ -124,4 +126,3 @@ struct MainView: View {
 #Preview {
     MainView()
 }
-
