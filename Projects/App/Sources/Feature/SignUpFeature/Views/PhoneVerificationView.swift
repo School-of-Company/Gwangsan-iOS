@@ -20,7 +20,6 @@ struct PhoneVerificationView: View {
     }
 
     var body: some View {
-        NavigationStack {
             VStack {
                 VStack(spacing: 54) {
                     VStack(alignment: .leading) {
@@ -103,8 +102,6 @@ struct PhoneVerificationView: View {
                 }
             }
             .modifier(BackButtonModifier())
-        }
-        .navigationBarHidden(true)
     }
 }
 
