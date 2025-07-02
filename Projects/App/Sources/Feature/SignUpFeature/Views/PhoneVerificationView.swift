@@ -3,6 +3,7 @@
 //  Gwangsan
 //
 //  Created by 박정우 on 4/17/25.
+//  Updated by ChatGPT on 2025/07/03.
 //  Copyright © 2025 schoolcompany. All rights reserved.
 //
 
@@ -12,12 +13,12 @@ struct PhoneVerificationView: View {
     @ObservedObject var viewModel: SignUpViewModel
     @StateObject private var phoneVM = PhoneVerificationViewModel()
     @State private var shouldNavigate = false
-    
-    /// 디자인 활성화 조건: 코드 전송된 상태에서 인증번호 필드에 뭔가만 입력돼 있으면 true
+
+    /// 인증 버튼을 눌러 코드가 전송된 상태이고, 인증번호 필드가 비어있지 않으면 활성화
     private var isNextEnabled: Bool {
         phoneVM.isCodeSent && !phoneVM.verificationCode.isEmpty
     }
-    
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -31,7 +32,7 @@ struct PhoneVerificationView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 24)
-                    
+
                     VStack(spacing: 32) {
                         VStack(spacing: 4) {
                             HStack(spacing: 12) {
@@ -44,7 +45,7 @@ struct PhoneVerificationView: View {
                                 )
                                 .frame(height: 56)
                                 .frame(maxWidth: .infinity)
-                                
+
                                 GwangsanButton(
                                     text: "인증",
                                     buttonState: !phoneVM.phoneNumber.isEmpty,
@@ -57,7 +58,7 @@ struct PhoneVerificationView: View {
                                 .padding(.top, 20)
                             }
                             .padding(.horizontal, 24)
-                            
+
                             if let error = phoneVM.errorMessage, !phoneVM.isCodeSent {
                                 Text(error)
                                     .font(.caption)
@@ -66,7 +67,7 @@ struct PhoneVerificationView: View {
                                     .padding(.horizontal, 24)
                             }
                         }
-                        
+
                         GwangsanTextField(
                             "인증번호를 입력해주세요",
                             text: $phoneVM.verificationCode,
@@ -78,9 +79,9 @@ struct PhoneVerificationView: View {
                     }
                 }
                 .padding(.top, 16)
-                
+
                 Spacer()
-                
+
                 GwangsanButton(
                     text: "다음",
                     buttonState: isNextEnabled,
@@ -89,8 +90,11 @@ struct PhoneVerificationView: View {
                     style: .filled
                 ) {
                     phoneVM.verifyCode()
+
+                    // 인증 성공 시 viewModel에 전화번호 복사 후 다음 화면으로 이동
                     if !phoneVM.isCodeError {
-                        shouldNavigate = true    
+                        viewModel.phoneNumber = phoneVM.phoneNumber
+                        shouldNavigate = true
                     }
                 }
                 .padding(.bottom, 30)
@@ -100,6 +104,7 @@ struct PhoneVerificationView: View {
             }
             .modifier(BackButtonModifier())
         }
+        .navigationBarHidden(true)
     }
 }
 
