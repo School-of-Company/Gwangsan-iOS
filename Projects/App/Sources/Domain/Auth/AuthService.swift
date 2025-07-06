@@ -45,7 +45,7 @@ extension AuthService: TargetType {
         }
     }
 
-    var sampleData: Data { Data() }
+    var sampleData: Data { Data() } 
 
     var headers: [String: String]? {
         ["Content-Type": "application/json"]
