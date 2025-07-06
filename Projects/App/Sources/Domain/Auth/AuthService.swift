@@ -27,8 +27,8 @@ enum AuthService {
 }
 
 extension AuthService: TargetType {
-    var baseURL: URL {
-        URL(string: "http://localhost:8080")!
+    public var baseURL: URL {
+          return URL(string: "https://gwangsan.kro.kr")!
     }
 
     var path: String {
@@ -54,7 +54,6 @@ extension AuthService: TargetType {
     var task: Task {
         switch self {
         case let .signup(request):
-            // Encodable 모델을 JSON으로 자동 인코딩
             return .requestJSONEncodable(request)
         }
     }

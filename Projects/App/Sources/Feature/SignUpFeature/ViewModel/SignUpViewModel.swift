@@ -6,7 +6,7 @@
 //  Copyright © 2025 schoolcompany. All rights reserved.
 //
 
-import SwiftUI
+import Foundation
 import Moya
 
 class SignUpViewModel: ObservableObject {
@@ -18,12 +18,11 @@ class SignUpViewModel: ObservableObject {
     @Published var branch: String = ""
     @Published var selectedMajors: [String] = []
     @Published var reference: String = ""
-    
-    // Moya provider 예시
+
     private let provider = MoyaProvider<AuthService>()
-    
+
     func submit() {
-        let signUpRequest = SignupRequest(
+        let request = SignupRequest(
             name: name,
             nickname: nickname,
             password: password,
@@ -33,19 +32,26 @@ class SignUpViewModel: ObservableObject {
             recommender: reference,
             specialties: selectedMajors
         )
-        
-        print("  name:        \(signUpRequest.name)")
-        print("  nickname:    \(signUpRequest.nickname)")
-        print("  password:    \(signUpRequest.password)")
-        print("  phoneNumber: \(signUpRequest.phoneNumber)")
-        print("  dongName:    \(signUpRequest.dongName)")
-        print("  placeName:   \(signUpRequest.placeName)")
-        print("  recommender: \(signUpRequest.recommender)")
-        print("  specialties: \(signUpRequest.specialties)")
-        
-        
-        //        provider.request(.signup(request: req)) { response in
-        //            // ...성공/실패 처리...
-        //        }
+
+        provider.request(.signup(request: request)) { result in
+            switch result {
+            case .success(let response):
+                switch response.statusCode {
+                case 201:
+                    print("회원가입 성공 (201)")
+                case 400:
+                    print("회원가입 실패: 필수 항목 누락 또는 형식 오류 (400 Bad Request)")
+                case 401:
+                    print("회원가입 실패: 인증 코드가 유효하지 않습니다. (401 Unauthorized)")
+                case 409:
+                    print("회원가입 실패: 중복된 닉네임 또는 전화번호입니다. (409 Conflict)")
+                default:
+                    print("⚠️ 예상치 못한 상태 코드: \(response.statusCode)")
+                }
+
+            case .failure(let error):
+                print("🚨 네트워크 오류: \(error.localizedDescription)")
+            }
+        }
     }
 }
