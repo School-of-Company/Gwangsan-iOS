@@ -9,17 +9,6 @@
 import Foundation
 import Moya
 
-struct SignupRequest: Encodable {
-    let name: String
-    let nickname: String
-    let password: String
-    let phoneNumber: String
-    let dongName: String
-    let placeName: String
-    let recommender: String
-    let specialties: [String]
-}
-
 enum AuthService {
     /// 회원가입
     case signup(request: SignupRequest)
