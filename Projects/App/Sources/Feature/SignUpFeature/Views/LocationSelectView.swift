@@ -89,7 +89,6 @@ struct LocationSelectView: View {
                 style: .filled,
                 destination: BranchSelectView(viewModel: viewModel)
             )
-            .padding(.horizontal, 24)
             .padding(.bottom, 30)
         }
         .modifier(BackButtonModifier())    // 한 단계 pop

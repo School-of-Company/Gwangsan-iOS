@@ -10,43 +10,62 @@ import SwiftUI
 
 struct NameInputView: View {
     @ObservedObject var viewModel: SignUpViewModel
-    @State private var showError: Bool = false
+    @State private var showError = false
+    @State private var shouldNavigate = false
+
     var body: some View {
         NavigationStack {
-            VStack{
-                VStack(spacing: 54){
+            VStack {
+                VStack(spacing: 54) {
                     VStack(alignment: .leading) {
                         Text("회원가입")
                             .gwangsanFont(style: .titleMedium)
-                        
-                        Text("별칭을 입력해주세요")
+
+                        Text("이름을 입력해주세요")
                             .gwangsanFont(style: .label)
                             .gwangsanColor(GwangsanAsset.Color.gray500)
-                        
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 24)
-                    
+
                     GwangsanTextField(
-                            "본인의 이름을 입력해주세요",
-                            text: $viewModel.name,
-                            title: "이름",
-                            horizontalPadding: 24,
-                            isError: $showError
-                        )
+                        "본인의 이름을 입력해주세요",
+                        text: $viewModel.name,
+                        title: "이름",
+                        horizontalPadding: 24,
+                        isError: $showError,
+                        errorMessage: "한글만 입력해주세요"
+                    ) {
+                        showError = !viewModel.isNameValid
+                    }
                 }
                 .padding(.top, 16)
-                
+
                 Spacer()
-                
+
                 GwangsanButton(
                     text: "다음",
                     buttonState: !viewModel.name.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
-                    destination: NicknameInputView(viewModel: viewModel)
-                )
+                    style: .filled
+                ) {
+                    if viewModel.isNameValid {
+                        showError = false
+                        shouldNavigate = true
+                    } else {
+                        showError = true
+                    }
+                }
                 .padding(.bottom, 30)
+
+                NavigationLink(
+                    destination: NicknameInputView(viewModel: viewModel),
+                    isActive: $shouldNavigate
+                ) {
+                    EmptyView()
+                }
+                .hidden()
             }
             .modifier(BackButtonModifier())
         }

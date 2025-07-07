@@ -20,6 +20,11 @@ class SignUpViewModel: ObservableObject {
     @Published var reference: String = ""
 
     private let provider = MoyaProvider<AuthService>()
+    
+    var isNameValid: Bool {
+        let pattern = "^[가-힣]{2,}$"
+        return name.range(of: pattern, options: .regularExpression) != nil
+    }
 
     func submit() {
         let request = SignupRequest(
