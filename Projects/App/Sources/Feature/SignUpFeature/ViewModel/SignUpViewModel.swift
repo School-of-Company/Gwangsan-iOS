@@ -26,6 +26,11 @@ class SignUpViewModel: ObservableObject {
         return name.range(of: pattern, options: .regularExpression) != nil
     }
 
+    var isPasswordValid: Bool {
+         let pattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$"
+         return password.range(of: pattern, options: .regularExpression) != nil
+    }
+    
     func submit() {
         let request = SignupRequest(
             name: name,
