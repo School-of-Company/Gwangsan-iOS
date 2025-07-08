@@ -10,7 +10,7 @@ import SwiftUI
 
 struct FinishedView: View {
     var body: some View {
-        NavigationStack{
+        VStack{
             VStack(spacing: 32) {
                 Image("Gwangsan")
                     .resizable()

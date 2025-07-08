@@ -14,65 +14,66 @@ struct NameInputView: View {
     @State private var shouldNavigate = false
 
     var body: some View {
-        NavigationStack {
-            VStack {
-                VStack(spacing: 54) {
-                    VStack(alignment: .leading) {
-                        Text("회원가입")
-                            .gwangsanFont(style: .titleMedium)
-
-                        Text("이름을 입력해주세요")
-                            .gwangsanFont(style: .label)
-                            .gwangsanColor(GwangsanAsset.Color.gray500)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 24)
-
-                    GwangsanTextField(
-                        "본인의 이름을 입력해주세요",
-                        text: $viewModel.name,
-                        title: "이름",
-                        horizontalPadding: 24,
-                        isError: $showError,
-                        errorMessage: "한글만 입력해주세요"
-                    ) {
-                        showError = !viewModel.isNameValid
-                    }
+        VStack {
+            VStack(spacing: 54) {
+                VStack(alignment: .leading) {
+                    Text("회원가입")
+                        .gwangsanFont(style: .titleMedium)
+                    Text("이름을 입력해주세요")
+                        .gwangsanFont(style: .label)
+                        .gwangsanColor(GwangsanAsset.Color.gray500)
                 }
-                .padding(.top, 16)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 24)
 
-                Spacer()
-
-                GwangsanButton(
-                    text: "다음",
-                    buttonState: !viewModel.name.isEmpty,
+                GwangsanTextField(
+                    "본인의 이름을 입력해주세요",
+                    text: $viewModel.name,
+                    title: "이름",
                     horizontalPadding: 24,
-                    height: 52,
-                    style: .filled
+                    isError: $showError,
+                    errorMessage: "한글만 입력해주세요"
                 ) {
-                    if viewModel.isNameValid {
-                        showError = false
-                        shouldNavigate = true
-                    } else {
-                        showError = true
-                    }
+                    showError = !viewModel.isNameValid
                 }
-                .padding(.bottom, 30)
-
-                NavigationLink(
-                    destination: NicknameInputView(viewModel: viewModel),
-                    isActive: $shouldNavigate
-                ) {
-                    EmptyView()
-                }
-                .hidden()
             }
-            .modifier(BackButtonModifier())
+            .padding(.top, 16)
+
+            Spacer()
+
+            GwangsanButton(
+                text: "다음",
+                buttonState: !viewModel.name.isEmpty,
+                horizontalPadding: 24,
+                height: 52,
+                style: .filled
+            ) {
+                if viewModel.isNameValid {
+                    showError = false
+                    shouldNavigate = true
+                } else {
+                    showError = true
+                }
+            }
+            .padding(.bottom, 30)
+
+            // 비활성화된 네비게이션 링크
+            NavigationLink(
+                destination: NicknameInputView(viewModel: viewModel),
+                isActive: $shouldNavigate
+            ) {
+                EmptyView()
+            }
+            .hidden()
         }
-        .navigationBarHidden(true)
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
+        .modifier(BackButtonModifier())
     }
 }
 
 #Preview {
-    NameInputView(viewModel: SignUpViewModel())
+    NavigationStack {
+        NameInputView(viewModel: SignUpViewModel())
+    }
 }

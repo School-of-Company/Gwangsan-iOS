@@ -16,7 +16,7 @@ struct StartView: View {
     let images = ["StartView1", "StartView2", "StartView3"]
 
     var body: some View {
-        NavigationView {
+        NavigationStack{
             VStack {
                 ZStack(alignment: .bottom) {
                     TabView(selection: $currentPage) {
