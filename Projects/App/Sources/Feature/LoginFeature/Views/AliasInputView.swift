@@ -12,7 +12,6 @@ struct AliasInputView: View {
     @ObservedObject var viewModel: LoginViewModel
     @State private var showError: Bool = false
     var body: some View {
-        NavigationStack {
             VStack{
                 VStack(spacing: 54){
                     VStack(alignment: .leading) {
@@ -51,12 +50,12 @@ struct AliasInputView: View {
                 )
                 .padding(.bottom, 30)
             }
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
             .modifier(BackButtonModifier())
         }
-        .navigationBarHidden(true)
-    }
-    
 }
+
 
 #Preview {
     AliasInputView(viewModel: LoginViewModel())
