@@ -49,7 +49,7 @@ struct PasswordInputView: View {
                     height: 52,
                     destination: MainView(),
                     action: {
-                        viewModel.submit()
+                        
                     }
                 )
                 .padding(.bottom, 30)
