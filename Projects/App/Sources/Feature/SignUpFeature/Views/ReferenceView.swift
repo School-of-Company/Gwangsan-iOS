@@ -67,7 +67,6 @@ struct ReferenceView: View {
             }
             .modifier(BackButtonModifier())
         }
-        .navigationBarHidden(true)
     }
 }
 
