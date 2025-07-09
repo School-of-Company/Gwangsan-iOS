@@ -10,8 +10,9 @@ import SwiftUI
 
 struct ReferenceView: View {
     @ObservedObject var viewModel: SignUpViewModel
-    @State private var showError: Bool = false
-    
+    @State private var showError = false
+    @State private var shouldNavigate = false
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -27,13 +28,16 @@ struct ReferenceView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 24)
 
-                        GwangsanTextField(
-                            "추천인 별칭을 입력해주세요",
-                            text: $viewModel.reference,
-                            title: "추천인",
-                            horizontalPadding: 24,
-                            isError: $showError
-                        )
+                    GwangsanTextField(
+                        "추천인 별칭을 입력해주세요",
+                        text: $viewModel.reference,
+                        title: "추천인",
+                        horizontalPadding: 24,
+                        isError: $showError,
+                        errorMessage: "한글만 입력해주세요(2글자 이상)"
+                    ) {
+                        showError = !viewModel.isNameValid
+                    }
                 }
                 .padding(.top, 16)
 
@@ -44,14 +48,29 @@ struct ReferenceView: View {
                     buttonState: !viewModel.reference.isEmpty,
                     horizontalPadding: 24,
                     height: 52,
-                    destination: FinishedView(),
-                    action: {
-                        viewModel.submit()
+                    style: .filled
+                ) {
+                    if viewModel.isNameValid {
+                        showError = false
+                        shouldNavigate = true
+                    } else {
+                        showError = true
                     }
-                )
+                }
                 .padding(.bottom, 30)
+
+                NavigationLink(
+                    destination: FinishedView(),
+                    isActive: $shouldNavigate
+                ) { EmptyView() }
+                .hidden()
             }
             .modifier(BackButtonModifier())
         }
+        .navigationBarHidden(true)
     }
+}
+
+#Preview {
+    ReferenceView(viewModel: SignUpViewModel())
 }
