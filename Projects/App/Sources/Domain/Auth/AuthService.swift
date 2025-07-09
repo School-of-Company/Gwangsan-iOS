@@ -42,7 +42,7 @@ public struct LoginResponse: Decodable {
 
 public enum AuthService {
     case signup(request: SignupRequest)
-    case login(request: LoginRequest)
+    case login(loginrequest: LoginRequest)
 }
 
 extension AuthService: TargetType {
